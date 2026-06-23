@@ -1,0 +1,223 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-sans: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-glow: var(--brand-glow);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-hairline: var(--hairline);
+}
+
+/* ============ LIGHT THEME (default) ============ */
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(0.985 0.003 260);          /* near white */
+  --foreground: oklch(0.18 0.02 265);            /* deep slate */
+  --surface: oklch(0.97 0.004 260);
+  --surface-elevated: oklch(1 0 0);
+  --hairline: oklch(0.18 0.02 265 / 0.10);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.02 265);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.02 265);
+
+  --brand-blue: oklch(0.55 0.20 268);
+  --brand-purple: oklch(0.52 0.22 295);
+  --brand-glow: oklch(0.48 0.22 280);
+
+  --primary: oklch(0.52 0.22 285);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.01 260);
+  --secondary-foreground: oklch(0.18 0.02 265);
+  --muted: oklch(0.96 0.005 260);
+  --muted-foreground: oklch(0.45 0.018 260);
+  --accent: oklch(0.52 0.22 285);
+  --accent-foreground: oklch(0.99 0 0);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.18 0.02 265 / 0.10);
+  --input: oklch(0.18 0.02 265 / 0.12);
+  --ring: oklch(0.52 0.22 285);
+
+  --gradient-brand: linear-gradient(135deg, var(--brand-blue), var(--brand-purple));
+  --gradient-glow: radial-gradient(ellipse at top, oklch(0.52 0.22 285 / 0.18), transparent 60%);
+  --shadow-glow: 0 0 0 1px oklch(0.52 0.22 285 / 0.25), 0 10px 40px -10px oklch(0.52 0.22 285 / 0.35);
+  --shadow-elevated: 0 20px 60px -20px oklch(0.18 0.02 265 / 0.18);
+}
+
+/* ============ DARK THEME ============ */
+.dark {
+  --background: oklch(0.26 0.025 265);
+  --foreground: oklch(0.98 0.005 250);
+  --surface: oklch(0.30 0.028 265);
+  --surface-elevated: oklch(0.34 0.03 265);
+  --hairline: oklch(1 0 0 / 0.10);
+
+  --card: oklch(0.30 0.028 265);
+  --card-foreground: oklch(0.98 0.005 250);
+  --popover: oklch(0.30 0.028 265);
+  --popover-foreground: oklch(0.98 0.005 250);
+
+  --brand-blue: oklch(0.68 0.20 268);
+  --brand-purple: oklch(0.66 0.22 295);
+  --brand-glow: oklch(0.76 0.20 280);
+
+  --primary: oklch(0.66 0.21 280);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.36 0.03 265);
+  --secondary-foreground: oklch(0.98 0.005 250);
+  --muted: oklch(0.34 0.025 265);
+  --muted-foreground: oklch(0.80 0.018 257);
+  --accent: oklch(0.66 0.21 280);
+  --accent-foreground: oklch(0.99 0 0);
+  --destructive: oklch(0.66 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(1 0 0 / 0.10);
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(0.66 0.21 280);
+
+  --gradient-glow: radial-gradient(ellipse at top, oklch(0.66 0.21 280 / 0.28), transparent 60%);
+  --shadow-glow: 0 0 0 1px oklch(0.66 0.21 280 / 0.4), 0 10px 40px -10px oklch(0.66 0.21 280 / 0.55);
+  --shadow-elevated: 0 20px 60px -20px oklch(0 0 0 / 0.5);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: var(--brand-purple);
+    color: white;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: linear-gradient(180deg, var(--surface-elevated), var(--surface));
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--hairline);
+  }
+  .glass-strong {
+    background: var(--surface-elevated);
+    backdrop-filter: blur(28px);
+    border: 1px solid var(--hairline);
+  }
+  .dark .glass {
+    background: linear-gradient(180deg, oklch(1 0 0 / 0.04), oklch(1 0 0 / 0.01));
+  }
+  .dark .glass-strong {
+    background: linear-gradient(180deg, oklch(1 0 0 / 0.06), oklch(1 0 0 / 0.02));
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-purple) 60%, var(--brand-glow) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .dark .gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 60%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--brand-blue), var(--brand-purple));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+  .gradient-border:hover::before {
+    opacity: 1;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(var(--hairline) 1px, transparent 1px),
+      linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .radial-glow {
+    background: var(--gradient-glow);
+  }
+}
+
+/* ============ Light-mode compatibility for utilities authored for dark bg ============ */
+/* The marketing site was authored with text-white / bg-white/5 literals. In light mode
+   we remap those to the foreground/dark equivalents so contrast stays correct. */
+html:not(.dark) .text-white { color: var(--foreground); }
+html:not(.dark) .text-white\/90 { color: oklch(0.18 0.02 265 / 0.92); }
+html:not(.dark) .text-white\/80 { color: oklch(0.18 0.02 265 / 0.85); }
+html:not(.dark) .text-white\/70 { color: oklch(0.18 0.02 265 / 0.75); }
+html:not(.dark) .text-white\/60 { color: oklch(0.18 0.02 265 / 0.65); }
+html:not(.dark) .bg-white\/5 { background-color: oklch(0.18 0.02 265 / 0.04); }
+html:not(.dark) .bg-white\/10 { background-color: oklch(0.18 0.02 265 / 0.08); }
+html:not(.dark) .bg-white\/\[0\.02\] { background-color: oklch(0.18 0.02 265 / 0.03); }
+html:not(.dark) .border-white\/10 { border-color: oklch(0.18 0.02 265 / 0.1); }
+html:not(.dark) .hover\:bg-white\/5:hover { background-color: oklch(0.18 0.02 265 / 0.04); }
+html:not(.dark) .hover\:text-white:hover { color: var(--foreground); }
+/* Bright purple-gradient brand buttons keep white text in both modes */
+html:not(.dark) [style*="gradient-brand"].text-white,
+html:not(.dark) [style*="gradient-brand"] .text-white { color: #fff; }
