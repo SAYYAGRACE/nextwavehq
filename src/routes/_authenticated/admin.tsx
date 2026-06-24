@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getStaffSession, clearStaffSession } from "@/integrations/supabase/staffAuth";
+import StaffMessaging from "@/components/StaffMessaging";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -40,7 +41,7 @@ type AuditEntry = {
   created_at: string;
 };
 
-type Tab = "overview" | "contact" | "waitlist" | "audit";
+type Tab = "overview" | "messages" | "contact" | "waitlist" | "audit";
 type DateRange = "all" | "7d" | "30d" | "90d";
 
 type DeleteTarget =
@@ -263,6 +264,7 @@ function AdminDashboard() {
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 border-b border-hairline">
           <TabBtn active={tab === "overview"} onClick={() => setTab("overview")} icon={<BarChart3 className="h-3.5 w-3.5" />} label="Overview" />
+          <TabBtn active={tab === "messages"} onClick={() => setTab("messages")} icon={<Mail className="h-3.5 w-3.5" />} label={`Messages`} />
           {(staffRole === "ceo" || staffRole === "coo") && (
             <>
               <TabBtn active={tab === "contact"} onClick={() => setTab("contact")} icon={<Inbox className="h-3.5 w-3.5" />} label={`Contact (${contacts.length})`} />
@@ -334,6 +336,11 @@ function AdminDashboard() {
         {/* OVERVIEW */}
         {tab === "overview" && (
           <Overview contacts={contacts} waitlist={waitlist} audit={audit} />
+        )}
+
+        {/* MESSAGES */}
+        {tab === "messages" && (
+          <StaffMessaging staffRole={staffRole} userEmail={userEmail} />
         )}
 
         {/* CONTACT */}
