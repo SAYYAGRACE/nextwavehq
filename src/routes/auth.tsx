@@ -29,7 +29,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/admin" });
+      if (data.session) navigate({ to: "/dashboard" });
     });
   }, [navigate]);
 
@@ -65,13 +65,13 @@ function AuthPage() {
       if (mode === "signin") {
         if (isStaffCredentials(email, password)) {
           setStaffSession(email);
-          navigate({ to: "/admin" });
+          navigate({ to: "/dashboard" });
           return;
         }
 
         const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
         if (error) throw error;
-        navigate({ to: "/admin" });
+        navigate({ to: "/dashboard" });
       } else {
         const { error } = await supabase.auth.signUp({
           email: email.trim(),
@@ -99,13 +99,13 @@ function AuthPage() {
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-md px-6">
           <div className="text-center">
-            <SectionEyebrow>Operations Console</SectionEyebrow>
-            <h1 className="mt-6 text-3xl sm:text-4xl font-bold tracking-tight text-white">
-              {mode === "signin" ? "Sign in" : "Create account"}
-            </h1>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Admin access only. Submissions and signups dashboard.
-            </p>
+              <SectionEyebrow>ERP Portal</SectionEyebrow>
+              <h1 className="mt-6 text-3xl sm:text-4xl font-bold tracking-tight text-white">
+                {mode === "signin" ? "Sign in" : "Create account"}
+              </h1>
+              <p className="mt-3 text-sm text-muted-foreground">
+                Enterprise Resource Planning system. Access your designated dashboard.
+              </p>
           </div>
 
           <form onSubmit={submit} className="mt-10 glass-strong rounded-2xl p-6 sm:p-8 space-y-5">
@@ -126,8 +126,8 @@ function AuthPage() {
             )}
             {mode === "signin" && (
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-muted-foreground">
-                <p className="font-medium text-white">Staff access</p>
-                <p>Enter your staff email and password to sign in.</p>
+                <p className="font-medium text-white">ERP Staff Access</p>
+                <p>Enter your staff email and password to access your personalized dashboard.</p>
               </div>
             )}
             <label className="block">

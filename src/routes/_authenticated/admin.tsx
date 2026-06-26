@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getStaffSession, clearStaffSession } from "@/integrations/supabase/staffAuth";
+import type { ErpRole } from "@/integrations/supabase/staffAuth";
 import StaffMessaging from "@/components/StaffMessaging";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -54,7 +55,7 @@ function AdminDashboard() {
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [userEmail, setUserEmail] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
-  const [staffRole, setStaffRole] = useState<"ceo" | "coo" | null>(null);
+  const [erpRole, setErpRole] = useState<ErpRole | null>(null);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [waitlist, setWaitlist] = useState<Waitlist[]>([]);
   const [audit, setAudit] = useState<AuditEntry[]>([]);
@@ -74,7 +75,7 @@ function AdminDashboard() {
     if (staff?.user) {
       setUserEmail(staff.user.email);
       setUserName(staff.user.user_metadata.name ?? "");
-      setStaffRole(staff.user.user_metadata.staffRole ?? "ceo");
+      setErpRole(staff.user.user_metadata.erpRole ?? "ceo");
       return setIsAdmin(true);
     }
 
@@ -122,7 +123,7 @@ function AdminDashboard() {
     if (!toDelete) return;
     setDeleting(true);
     const rpc = toDelete.kind === "contact" ? "admin_delete_contact" : "admin_delete_waitlist";
-    const { error } = await supabase.rpc(rpc, { _id: toDelete.row.id });
+    const { error } = await (supabase.rpc as any)(rpc, { _id: toDelete.row.id });
     setDeleting(false);
     if (error) {
       flash(`Delete failed: ${error.message}`);
@@ -265,13 +266,13 @@ function AdminDashboard() {
         <div className="flex flex-wrap gap-2 border-b border-hairline">
           <TabBtn active={tab === "overview"} onClick={() => setTab("overview")} icon={<BarChart3 className="h-3.5 w-3.5" />} label="Overview" />
           <TabBtn active={tab === "messages"} onClick={() => setTab("messages")} icon={<Mail className="h-3.5 w-3.5" />} label={`Messages`} />
-          {(staffRole === "ceo" || staffRole === "coo") && (
+          {(erpRole === "ceo" || erpRole === "coo") && (
             <>
               <TabBtn active={tab === "contact"} onClick={() => setTab("contact")} icon={<Inbox className="h-3.5 w-3.5" />} label={`Contact (${contacts.length})`} />
               <TabBtn active={tab === "waitlist"} onClick={() => setTab("waitlist")} icon={<Mail className="h-3.5 w-3.5" />} label={`Waitlist (${waitlist.length})`} />
             </>
           )}
-          {staffRole === "ceo" && (
+          {erpRole === "ceo" && (
             <TabBtn active={tab === "audit"} onClick={() => setTab("audit")} icon={<ScrollText className="h-3.5 w-3.5" />} label={`Audit (${audit.length})`} />
           )}
           <div className="ml-auto flex items-center gap-2 py-2">
@@ -340,11 +341,11 @@ function AdminDashboard() {
 
         {/* MESSAGES */}
         {tab === "messages" && (
-          <StaffMessaging staffRole={staffRole} userEmail={userEmail} />
+          <StaffMessaging staffRole={erpRole === "ceo" || erpRole === "coo" ? erpRole : "member"} userEmail={userEmail} />
         )}
 
         {/* CONTACT */}
-        {tab === "contact" && (staffRole === "ceo" || staffRole === "coo") && (
+        {tab === "contact" && (erpRole === "ceo" || erpRole === "coo") && (
           <DataCard count={filteredContacts.length} total={contacts.length} label="contact message">
             <table className="w-full text-sm">
               <thead>
@@ -414,7 +415,7 @@ function AdminDashboard() {
         )}
 
         {/* AUDIT */}
-        {tab === "audit" && staffRole === "ceo" && (
+        {tab === "audit" && erpRole === "ceo" && (
           <div className="mt-6 overflow-hidden rounded-2xl glass-strong">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">

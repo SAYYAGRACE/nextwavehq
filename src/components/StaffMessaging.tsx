@@ -16,7 +16,7 @@ export default function StaffMessaging({ staffRole, userEmail }: Props) {
   useEffect(() => {
     const s = getStaffSession();
     if (s?.user) {
-      setUser({ id: s.user.id ?? null, email: s.user.email, name: s.user.user_metadata.name, staffRole: s.user.user_metadata.staffRole });
+      setUser({ id: s.user.id ?? null, email: s.user.email, name: s.user.user_metadata.name, staffRole: s.user.user_metadata.erpRole });
     } else {
       supabase.auth.getUser().then(({ data }) => {
         setUser({ id: data.user?.id, email: data.user?.email, name: data.user?.user_metadata?.name, staffRole: data.user?.user_metadata?.staffRole });
@@ -55,7 +55,7 @@ export default function StaffMessaging({ staffRole, userEmail }: Props) {
 
   async function fetchAllStaff() {
     try {
-      const { data } = await supabase.rpc("get_all_staff");
+      const { data } = await (supabase.rpc as any)("get_all_staff");
       setAllStaff(data ?? []);
     } catch (e) {
       // ignore

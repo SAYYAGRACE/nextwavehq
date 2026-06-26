@@ -7,263 +7,59 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
       admin_audit_log: {
-        Row: {
-          action: string
-          admin_email: string | null
-          admin_id: string
-          created_at: string
-          id: string
-          metadata: Json
-          target_id: string | null
-          target_table: string
-        }
-        Insert: {
-          action: string
-          admin_email?: string | null
-          admin_id: string
-          created_at?: string
-          id?: string
-          metadata?: Json
-          target_id?: string | null
-          target_table: string
-        }
-        Update: {
-          action?: string
-          admin_email?: string | null
-          admin_id?: string
-          created_at?: string
-          id?: string
-          metadata?: Json
-          target_id?: string | null
-          target_table?: string
-        }
+        Row: { action: string; admin_email: string | null; admin_id: string; created_at: string; id: string; metadata: Json; target_id: string | null; target_table: string }
+        Insert: { action: string; admin_email?: string | null; admin_id: string; created_at?: string; id?: string; metadata?: Json; target_id?: string | null; target_table: string }
+        Update: { action?: string; admin_email?: string | null; admin_id?: string; created_at?: string; id?: string; metadata?: Json; target_id?: string | null; target_table?: string }
         Relationships: []
       }
       contact_submissions: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          intent: string
-          message: string
-          name: string
-          organization: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          intent: string
-          message: string
-          name: string
-          organization: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          intent?: string
-          message?: string
-          name?: string
-          organization?: string
-        }
+        Row: { created_at: string; email: string; id: string; intent: string; message: string; name: string; organization: string }
+        Insert: { created_at?: string; email: string; id?: string; intent: string; message: string; name: string; organization: string }
+        Update: { created_at?: string; email?: string; id?: string; intent?: string; message?: string; name?: string; organization?: string }
         Relationships: []
       }
       user_roles: {
-        Row: {
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
+        Row: { created_at: string; id: string; role: Database["public"]["Enums"]["app_role"]; user_id: string }
+        Insert: { created_at?: string; id?: string; role: Database["public"]["Enums"]["app_role"]; user_id: string }
+        Update: { created_at?: string; id?: string; role?: Database["public"]["Enums"]["app_role"]; user_id?: string }
         Relationships: []
       }
       waitlist_signups: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          source: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          source?: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          source?: string
-        }
+        Row: { created_at: string; email: string; id: string; source: string }
+        Insert: { created_at?: string; email: string; id?: string; source: string }
+        Update: { created_at?: string; email?: string; id?: string; source?: string }
+        Relationships: []
+      }
+      staff_conversations: {
+        Row: { created_at: string; created_by: string; id: string; subject: string | null; updated_at: string }
+        Insert: { created_at?: string; created_by: string; id?: string; subject?: string | null; updated_at?: string }
+        Update: { created_at?: string; created_by?: string; id?: string; subject?: string | null; updated_at?: string }
+        Relationships: []
+      }
+      staff_messages: {
+        Row: { content: string; conversation_id: string; created_at: string; id: string; sender_email: string; sender_id: string; sender_name: string; sender_role: string }
+        Insert: { content: string; conversation_id: string; created_at?: string; id?: string; sender_email: string; sender_id: string; sender_name: string; sender_role: string }
+        Update: { content?: string; conversation_id?: string; created_at?: string; id?: string; sender_email?: string; sender_id?: string; sender_name?: string; sender_role?: string }
+        Relationships: []
+      }
+      staff_conversation_participants: {
+        Row: { conversation_id: string; id: string; joined_at: string; last_read_at: string | null; user_email: string; user_id: string; user_name: string; user_role: string }
+        Insert: { conversation_id: string; id?: string; joined_at?: string; last_read_at?: string | null; user_email: string; user_id: string; user_name: string; user_role: string }
+        Update: { conversation_id?: string; id?: string; joined_at?: string; last_read_at?: string | null; user_email?: string; user_id?: string; user_name?: string; user_role?: string }
         Relationships: []
       }
     }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      admin_delete_contact: { Args: { _id: string }; Returns: undefined }
-      admin_delete_waitlist: { Args: { _id: string }; Returns: undefined }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
-    }
+    Views: { [_ in never]: never }
+    Functions: { [_ in never]: never }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "erp" | "member"
     }
-    CompositeTypes: {
-      [_ in never]: never
-    }
+    CompositeTypes: { [_ in never]: never }
   }
 }
-
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
-
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
-
-export type Tables<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
-    }
-    ? R
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R
-      }
-      ? R
-      : never
-    : never
-
-export type TablesInsert<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
-    }
-    ? I
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I
-      }
-      ? I
-      : never
-    : never
-
-export type TablesUpdate<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
-    }
-    ? U
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U
-      }
-      ? U
-      : never
-    : never
-
-export type Enums<
-  DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
-> = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
-
-export type CompositeTypes<
-  PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
-> = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
-
-export const Constants = {
-  public: {
-    Enums: {
-      app_role: ["admin", "user"],
-    },
-  },
-} as const

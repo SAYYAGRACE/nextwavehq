@@ -10,6 +10,7 @@ const NAV = [
   { to: "/team", label: "Team" },
   { to: "/contact", label: "Contact" },
   { to: "/auth", label: "Sign in" },
+  { to: "/dashboard", label: "ERP" },
 ] as const;
 
 export function SiteHeader() {
