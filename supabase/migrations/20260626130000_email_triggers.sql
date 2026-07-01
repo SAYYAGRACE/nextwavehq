@@ -13,15 +13,12 @@ BEGIN
     PERFORM
       net.http_post(
         url := 'https://ljwrowlxkkagvwxeungw.functions.supabase.co/send-email',
-        headers := jsonb_build_object(
-          'Content-Type', 'application/json',
-          'Authorization', CONCAT('Bearer ', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3Jvd2x4a2thZ3Z3eGV1bmd3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjg5NzUzNSwiZXhwIjoyMDk4NDczNTM1fQ.PwKfpuWXg4vxRLDurmh7eah9DiENITjekjKTuTPFle8')
-        ),
+        headers := '{"Content-Type":"application/json","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3Jvd2x4a2thZ3Z3eGV1bmd3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjg5NzUzNSwiZXhwIjoyMDk4NDczNTM1fQ.PwKfpuWXg4vxRLDurmh7eah9DiENITjekjKTuTPFle8"}'::jsonb,
         body := jsonb_build_object(
           'type', 'approved',
           'to', NEW.email,
           'name', split_part(NEW.email, '@', 1)
-        )::text
+        )
       );
   END IF;
   RETURN NEW;
@@ -44,10 +41,7 @@ BEGIN
   PERFORM
     net.http_post(
       url := 'https://ljwrowlxkkagvwxeungw.functions.supabase.co/send-email',
-      headers := jsonb_build_object(
-        'Content-Type', 'application/json',
-        'Authorization', CONCAT('Bearer ', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3Jvd2x4a2thZ3Z3eGV1bmd3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjg5NzUzNSwiZXhwIjoyMDk4NDczNTM1fQ.PwKfpuWXg4vxRLDurmh7eah9DiENITjekjKTuTPFle8')
-      ),
+      headers := '{"Content-Type":"application/json","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3Jvd2x4a2thZ3Z3eGV1bmd3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjg5NzUzNSwiZXhwIjoyMDk4NDczNTM1fQ.PwKfpuWXg4vxRLDurmh7eah9DiENITjekjKTuTPFle8"}'::jsonb,
       body := jsonb_build_object(
         'type', 'contact',
         'to', 'nextwavehq@outlook.com',
@@ -55,7 +49,7 @@ BEGIN
         'email', NEW.email,
         'intent', NEW.intent,
         'message', NEW.message
-      )::text
+      )
     );
   RETURN NEW;
 END;
