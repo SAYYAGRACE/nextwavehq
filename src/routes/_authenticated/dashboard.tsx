@@ -6,6 +6,7 @@ import { getErpModuleAccess, getRoleLabel, getRoleDescription } from "@/integrat
 import type { ErpRole } from "@/integrations/supabase/staffAuth";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import StaffMessaging from "@/components/StaffMessaging";
 import {
   LayoutDashboard, Users, Banknote, Briefcase, Settings, LogOut,
   BarChart3, ScrollText, Inbox, Mail, CheckSquare, TrendingUp,
@@ -17,15 +18,14 @@ import {
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "ERP Dashboard — Nextwave" },
-      { name: "description", content: "Enterprise Resource Planning system." },
+      { title: "Dashboard — Nextwave" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
   component: ErpDashboard,
 });
 
-type ErpModule = "overview" | "analytics" | "hr" | "finance" | "operations" | "projects" | "tasks" | "settings" | "audit" | "contact" | "waitlist" | "marketing";
+type ErpModule = "overview" | "analytics" | "hr" | "finance" | "operations" | "projects" | "tasks" | "messages" | "settings" | "audit" | "contact" | "waitlist" | "marketing";
 
 type Contact = {
   id: string; name: string; organization: string; email: string; intent: string; message: string; created_at: string;
@@ -50,6 +50,7 @@ const MODULE_CONFIGS: Record<ErpModule, ModuleConfig> = {
   operations: { id: "operations", label: "Operations", icon: <Activity className="h-4 w-4" />, description: "Operational metrics" },
   projects: { id: "projects", label: "Projects", icon: <Briefcase className="h-4 w-4" />, description: "Project tracking" },
   tasks: { id: "tasks", label: "Tasks", icon: <CheckSquare className="h-4 w-4" />, description: "My tasks" },
+  messages: { id: "messages", label: "Messages", icon: <Mail className="h-4 w-4" />, description: "Staff messaging" },
   settings: { id: "settings", label: "Settings", icon: <Settings className="h-4 w-4" />, description: "Account settings" },
   audit: { id: "audit", label: "Audit", icon: <ScrollText className="h-4 w-4" />, description: "Activity log" },
   contact: { id: "contact", label: "Contact", icon: <Inbox className="h-4 w-4" />, description: "Contact submissions" },
@@ -114,7 +115,7 @@ function ErpDashboard() {
   }
 
   useEffect(() => {
-    if (allowedModules.includes("contact") || allowedModules.includes("waitlist") || allowedModules.includes("audit")) {
+    if (allowedModules.includes("contact") || allowedModules.includes("waitlist") || allowedModules.includes("audit") || allowedModules.includes("marketing")) {
       loadData();
     }
   }, [allowedModules]);
@@ -137,7 +138,7 @@ function ErpDashboard() {
         <div className="p-4 border-b border-hairline flex items-center gap-3">
           <Logo variant="square" className="h-8 w-8 shrink-0" />
           <div className="min-w-0">
-            <div className="text-sm font-semibold truncate">Nextwave ERP</div>
+            <div className="text-sm font-semibold truncate">Nextwave</div>
             <div className="text-[10px] tracking-widest uppercase text-muted-foreground truncate">{roleLabel}</div>
           </div>
         </div>
@@ -214,12 +215,13 @@ function ErpDashboard() {
           {activeModule === "operations" && <OperationsView />}
           {activeModule === "projects" && <ProjectsView erpRole={erpRole} />}
           {activeModule === "tasks" && <TasksView userName={userName} />}
+          {activeModule === "messages" && <MessagesView userEmail={userEmail} erpRole={erpRole} />}
           {activeModule === "settings" && (
             <SettingsView userName={userName} userEmail={userEmail} erpRole={erpRole} department={department} title={title} onFlash={flash} />
           )}
           {activeModule === "audit" && <AuditView audit={audit} />}
           {activeModule === "contact" && <ContactView contacts={contacts} onFlash={flash} />}
-          {activeModule === "waitlist" && <WaitlistView waitlist={waitlist} onFlash={flash} />}
+          {activeModule === "waitlist" && <WaitlistView waitlist={waitlist} erpRole={erpRole} userEmail={userEmail} onFlash={flash} onRefresh={loadData} />}
           {activeModule === "marketing" && <MarketingView />}
         </main>
       </div>
@@ -792,21 +794,74 @@ function ContactView({ contacts, onFlash }: { contacts: Contact[]; onFlash: (msg
 
 /* ─── WAITLIST ─── */
 
-function WaitlistView({ waitlist, onFlash }: { waitlist: Waitlist[]; onFlash: (msg: string) => void }) {
+function WaitlistView({ waitlist, erpRole, userEmail, onFlash, onRefresh }: {
+  waitlist: Waitlist[]; erpRole: ErpRole; userEmail: string; onFlash: (msg: string) => void; onRefresh: () => void;
+}) {
   const [search, setSearch] = useState("");
+  const [tab, setTab] = useState<"pending" | "approved" | "rejected" | "all">("pending");
+  const isHoo = erpRole === "head-of-operations";
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return waitlist.filter((w) => !q || w.email.toLowerCase().includes(q) || w.source.toLowerCase().includes(q));
-  }, [waitlist, search]);
+    return waitlist.filter((w: any) => {
+      if (tab !== "all" && (w as any).status !== tab && !(tab === "pending" && !(w as any).status)) return false;
+      if (!q) return true;
+      return w.email.toLowerCase().includes(q) || w.source.toLowerCase().includes(q);
+    });
+  }, [waitlist, search, tab]);
+
+  async function approve(signup: Waitlist) {
+    const { error } = await (supabase.rpc as any)("approve_waitlist_signup", {
+      _id: signup.id,
+      _admin_email: userEmail,
+    });
+    if (error) {
+      onFlash(`Error: ${error.message}`);
+      return;
+    }
+    onFlash(`Approved — ${signup.email}`);
+    onRefresh();
+  }
+
+  async function reject(signup: Waitlist) {
+    const { error } = await (supabase.rpc as any)("reject_waitlist_signup", {
+      _id: signup.id,
+    });
+    if (error) {
+      onFlash(`Error: ${error.message}`);
+      return;
+    }
+    onFlash(`Rejected — ${signup.email}`);
+    onRefresh();
+  }
+
+  const pending = waitlist.filter((w: any) => !(w as any).status || (w as any).status === "pending");
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold tracking-tight">Waitlist Signups</h1>
-      <div className="relative max-w-xs">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search email or source…" className="w-full rounded-full border border-hairline bg-surface pl-10 pr-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary" />
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">NerdHaven Waitlist</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {pending.length} pending signup{pending.length !== 1 ? "s" : ""} awaiting review
+          </p>
+        </div>
       </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="relative flex-1 min-w-[220px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search email or source…" className="w-full rounded-full border border-hairline bg-surface pl-10 pr-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary" />
+        </div>
+        <div className="flex rounded-full border border-hairline overflow-hidden">
+          {(["pending", "approved", "rejected", "all"] as const).map((t) => (
+            <button key={t} onClick={() => setTab(t)}
+              className={`px-3 py-2 text-xs uppercase tracking-wider transition ${tab === t ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            >{t}</button>
+          ))}
+        </div>
+      </div>
+
       <div className="rounded-2xl glass-strong overflow-hidden">
         <table className="w-full text-sm">
           <thead>
@@ -814,15 +869,40 @@ function WaitlistView({ waitlist, onFlash }: { waitlist: Waitlist[]; onFlash: (m
               <th className="px-5 py-3 font-medium">Date</th>
               <th className="px-5 py-3 font-medium">Email</th>
               <th className="px-5 py-3 font-medium">Source</th>
+              <th className="px-5 py-3 font-medium">Status</th>
+              {isHoo && <th className="px-5 py-3 font-medium">Actions</th>}
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 && <tr><td colSpan={3} className="px-5 py-10 text-center text-muted-foreground">No signups match.</td></tr>}
-            {filtered.map((w) => (
+            {filtered.length === 0 && (
+              <tr><td colSpan={isHoo ? 5 : 4} className="px-5 py-10 text-center text-muted-foreground">No signups match.</td></tr>
+            )}
+            {filtered.map((w: any) => (
               <tr key={w.id} className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] transition">
                 <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">{fmtDate(w.created_at)}</td>
                 <td className="px-5 py-4 text-brand-glow">{w.email}</td>
                 <td className="px-5 py-4 text-muted-foreground">{w.source}</td>
+                <td className="px-5 py-4">
+                  <span className={`inline-flex items-center gap-1 rounded-full text-[10px] tracking-widest uppercase px-2.5 py-1 ${
+                    w.status === "approved" ? "bg-emerald-500/10 text-emerald-400" :
+                    w.status === "rejected" ? "bg-destructive/10 text-destructive" :
+                    "bg-amber-500/10 text-amber-400"
+                  }`}>
+                    {w.status ?? "pending"}
+                  </span>
+                </td>
+                {isHoo && (
+                  <td className="px-5 py-4">
+                    {(!w.status || w.status === "pending") ? (
+                      <div className="flex items-center gap-1.5">
+                        <button onClick={() => approve(w)} className="rounded-full bg-emerald-500/10 text-emerald-400 px-3 py-1 text-xs hover:bg-emerald-500/20">Approve</button>
+                        <button onClick={() => reject(w)} className="rounded-full bg-destructive/10 text-destructive px-3 py-1 text-xs hover:bg-destructive/20">Reject</button>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -830,6 +910,12 @@ function WaitlistView({ waitlist, onFlash }: { waitlist: Waitlist[]; onFlash: (m
       </div>
     </div>
   );
+}
+
+/* ─── MESSAGES ─── */
+
+function MessagesView({ userEmail, erpRole }: { userEmail: string; erpRole: ErpRole }) {
+  return <StaffMessaging staffRole={erpRole === "ceo" || erpRole === "coo" ? erpRole : "member"} userEmail={userEmail} />;
 }
 
 /* ─── MARKETING ─── */

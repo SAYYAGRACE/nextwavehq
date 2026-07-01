@@ -5,13 +5,13 @@ import { isStaffCredentials, setStaffSession } from "@/integrations/supabase/sta
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
-import { LogIn, UserPlus, ShieldCheck } from "lucide-react";
+import { LogIn, UserPlus } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Admin Sign In — Nextwave" },
-      { name: "description", content: "Administrative access to the Nextwave operations console." },
+      { title: "Sign In — Nextwave" },
+      { name: "description", content: "Sign in to your account." },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
@@ -99,12 +99,11 @@ function AuthPage() {
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-md px-6">
           <div className="text-center">
-              <SectionEyebrow>ERP Portal</SectionEyebrow>
               <h1 className="mt-6 text-3xl sm:text-4xl font-bold tracking-tight text-white">
                 {mode === "signin" ? "Sign in" : "Create account"}
               </h1>
               <p className="mt-3 text-sm text-muted-foreground">
-                Enterprise Resource Planning system. Access your designated dashboard.
+                Sign in with your email to continue.
               </p>
           </div>
 
@@ -123,12 +122,6 @@ function AuthPage() {
               <p className="text-xs text-muted-foreground leading-5">
                 Supabase handles confirmation email delivery. If you do not receive an email, check your spam folder or contact nextwavehq@outlook.com.
               </p>
-            )}
-            {mode === "signin" && (
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-muted-foreground">
-                <p className="font-medium text-white">ERP Staff Access</p>
-                <p>Enter your staff email and password to access your personalized dashboard.</p>
-              </div>
             )}
             <label className="block">
               <span className="text-xs tracking-widest uppercase text-muted-foreground">Email</span>
@@ -168,10 +161,6 @@ function AuthPage() {
               {mode === "signin" ? "Need an account? Create one" : "Have an account? Sign in"}
             </button>
           </form>
-
-          <p className="mt-6 text-center text-xs text-muted-foreground inline-flex items-center gap-2 w-full justify-center">
-            <ShieldCheck className="h-3 w-3" /> New accounts must be granted admin role to view data.
-          </p>
 
           <p className="mt-2 text-center text-xs text-muted-foreground">
             <Link to="/" className="hover:text-white">← Back to site</Link>

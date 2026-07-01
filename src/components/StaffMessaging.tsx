@@ -2,6 +2,19 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getStaffSession } from "@/integrations/supabase/staffAuth";
 
+const LOCAL_STAFF = [
+  { id: "staff-ceo", email: "ceo@nextwave.com", name: "Khalifa", role: "CEO" },
+  { id: "staff-coo", email: "coo@nextwave.com", name: "Ahmad Sani", role: "COO" },
+  { id: "staff-head-ops", email: "operations@nextwave.com", name: "Musa Ibrahim", role: "Head of Operations" },
+  { id: "staff-head-programs", email: "programs@nextwave.com", name: "Sarah Okafor", role: "Head of Programs" },
+  { id: "staff-head-marketing", email: "marketing@nextwave.com", name: "Chidi Eze", role: "Head of Marketing" },
+  { id: "staff-hr", email: "hr@nextwave.com", name: "Aisha Mohammed", role: "HR Manager" },
+  { id: "staff-finance", email: "finance@nextwave.com", name: "Ibrahim Musa", role: "Finance Manager" },
+  { id: "staff-pm", email: "pm@nextwave.com", name: "Fatima Usman", role: "Project Manager" },
+  { id: "staff-member-1", email: "ahmadsalisu@nextwave.com", name: "Ahmad Salisu", role: "Software Engineer" },
+  { id: "staff-member-2", email: "member@nextwave.com", name: "Zainab Abdullah", role: "Junior Developer" },
+];
+
 type Props = { staffRole: "ceo" | "coo" | "member" | null; userEmail: string };
 
 export default function StaffMessaging({ staffRole, userEmail }: Props) {
@@ -56,9 +69,12 @@ export default function StaffMessaging({ staffRole, userEmail }: Props) {
   async function fetchAllStaff() {
     try {
       const { data } = await (supabase.rpc as any)("get_all_staff");
-      setAllStaff(data ?? []);
+      const dbStaff = (data ?? []) as any[];
+      const seen = new Set(dbStaff.map((s: any) => s.email.toLowerCase()));
+      const merged = [...dbStaff, ...LOCAL_STAFF.filter((s) => !seen.has(s.email.toLowerCase()))];
+      setAllStaff(merged);
     } catch (e) {
-      // ignore
+      setAllStaff(LOCAL_STAFF);
     }
   }
 

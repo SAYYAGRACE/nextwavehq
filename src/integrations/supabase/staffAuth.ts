@@ -185,15 +185,15 @@ export function getRoleDescription(role: ErpRole): string {
 
 export function getErpModuleAccess(role: ErpRole): string[] {
   const access: Record<ErpRole, string[]> = {
-    ceo: ["overview", "analytics", "hr", "finance", "projects", "operations", "settings", "audit", "contact", "waitlist"],
-    coo: ["overview", "operations", "projects", "hr", "settings"],
-    hr: ["overview", "hr", "settings"],
-    finance: ["overview", "finance", "settings"],
-    "project-manager": ["overview", "projects", "settings"],
-    member: ["overview", "tasks", "settings"],
-    "head-of-operations": ["overview", "operations", "projects", "settings"],
-    "head-of-programs": ["overview", "projects", "analytics", "settings"],
-    "head-of-marketing": ["overview", "marketing", "analytics", "contact", "settings"],
+    ceo: ["overview", "analytics", "hr", "finance", "projects", "operations", "messages", "settings", "audit", "contact", "waitlist"],
+    coo: ["overview", "operations", "projects", "hr", "messages", "contact", "settings"],
+    hr: ["overview", "hr", "messages", "settings"],
+    finance: ["overview", "finance", "messages", "settings"],
+    "project-manager": ["overview", "projects", "messages", "settings"],
+    member: ["overview", "tasks", "messages", "settings"],
+    "head-of-operations": ["overview", "operations", "projects", "messages", "waitlist", "settings"],
+    "head-of-programs": ["overview", "projects", "analytics", "messages", "settings"],
+    "head-of-marketing": ["overview", "marketing", "analytics", "contact", "messages", "settings"],
   };
   return access[role] ?? ["overview"];
 }
