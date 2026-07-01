@@ -104,9 +104,9 @@ function ErpDashboard() {
   async function loadData() {
     setLoading(true);
     const [c, w, a] = await Promise.all([
-      supabase.from("contact_submissions").select("*").order("created_at", { ascending: false }),
-      supabase.from("waitlist_signups").select("*").order("created_at", { ascending: false }),
-      supabase.from("admin_audit_log").select("*").order("created_at", { ascending: false }).limit(200),
+      supabase.rpc("get_contact_submissions"),
+      supabase.rpc("get_waitlist_signups"),
+      supabase.rpc("get_admin_audit_log"),
     ]);
     setContacts(c.data ?? []);
     setWaitlist(w.data ?? []);

@@ -95,9 +95,9 @@ function AdminDashboard() {
   async function loadAll() {
     setLoading(true);
     const [{ data: c }, { data: w }, { data: a }] = await Promise.all([
-      supabase.from("contact_submissions").select("*").order("created_at", { ascending: false }),
-      supabase.from("waitlist_signups").select("*").order("created_at", { ascending: false }),
-      supabase.from("admin_audit_log").select("*").order("created_at", { ascending: false }).limit(200),
+      supabase.rpc("get_contact_submissions"),
+      supabase.rpc("get_waitlist_signups"),
+      supabase.rpc("get_admin_audit_log"),
     ]);
     setContacts(c ?? []);
     setWaitlist(w ?? []);
@@ -138,7 +138,7 @@ function AdminDashboard() {
     setToDelete(null);
     flash("Deleted · audit log updated");
     // refresh audit silently
-    supabase.from("admin_audit_log").select("*").order("created_at", { ascending: false }).limit(200)
+    supabase.rpc("get_admin_audit_log")
       .then(({ data }) => setAudit((data as AuditEntry[] | null) ?? []));
   }
 
