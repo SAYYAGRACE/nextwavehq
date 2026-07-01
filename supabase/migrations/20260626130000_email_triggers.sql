@@ -1,3 +1,6 @@
+-- Enable pg_net for HTTP requests
+CREATE EXTENSION IF NOT EXISTS pg_net WITH SCHEMA extensions;
+
 -- Trigger to send email notifications on waitlist approval
 -- Requires the send-email edge function to be deployed
 
@@ -9,10 +12,10 @@ BEGIN
   IF NEW.status = 'approved' AND (OLD.status IS NULL OR OLD.status != 'approved') THEN
     PERFORM
       net.http_post(
-        url := CONCAT(current_setting('app.settings.edge_function_url'), '/send-email'),
+        url := 'https://ljwrowlxkkagvwxeungw.functions.supabase.co/send-email',
         headers := jsonb_build_object(
           'Content-Type', 'application/json',
-          'Authorization', CONCAT('Bearer ', current_setting('app.settings.service_role_key'))
+          'Authorization', CONCAT('Bearer ', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3Jvd2x4a2thZ3Z3eGV1bmd3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjg5NzUzNSwiZXhwIjoyMDk4NDczNTM1fQ.PwKfpuWXg4vxRLDurmh7eah9DiENITjekjKTuTPFle8')
         ),
         body := jsonb_build_object(
           'type', 'approved',
@@ -40,10 +43,10 @@ AS $$
 BEGIN
   PERFORM
     net.http_post(
-      url := CONCAT(current_setting('app.settings.edge_function_url'), '/send-email'),
+      url := 'https://ljwrowlxkkagvwxeungw.functions.supabase.co/send-email',
       headers := jsonb_build_object(
         'Content-Type', 'application/json',
-        'Authorization', CONCAT('Bearer ', current_setting('app.settings.service_role_key'))
+        'Authorization', CONCAT('Bearer ', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3Jvd2x4a2thZ3Z3eGV1bmd3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjg5NzUzNSwiZXhwIjoyMDk4NDczNTM1fQ.PwKfpuWXg4vxRLDurmh7eah9DiENITjekjKTuTPFle8')
       ),
       body := jsonb_build_object(
         'type', 'contact',
