@@ -85,7 +85,36 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:site_name", content: "Nextwave Infotech" },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://nextwave.com.ng" },
+      { property: "og:title", content: "Nextwave — Empowering Africa's Youth in Deep Tech" },
+      {
+        property: "og:description",
+        content:
+          "A youth-led deep-tech movement bridging Africa's gap in AI, biotechnology, and digital health, originating from Northern Nigeria.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Nextwave — Empowering Africa's Youth in Deep Tech" },
+      {
+        name: "twitter:description",
+        content:
+          "A youth-led deep-tech movement bridging Africa's gap in AI, biotechnology, and digital health, originating from Northern Nigeria.",
+      },
+      { name: "theme-color", content: "#0a0a12" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Nextwave Infotech",
+          url: "https://nextwave.com.ng",
+          description:
+            "A strategic, youth-driven ecosystem positioning the African continent at the forefront of AI, biotechnology, and digital health innovation, originating from Northern Nigeria.",
+          knowsAbout: ["AI & Data Science", "Biotechnology & Health", "Digital Health Policy"],
+          address: { "@type": "PostalAddress", addressLocality: "Kaduna", addressCountry: "NG" },
+        }),
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
