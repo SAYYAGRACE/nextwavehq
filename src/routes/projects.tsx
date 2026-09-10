@@ -19,9 +19,16 @@ export const Route = createFileRoute("/projects")({
   head: () => ({
     meta: [
       { title: "Projects — Nextwave Bootcamp & NerdHaven" },
-      { name: "description", content: "Active initiatives and future infrastructure: The Nextwave Bootcamp and NerdHaven, the borderless digital academy." },
+      {
+        name: "description",
+        content:
+          "Active initiatives and future infrastructure: The Nextwave Bootcamp and NerdHaven, the borderless digital academy.",
+      },
       { property: "og:title", content: "Projects — Nextwave" },
-      { property: "og:description", content: "Active initiatives and future infrastructure from Nextwave." },
+      {
+        property: "og:description",
+        content: "Active initiatives and future infrastructure from Nextwave.",
+      },
       { property: "og:url", content: "/projects" },
     ],
     links: [{ rel: "canonical", href: "/projects" }],
@@ -58,15 +65,15 @@ const PHASES: { n: string; title: string; sub: string; body: string; icon: Lucid
   {
     n: "01",
     title: "The Strategic Outreach",
-    sub: "Academic Deployment",
-    body: "Nextwave engineering staff and mentors deploy directly to secondary schools and universities across Kaduna State to deliver intensive, foundational masterclasses in AI, logic, algorithmics, and biotechnology.",
+    sub: "Learning Community Deployment",
+    body: "Nextwave engineering staff and mentors deploy directly to learning communities and talent hubs across Kaduna State to deliver intensive, foundational masterclasses in AI, logic, algorithmics, and biotechnology.",
     icon: GraduationCap,
   },
   {
     n: "02",
     title: "The Aptitude Challenge",
     sub: "Rigorous Selection Framework",
-    body: "Students undergo a comprehensive, standardized technical evaluation and logical reasoning examination. This data-driven filter identifies the top analytical minds per cohort.",
+    body: "Candidates undergo a comprehensive, standardized technical evaluation and logical reasoning examination. This data-driven filter identifies the top analytical minds per cohort.",
     icon: ClipboardCheck,
   },
   {
@@ -91,7 +98,9 @@ function Bootcamp() {
   return (
     <section className="relative mx-auto max-w-7xl px-6 lg:px-10 mt-24 lg:mt-32">
       <div className="flex flex-wrap items-center gap-3 mb-6">
-        <span className="text-xs tracking-[0.2em] uppercase text-brand-glow">Pillar 01 · Active Initiative</span>
+        <span className="text-xs tracking-[0.2em] uppercase text-brand-glow">
+          Pillar 01 · Active Initiative
+        </span>
       </div>
       <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr] lg:items-end">
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
@@ -105,8 +114,8 @@ function Bootcamp() {
         </div>
       </div>
       <p className="mt-6 max-w-3xl text-muted-foreground leading-relaxed">
-        A high-impact, metrics-driven pipeline transforming local academic talent into high-performing
-        industry engineering assets.
+        A high-impact, metrics-driven pipeline transforming local technical talent into
+        high-performing industry engineering assets.
       </p>
 
       {/* Stepper */}
@@ -127,7 +136,10 @@ function Bootcamp() {
               <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
                 Phase {p.n}
               </span>
-              <p.icon className={`h-4 w-4 ${active === i ? "text-brand-glow" : "text-muted-foreground"}`} strokeWidth={1.5} />
+              <p.icon
+                className={`h-4 w-4 ${active === i ? "text-brand-glow" : "text-muted-foreground"}`}
+                strokeWidth={1.5}
+              />
             </div>
             <h3 className="mt-4 text-base font-semibold text-white">{p.title}</h3>
             <p className="mt-1 text-xs text-brand-glow/80">{p.sub}</p>
@@ -143,7 +155,9 @@ function Bootcamp() {
             <p className="text-sm text-brand-glow/90">{PHASES[active].sub}</p>
           </div>
         </div>
-        <p className="mt-5 text-muted-foreground leading-relaxed max-w-3xl">{PHASES[active].body}</p>
+        <p className="mt-5 text-muted-foreground leading-relaxed max-w-3xl">
+          {PHASES[active].body}
+        </p>
       </div>
 
       {/* B2B CTA */}
@@ -151,7 +165,9 @@ function Bootcamp() {
         <div className="absolute -top-24 -right-12 h-64 w-64 rounded-full bg-brand-blue/20 blur-[100px]" />
         <div className="relative grid gap-6 md:grid-cols-[1.7fr_auto] md:items-center">
           <div>
-            <span className="text-[10px] tracking-[0.2em] uppercase text-brand-glow">Enterprise Partnership</span>
+            <span className="text-[10px] tracking-[0.2em] uppercase text-brand-glow">
+              Enterprise Partnership
+            </span>
             <h3 className="mt-3 text-xl sm:text-2xl font-semibold text-white">
               Want to source premier elite talent?
             </h3>
@@ -177,13 +193,13 @@ const TRACKS = [
   {
     code: "Track A",
     title: "Foundations",
-    target: "Primary & Secondary Students",
+    target: "Primary & Secondary Learners",
     body: "Gamified logical reasoning, early computational thinking, scratch algorithms, and basic programming frameworks.",
   },
   {
     code: "Track B",
     title: "Specializations",
-    target: "University Undergraduates",
+    target: "Undergraduate Learners",
     body: "Deep-dives into industry-grade technologies, machine learning data models, API integrations, cloud architecture, and bioinformatics.",
   },
   {
@@ -219,11 +235,17 @@ function NerdHaven() {
   return (
     <section className="relative mx-auto max-w-7xl px-6 lg:px-10 mt-28 lg:mt-40">
       <div className="flex flex-wrap items-center gap-3 mb-6">
-        <span className="text-xs tracking-[0.2em] uppercase text-brand-glow">Pillar 02 · Future Infrastructure</span>
+        <span className="text-xs tracking-[0.2em] uppercase text-brand-glow">
+          Pillar 02 · Future Infrastructure
+        </span>
       </div>
       <div className="grid gap-8 lg:grid-cols-[auto_1fr_auto] lg:items-end">
         <div className="rounded-2xl bg-white p-4 w-fit shadow-glow">
-          <img src={nerdhavenLogo} alt="Nerdhaven, est. 2026" className="h-20 w-20 object-contain" />
+          <img
+            src={nerdhavenLogo}
+            alt="Nerdhaven, est. 2026"
+            className="h-20 w-20 object-contain"
+          />
         </div>
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
           NerdHaven:
@@ -260,8 +282,12 @@ function NerdHaven() {
                 className="group rounded-xl border border-hairline bg-gradient-to-br from-white/[0.04] to-transparent p-6 transition-all hover:border-brand-purple/50"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground">{t.code}</span>
-                  <span className="text-[10px] tracking-widest uppercase text-brand-glow text-right max-w-[55%]">{t.target}</span>
+                  <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
+                    {t.code}
+                  </span>
+                  <span className="text-[10px] tracking-widest uppercase text-brand-glow text-right max-w-[55%]">
+                    {t.target}
+                  </span>
                 </div>
                 <h3 className="mt-5 text-xl font-semibold text-white">{t.title}</h3>
                 <div className="mt-3 h-px bg-gradient-to-r from-brand-purple/40 to-transparent" />
@@ -332,8 +358,8 @@ function Badge({ children, tone }: { children: React.ReactNode; tone?: "active" 
     tone === "active"
       ? "bg-emerald-400 shadow-[0_0_8px_oklch(0.75_0.18_150)]"
       : tone === "dev"
-      ? "bg-amber-400 shadow-[0_0_8px_oklch(0.78_0.18_80)]"
-      : "bg-brand-glow";
+        ? "bg-amber-400 shadow-[0_0_8px_oklch(0.78_0.18_80)]"
+        : "bg-brand-glow";
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.03] px-3 py-1.5 text-[11px] tracking-widest uppercase text-muted-foreground">
       <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />

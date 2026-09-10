@@ -20,21 +20,30 @@ export function SiteFooter() {
             </p>
           </div>
 
-          <FooterCol title="Ecosystem" links={[
-            { to: "/about", label: "About" },
-            { to: "/projects", label: "Projects" },
-            { to: "/team", label: "Team" },
-          ]} />
-          <FooterCol title="Engage" links={[
-            { to: "/contact", label: "Contact" },
-            { to: "/projects", label: "Bootcamp" },
-            { to: "/projects", label: "NerdHaven" },
-          ]} />
-          <FooterCol title="Resources" links={[
-            { to: "/about", label: "Manifesto" },
-            { to: "/team", label: "Leadership" },
-            { to: "/contact", label: "Partnerships" },
-          ]} />
+          <FooterCol
+            title="Ecosystem"
+            links={[
+              { to: "/about", label: "About" },
+              { to: "/projects", label: "Projects" },
+              { to: "/team", label: "Team" },
+            ]}
+          />
+          <FooterCol
+            title="Engage"
+            links={[
+              { to: "/contact", label: "Contact" },
+              { to: "/projects", label: "Bootcamp" },
+              { to: "/projects", label: "NerdHaven" },
+            ]}
+          />
+          <FooterCol
+            title="Resources"
+            links={[
+              { to: "/about", label: "Manifesto" },
+              { to: "/team", label: "Leadership" },
+              { to: "/contact", label: "Partnerships" },
+            ]}
+          />
         </div>
 
         <div className="mt-14 pt-8 border-t border-hairline flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

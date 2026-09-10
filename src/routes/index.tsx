@@ -1,9 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight, ArrowUpRight, BrainCircuit, Dna, ShieldPlus, CheckCircle2, Sparkles } from "lucide-react";
+import {
+  Activity,
+  ArrowRight,
+  ArrowUpRight,
+  BrainCircuit,
+  Dna,
+  Globe2,
+  Layers,
+  ShieldPlus,
+  CheckCircle2,
+  Sparkles,
+  Trophy,
+} from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
+import { Reveal } from "@/components/Reveal";
 import nerdhavenLogo from "../assets/nerdhaven.png";
 
 export const Route = createFileRoute("/")({
@@ -35,6 +48,7 @@ function HomePage() {
       <main>
         <Hero />
         <FocusAreas />
+        <TenetsSection />
         <BootcampTimeline />
         <NerdHaven />
       </main>
@@ -62,7 +76,8 @@ function Hero() {
           </h1>
           <p className="mt-7 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
             Nextwave is a strategic, youth-driven ecosystem positioning the African continent at the
-            forefront of AI, biotechnology, and digital health innovation, beginning from Northern Nigeria.
+            forefront of AI, biotechnology, and digital health innovation, beginning from Northern
+            Nigeria.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center gap-3">
             <Link
@@ -126,38 +141,102 @@ function FocusAreas() {
   return (
     <section className="relative py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="max-w-2xl">
-          <SectionEyebrow>Core Focus Areas</SectionEyebrow>
-          <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Three verticals. <span className="gradient-text">One continental thesis.</span>
-          </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
-            We operate where research, advocacy, and engineering converge — building the structural
-            scaffolding for Africa's deep-tech century.
-          </p>
-        </div>
+        <Reveal>
+          <div className="max-w-2xl">
+            <SectionEyebrow>Core Focus Areas</SectionEyebrow>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+              Three verticals. <span className="gradient-text">One continental thesis.</span>
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              We operate where research, advocacy, and engineering converge — building the
+              structural scaffolding for Africa's deep-tech century.
+            </p>
+          </div>
+        </Reveal>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-3">
-          {FOCUS.map((f) => (
-            <article
-              key={f.title}
-              className="group relative glass gradient-border rounded-2xl p-7 transition-all hover:-translate-y-1"
-            >
-              <div className="flex items-center justify-between">
-                <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
-                  <f.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+        <Reveal delay={120}>
+          <div className="mt-14 grid gap-5 md:grid-cols-3">
+            {FOCUS.map((f) => (
+              <article
+                key={f.title}
+                className="group relative glass gradient-border rounded-2xl p-7 transition-all hover:-translate-y-1"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
+                    <f.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                    {f.tag}
+                  </span>
                 </div>
-                <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
-                  {f.tag}
-                </span>
-              </div>
-              <h3 className="mt-7 text-xl font-semibold text-white">{f.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
-              <div className="mt-8 pt-5 border-t border-hairline flex items-center justify-between text-xs text-muted-foreground">
-                <span>Research · Advocacy</span>
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </div>
-            </article>
+                <h3 className="mt-7 text-xl font-semibold text-white">{f.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+                <div className="mt-8 pt-5 border-t border-hairline flex items-center justify-between text-xs text-muted-foreground">
+                  <span>Research · Advocacy</span>
+                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+              </article>
+            ))}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+const TENETS = [
+  {
+    icon: Trophy,
+    title: "Merit before access",
+    body: "Talent is everywhere — opportunity is not. We identify exceptional logical minds early and route them through a transparent, merit-first pipeline.",
+  },
+  {
+    icon: Globe2,
+    title: "Borders as UI, not walls",
+    body: "Nextwave is a borderless academy. Our programs extend across communities — reaching learners wherever they choose to engage.",
+  },
+  {
+    icon: Layers,
+    title: "Own the stack",
+    body: "From AI to digital health policy, we engineer the infrastructure, not just the talent. We run the full build.",
+  },
+  {
+    icon: Activity,
+    title: "Measure everything",
+    body: "Every cohort is tracked against clear success metrics. Certification, placement, and long-term trajectory are built into the pipeline.",
+  },
+];
+
+function TenetsSection() {
+  return (
+    <section className="relative py-24 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <Reveal>
+          <SectionEyebrow>How We Think</SectionEyebrow>
+        </Reveal>
+        <Reveal delay={100}>
+          <div className="mt-5 max-w-2xl">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+              Four tenets <span className="gradient-text">guiding the mission.</span>
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              Every decision, partnership, and cohort is filtered through these core operating
+              principles.
+            </p>
+          </div>
+        </Reveal>
+
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {TENETS.map((t, i) => (
+            <Reveal key={t.title} delay={160 + i * 80}>
+              <article className="group h-full glass gradient-border rounded-2xl p-7 transition-all hover:-translate-y-1">
+                <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
+                  <t.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                </div>
+                <h3 className="mt-6 text-lg font-semibold text-white">{t.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
+              </article>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -169,7 +248,7 @@ const PHASES = [
   {
     n: "01",
     title: "Strategic Outreach",
-    body: "Nextwave engineering staff deploy to academic institutions across Kaduna State, conducting high-intensity emerging technology masterclasses.",
+    body: "Nextwave engineering staff deploy across Kaduna State, running high-intensity emerging technology masterclasses.",
   },
   {
     n: "02",
@@ -193,62 +272,83 @@ function BootcampTimeline() {
     <section className="relative py-24 lg:py-32">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="max-w-3xl">
-          <SectionEyebrow>Flagship Initiative</SectionEyebrow>
-          <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            The Nextwave Bootcamp:
-            <br />
-            <span className="gradient-text">Nurturing Nigeria's next tech leaders.</span>
-          </h2>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
-            A metrics-driven pipeline transforming local academic talent into high-performing industry
-            engineering assets, originating in Kaduna State.
-          </p>
-        </div>
-
-        <div className="mt-16 relative">
-          <div className="hidden lg:block absolute top-[52px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
-          <div className="grid gap-5 lg:grid-cols-4">
-            {PHASES.map((p, i) => (
-              <div key={p.n} className="group relative">
-                <div className="hidden lg:flex absolute -top-2 left-1/2 -translate-x-1/2 h-5 w-5 items-center justify-center">
-                  <span className="h-2.5 w-2.5 rounded-full bg-brand-glow shadow-[0_0_12px_var(--brand-glow)]" />
-                </div>
-                <article className="glass gradient-border rounded-2xl p-6 h-full transition-all hover:-translate-y-1">
-                  <div className="flex items-baseline justify-between">
-                    <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
-                      Phase {p.n}
-                    </span>
-                    <span className="text-3xl font-bold text-white/10 group-hover:text-brand-purple/40 transition-colors">
-                      0{i + 1}
-                    </span>
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-white">{p.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-                </article>
-              </div>
-            ))}
+        <Reveal>
+          <div className="max-w-3xl">
+            <SectionEyebrow>Flagship Initiative</SectionEyebrow>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+              The Nextwave Bootcamp:
+              <br />
+              <span className="gradient-text">Nurturing Nigeria's next tech leaders.</span>
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              A metrics-driven pipeline transforming local talent into high-performing industry
+              engineering assets, originating in Kaduna State.
+            </p>
           </div>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 flex justify-center">
-          <Link
-            to="/contact"
-            className="group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white glass-strong hover:bg-white/5 transition-all"
-          >
-            Become a Partner Host Company
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </div>
+        <Reveal delay={100}>
+          <div className="mt-16 relative">
+            <div className="hidden lg:block absolute top-[52px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
+            <div className="grid gap-5 lg:grid-cols-4">
+              {PHASES.map((p, i) => (
+                <div key={p.n} className="group relative">
+                  <div className="hidden lg:flex absolute -top-2 left-1/2 -translate-x-1/2 h-5 w-5 items-center justify-center">
+                    <span className="h-2.5 w-2.5 rounded-full bg-brand-glow shadow-[0_0_12px_var(--brand-glow)]" />
+                  </div>
+                  <article className="glass gradient-border rounded-2xl p-6 h-full transition-all hover:-translate-y-1">
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
+                        Phase {p.n}
+                      </span>
+                      <span className="text-3xl font-bold text-white/10 group-hover:text-brand-purple/40 transition-colors">
+                        0{i + 1}
+                      </span>
+                    </div>
+                    <h3 className="mt-4 text-lg font-semibold text-white">{p.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
+                  </article>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={200}>
+          <div className="mt-12 flex justify-center">
+            <Link
+              to="/contact"
+              className="group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white glass-strong hover:bg-white/5 transition-all"
+            >
+              Become a Partner Host Company
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
 }
 
 const TRACKS = [
-  { n: "01", title: "Foundations", target: "Primary & Secondary", body: "Computational logic, core algorithmics, and early engineering foundations." },
-  { n: "02", title: "Specializations", target: "University Undergrads", body: "Advanced AI models, data sciences, and biotechnology frameworks." },
-  { n: "03", title: "Growth Hub", target: "Business Owners", body: "Enterprise digital transformation, cloud scaling, and modern technical workflows." },
+  {
+    n: "01",
+    title: "Foundations",
+    target: "Primary & Secondary",
+    body: "Computational logic, core algorithmics, and early engineering foundations.",
+  },
+  {
+    n: "02",
+    title: "Specializations",
+    target: "Undergraduate Learners",
+    body: "Advanced AI models, data sciences, and biotechnology frameworks.",
+  },
+  {
+    n: "03",
+    title: "Growth Hub",
+    target: "Business Owners",
+    body: "Enterprise digital transformation, cloud scaling, and modern technical workflows.",
+  },
 ];
 
 function NerdHaven() {
@@ -274,38 +374,49 @@ function NerdHaven() {
   }
 
   return (
-    <section className="relative py-24 lg:py-32">
+    <section id="nerdhaven" className="relative py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-12 lg:p-16">
-          <div className="absolute -top-32 -right-20 h-80 w-80 rounded-full bg-brand-blue/25 blur-[120px]" />
-          <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-brand-purple/25 blur-[120px]" />
+        <Reveal>
+          <div className="relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-12 lg:p-16">
+            <div className="absolute -top-32 -right-20 h-80 w-80 rounded-full bg-brand-blue/25 blur-[120px]" />
+            <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-brand-purple/25 blur-[120px]" />
 
-          <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-            <div className="flex-shrink-0 rounded-3xl border border-white/10 bg-white/5 p-4">
-              <img src={nerdhavenLogo} alt="NerdHaven logo" className="h-16 w-16 object-contain" />
-            </div>
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-brand-purple/40 bg-brand-purple/10 px-3 py-1">
-                <Sparkles className="h-3 w-3 text-brand-glow" />
-                <span className="text-[11px] font-medium tracking-widest uppercase text-brand-glow">
-                  Coming Soon
-                </span>
+            <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+              <div className="flex-shrink-0 rounded-3xl border border-white/10 bg-white/5 p-4">
+                <img
+                  src={nerdhavenLogo}
+                  alt="NerdHaven logo"
+                  className="h-16 w-16 object-contain"
+                />
               </div>
-              <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-                NerdHaven:
-                <br />
-                <span className="gradient-text">The Borderless Digital Academy.</span>
-              </h2>
-              <p className="mt-5 text-muted-foreground leading-relaxed max-w-xl">
-                A comprehensive digital learning ecosystem engineered by Nextwave to democratize
-                high-tier technical literacy across multiple user demographics.
-              </p>
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 rounded-full border border-brand-purple/40 bg-brand-purple/10 px-3 py-1">
+                  <Sparkles className="h-3 w-3 text-brand-glow" />
+                  <span className="text-[11px] font-medium tracking-widest uppercase text-brand-glow">
+                    Coming Soon
+                  </span>
+                </div>
+                <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+                  NerdHaven:
+                  <br />
+                  <span className="gradient-text">The Borderless Digital Academy.</span>
+                </h2>
+                <p className="mt-5 text-muted-foreground leading-relaxed max-w-xl">
+                  A comprehensive digital learning ecosystem engineered by Nextwave to democratize
+                  high-tier technical literacy across multiple user demographics.
+                </p>
+              </div>
             </div>
           </div>
+        </Reveal>
 
+        <Reveal delay={150}>
           <div className="relative mt-12 grid gap-4 md:grid-cols-3">
             {TRACKS.map((t) => (
-              <div key={t.n} className="rounded-2xl border border-hairline bg-white/[0.02] p-6 backdrop-blur-sm">
+              <div
+                key={t.n}
+                className="rounded-2xl border border-hairline bg-white/[0.02] p-6 backdrop-blur-sm"
+              >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
                     Track {t.n}
@@ -319,7 +430,9 @@ function NerdHaven() {
               </div>
             ))}
           </div>
+        </Reveal>
 
+        <Reveal delay={250}>
           <form
             onSubmit={submit}
             className="relative mt-10 flex flex-col sm:flex-row gap-3 max-w-xl"
@@ -347,16 +460,19 @@ function NerdHaven() {
           </form>
           {state === "ok" && (
             <p className="relative mt-3 text-sm text-brand-glow flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4" /> You're on the list — confirmation will arrive shortly.
+              <CheckCircle2 className="h-4 w-4" /> You're on the list — confirmation will arrive
+              shortly.
             </p>
           )}
           {state === "dup" && (
             <p className="relative mt-3 text-sm text-brand-glow">You're already on the waitlist.</p>
           )}
           {state === "err" && (
-            <p className="relative mt-3 text-sm text-destructive">Please enter a valid email address.</p>
+            <p className="relative mt-3 text-sm text-destructive">
+              Please enter a valid email address.
+            </p>
           )}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

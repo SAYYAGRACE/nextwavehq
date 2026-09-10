@@ -11,9 +11,16 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact — Establish Strategic Contact with Nextwave" },
-      { name: "description", content: "Reach out to the Nextwave operations team for partnerships, institutional programs, or corporate alignment." },
+      {
+        name: "description",
+        content:
+          "Reach out to the Nextwave operations team for partnerships, talent programs, or corporate alignment.",
+      },
       { property: "og:title", content: "Contact — Nextwave" },
-      { property: "og:description", content: "Establish strategic contact with the Nextwave operations team." },
+      {
+        property: "og:description",
+        content: "Establish strategic contact with the Nextwave operations team.",
+      },
       { property: "og:url", content: "/contact" },
     ],
     links: [{ rel: "canonical", href: "/contact" }],
@@ -76,7 +83,7 @@ function ContactPage() {
               Establish <span className="gradient-text">Strategic Contact.</span>
             </h1>
             <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
-              Reach out to the Nextwave operations team for partnerships, institutional programs, or
+              Reach out to the Nextwave operations team for partnerships, talent programs, or
               corporate alignment.
             </p>
           </div>
@@ -93,7 +100,9 @@ function ContactPage() {
                     <c.icon className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-[10px] tracking-widest uppercase text-muted-foreground">{c.t}</div>
+                    <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                      {c.t}
+                    </div>
                     <div className="mt-1 text-sm text-white truncate">{c.v}</div>
                   </div>
                 </div>
@@ -128,7 +137,7 @@ function ContactPage() {
                     type="text"
                     value={form.org}
                     onChange={(e) => update("org", e.target.value)}
-                    placeholder="e.g., Technology Firm, University"
+                    placeholder="e.g., Technology Firm, NGO"
                     className={inputCls(errors.org)}
                   />
                 </Field>
@@ -156,7 +165,7 @@ function ContactPage() {
                   >
                     <option value="">Select Purpose of Engagement</option>
                     <option>Corporate Partnership Inquiry</option>
-                    <option>Academic Institution Alignment</option>
+                    <option>Training Program Alignment</option>
                     <option>Volunteer Application</option>
                     <option>General Media & Public Relations</option>
                   </select>
@@ -195,7 +204,15 @@ function ContactPage() {
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({
+  label,
+  error,
+  children,
+}: {
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
   return (
     <label className="block">
       <div className="flex items-center justify-between mb-2">
