@@ -193,41 +193,6 @@
   .gradient-border:hover::before {
     opacity: 1;
   }
-  .gradient-border-strong {
-    border: 1px solid transparent;
-    background:
-      linear-gradient(var(--surface-elevated), var(--surface)) padding-box,
-      linear-gradient(135deg, var(--brand-blue), var(--brand-purple)) border-box;
-  }
-  .dark .gradient-border-strong {
-    background:
-      linear-gradient(oklch(0.30 0.028 265), oklch(0.26 0.025 265)) padding-box,
-      linear-gradient(135deg, var(--brand-blue), var(--brand-purple)) border-box;
-  }
-  .marquee {
-    animation: marquee 36s linear infinite;
-  }
-  .marquee:hover {
-    animation-play-state: paused;
-  }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-  @keyframes accordion-down {
-    from { height: 0; }
-    to { height: var(--radix-accordion-content-height); }
-  }
-  @keyframes accordion-up {
-    from { height: var(--radix-accordion-content-height); }
-    to { height: 0; }
-  }
-  .animate-accordion-up {
-    animation: accordion-up 250ms ease-out;
-  }
-  .animate-accordion-down {
-    animation: accordion-down 250ms ease-out;
-  }
   .grid-bg {
     background-image:
       linear-gradient(var(--hairline) 1px, transparent 1px),

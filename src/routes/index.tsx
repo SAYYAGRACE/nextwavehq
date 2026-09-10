@@ -1,19 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import * as Accordion from "@radix-ui/react-accordion";
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  BrainCircuit,
-  CheckCircle2,
-  Dna,
-  Mail,
-  MapPin,
-  Plus,
-  ShieldPlus,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, BrainCircuit, Dna, ShieldPlus, CheckCircle2, Sparkles } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
@@ -41,170 +28,15 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const TICKER = [
-  "AI & Data Science",
-  "Biotechnology & Health",
-  "Digital Health Policy",
-  "Kaduna · Northern Nigeria",
-  "Bootcamp · Cohort 02",
-  "NerdHaven Academy",
-];
-
-function MissionTicker() {
-  const items = TICKER.map((t, i) => (
-    <span key={t} className="mx-6 sm:mx-10 inline-flex items-center gap-6 sm:gap-10">
-      <span className="whitespace-nowrap text-sm sm:text-base font-semibold tracking-wide text-white/90">
-        {t}
-      </span>
-      <span className="h-1.5 w-1.5 rounded-full bg-brand-glow opacity-80" aria-hidden />
-    </span>
-  ));
-  const repeat = (n: number) =>
-    Array.from({ length: n }, () => (
-      <span key={crypto.randomUUID()} className="inline-flex shrink-0 items-center" aria-hidden>
-        {items}
-      </span>
-    ));
-
-  return (
-    <section className="relative overflow-hidden border-y border-hairline bg-white/[0.02]">
-      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-      <div className="marquee flex py-5 select-none">{repeat(4)}</div>
-    </section>
-  );
-}
-
-function FaqSection() {
-  return (
-    <section className="relative py-24 lg:py-32">
-      <div className="mx-auto max-w-3xl px-6 lg:px-10">
-        <div className="text-center">
-          <SectionEyebrow>Common Questions</SectionEyebrow>
-          <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Answers, <span className="gradient-text">before you ask.</span>
-          </h2>
-        </div>
-
-        <Accordion.Root type="single" collapsible className="mt-12 space-y-4">
-          {FAQS.map((f) => (
-            <Accordion.Item
-              key={f.q}
-              value={f.q}
-              className="glass gradient-border rounded-2xl overflow-hidden"
-            >
-              <Accordion.Header>
-                <Accordion.Trigger className="group flex w-full items-center justify-between gap-4 px-6 py-5 text-left">
-                  <span className="text-base sm:text-lg font-semibold text-white">{f.q}</span>
-                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-hairline bg-white/[0.04] text-brand-glow transition-transform duration-300 group-data-[state=open]:rotate-45">
-                    <Plus className="h-4 w-4" strokeWidth={2} />
-                  </span>
-                </Accordion.Trigger>
-              </Accordion.Header>
-              <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-                <p className="px-6 pb-6 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
-              </Accordion.Content>
-            </Accordion.Item>
-          ))}
-        </Accordion.Root>
-      </div>
-    </section>
-  );
-}
-
-const FAQS = [
-  {
-    q: "Who is the Nextwave Bootcamp for?",
-    a: "Emerging talent across primary, secondary, and university levels in Northern Nigeria. We begin with high-intensity masterclasses in academic institutions, then use rigorous aptitude challenges to select the most exceptional logical minds in every cohort.",
-  },
-  {
-    q: "What does it cost to participate?",
-    a: "The flagship bootcamp is tuition-free. Costs are covered by our network of partner host companies and ecosystem sponsors, so access stays fair and merit-driven.",
-  },
-  {
-    q: "How do I join the NerdHaven waitlist?",
-    a: "Use the waitlist form on this page. NerdHaven rolls out in phases across three tracks — Foundations (primary & secondary), Specializations (undergraduates), and the Growth Hub (business owners) — and we email each cohort as seats open.",
-  },
-  {
-    q: "Where does Nextwave operate?",
-    a: "We originate in Kaduna State, Northern Nigeria, with a continent-wide mission. Remote and digital programs extend our engineering and advocacy work well beyond national borders.",
-  },
-  {
-    q: "Do bootcamp graduates get certified?",
-    a: "Yes. The Launchpad Deployment phase issues official Nextwave certifications and places exceptional candidates into high-impact holiday internships at premier IT companies.",
-  },
-];
-
-function CtaBand() {
-  return (
-    <section className="relative py-24 lg:py-28">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="relative overflow-hidden rounded-3xl">
-          <div className="absolute inset-0 gradient-border-strong" aria-hidden />
-          <div
-            className="absolute -top-24 -left-16 h-72 w-72 rounded-full bg-brand-purple/30 blur-[120px]"
-            aria-hidden
-          />
-          <div
-            className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full bg-brand-blue/30 blur-[120px]"
-            aria-hidden
-          />
-
-          <div className="relative px-8 py-14 sm:px-12 lg:px-16 text-center">
-            <SectionEyebrow>Build With Us</SectionEyebrow>
-            <h2 className="mt-5 mx-auto max-w-2xl text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-              Africa's deep-tech future is being
-              <span className="gradient-text"> engineered from Northern Nigeria.</span>
-            </h2>
-            <p className="mt-5 mx-auto max-w-xl text-muted-foreground leading-relaxed">
-              Investors, institutions, and operators — partner with Nextwave to fund, host, and
-              scale the movement across the continent.
-            </p>
-
-            <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link
-                to="/contact"
-                className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03]"
-                style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
-              >
-                Partner With Us
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-              <Link
-                to="/about"
-                className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white glass-strong hover:bg-white/5 transition-colors"
-              >
-                Read Our Manifesto
-              </Link>
-            </div>
-
-            <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-x-8 gap-y-2 text-xs text-muted-foreground">
-              <span className="inline-flex items-center gap-2">
-                <MapPin className="h-3.5 w-3.5 text-brand-glow" /> Kaduna, Nigeria
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <Mail className="h-3.5 w-3.5 text-brand-glow" /> hello@nextwave.com.ng
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
       <main>
         <Hero />
-        <MissionTicker />
         <FocusAreas />
         <BootcampTimeline />
-        <FaqSection />
         <NerdHaven />
-        <CtaBand />
       </main>
       <SiteFooter />
     </div>
@@ -220,16 +52,7 @@ function Hero() {
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-2 rounded-full border border-brand-purple/40 bg-brand-purple/10 px-4 py-1.5 text-xs font-medium text-brand-glow transition-colors hover:bg-brand-purple/20"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-glow opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-glow" />
-            </span>
-            Now enrolling — Bootcamp Cohort 02 · Kaduna
-          </Link>
+          <SectionEyebrow>Originating from Northern Nigeria</SectionEyebrow>
           <h1 className="mt-6 text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
             <span className="gradient-text">Empowering Africa's Youth</span>
             <br />
@@ -239,8 +62,7 @@ function Hero() {
           </h1>
           <p className="mt-7 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
             Nextwave is a strategic, youth-driven ecosystem positioning the African continent at the
-            forefront of AI, biotechnology, and digital health innovation, beginning from Northern
-            Nigeria.
+            forefront of AI, biotechnology, and digital health innovation, beginning from Northern Nigeria.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center gap-3">
             <Link
@@ -273,14 +95,6 @@ function Hero() {
               </div>
             ))}
           </div>
-
-          <a
-            href="#focus"
-            className="mt-20 inline-flex flex-col items-center gap-2 text-[11px] tracking-widest uppercase text-muted-foreground transition-colors hover:text-white"
-          >
-            Scroll to explore
-            <ArrowDown className="h-4 w-4 animate-bounce" />
-          </a>
         </div>
       </div>
     </section>
@@ -310,7 +124,7 @@ const FOCUS = [
 
 function FocusAreas() {
   return (
-    <section id="focus" className="relative py-24 lg:py-32">
+    <section className="relative py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-2xl">
           <SectionEyebrow>Core Focus Areas</SectionEyebrow>
@@ -376,7 +190,7 @@ const PHASES = [
 
 function BootcampTimeline() {
   return (
-    <section id="bootcamp" className="relative py-24 lg:py-32">
+    <section className="relative py-24 lg:py-32">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="max-w-3xl">
@@ -387,8 +201,8 @@ function BootcampTimeline() {
             <span className="gradient-text">Nurturing Nigeria's next tech leaders.</span>
           </h2>
           <p className="mt-4 text-muted-foreground leading-relaxed">
-            A metrics-driven pipeline transforming local academic talent into high-performing
-            industry engineering assets, originating in Kaduna State.
+            A metrics-driven pipeline transforming local academic talent into high-performing industry
+            engineering assets, originating in Kaduna State.
           </p>
         </div>
 
@@ -432,24 +246,9 @@ function BootcampTimeline() {
 }
 
 const TRACKS = [
-  {
-    n: "01",
-    title: "Foundations",
-    target: "Primary & Secondary",
-    body: "Computational logic, core algorithmics, and early engineering foundations.",
-  },
-  {
-    n: "02",
-    title: "Specializations",
-    target: "University Undergrads",
-    body: "Advanced AI models, data sciences, and biotechnology frameworks.",
-  },
-  {
-    n: "03",
-    title: "Growth Hub",
-    target: "Business Owners",
-    body: "Enterprise digital transformation, cloud scaling, and modern technical workflows.",
-  },
+  { n: "01", title: "Foundations", target: "Primary & Secondary", body: "Computational logic, core algorithmics, and early engineering foundations." },
+  { n: "02", title: "Specializations", target: "University Undergrads", body: "Advanced AI models, data sciences, and biotechnology frameworks." },
+  { n: "03", title: "Growth Hub", target: "Business Owners", body: "Enterprise digital transformation, cloud scaling, and modern technical workflows." },
 ];
 
 function NerdHaven() {
@@ -475,7 +274,7 @@ function NerdHaven() {
   }
 
   return (
-    <section id="nerdhaven" className="relative py-24 lg:py-32">
+    <section className="relative py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-12 lg:p-16">
           <div className="absolute -top-32 -right-20 h-80 w-80 rounded-full bg-brand-blue/25 blur-[120px]" />
@@ -506,10 +305,7 @@ function NerdHaven() {
 
           <div className="relative mt-12 grid gap-4 md:grid-cols-3">
             {TRACKS.map((t) => (
-              <div
-                key={t.n}
-                className="rounded-2xl border border-hairline bg-white/[0.02] p-6 backdrop-blur-sm"
-              >
+              <div key={t.n} className="rounded-2xl border border-hairline bg-white/[0.02] p-6 backdrop-blur-sm">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
                     Track {t.n}
@@ -551,17 +347,14 @@ function NerdHaven() {
           </form>
           {state === "ok" && (
             <p className="relative mt-3 text-sm text-brand-glow flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4" /> You're on the list — confirmation will arrive
-              shortly.
+              <CheckCircle2 className="h-4 w-4" /> You're on the list — confirmation will arrive shortly.
             </p>
           )}
           {state === "dup" && (
             <p className="relative mt-3 text-sm text-brand-glow">You're already on the waitlist.</p>
           )}
           {state === "err" && (
-            <p className="relative mt-3 text-sm text-destructive">
-              Please enter a valid email address.
-            </p>
+            <p className="relative mt-3 text-sm text-destructive">Please enter a valid email address.</p>
           )}
         </div>
       </div>
