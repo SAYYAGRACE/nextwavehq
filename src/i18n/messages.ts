@@ -10,13 +10,13 @@ const en: Dict = {
   footer: {
     tagline:
       "A youth-led deep-tech movement bridging Africa's technological gap in AI, biotechnology, and digital health — originating from Northern Nigeria.",
-    location: "Kawo, Kaduna · Nigeria",
+    location: "Kaduna · Nigeria",
   },
 };
 
 const ha: Dict = {
   nav: { about: "", projects: "", team: "", contact: "" },
-  footer: { tagline: "", location: "Kawo, Kaduna · Nijeriya" },
+  footer: { tagline: "", location: "Kaduna · Nijeriya" },
 };
 
 export const DICTS: Record<Locale, Dict> = { en, ha };

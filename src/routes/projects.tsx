@@ -46,14 +46,14 @@ export const Route = createFileRoute("/projects")({
           "@type": "Course",
           name: "The Nextwave Bootcamp",
           description:
-            "A high-impact, metrics-driven pipeline transforming local technical talent into high-performing industry engineering assets — operating live in Kawo, Kaduna.",
+            "A high-impact, metrics-driven pipeline transforming local technical talent into high-performing industry engineering assets — operating live in Kaduna.",
           provider: {
             "@type": "Organization",
             name: "Nextwave Infotech",
             url: "https://nextwave.com.ng",
           },
           educationalLevel: "Beginner to Advanced",
-          locationCreated: { "@type": "Place", name: "Kawo, Kaduna, Nigeria" },
+          locationCreated: { "@type": "Place", name: "Kaduna, Nigeria" },
           inLanguage: "en",
           isAccessibleForFree: true,
           hasCourseInstance: {

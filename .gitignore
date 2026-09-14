@@ -33,3 +33,8 @@ dist-ssr
 .vercel
 .env*
 supabase/.temp/
+
+# Source art assets (copied into src/assets/partners)
+/scratches/
+WhatsApp_Image_*.png
+/images.jpeg

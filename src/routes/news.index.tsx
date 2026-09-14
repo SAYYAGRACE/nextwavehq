@@ -57,7 +57,7 @@ function NewsIndexPage() {
             </h1>
             <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
               Bootcamp milestones, NerdHaven progress, partnership announcements, and stories from
-              the field in Kawo, Kaduna.
+              the field in Kaduna.
             </p>
           </Reveal>
 

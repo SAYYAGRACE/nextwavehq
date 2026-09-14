@@ -14,10 +14,10 @@ export const SITE = {
     whatsapp: "+2348066549337",
   },
   location: {
-    area: "Kawo, Kaduna",
+    area: "Kaduna",
     city: "Nigeria",
     country: "Nigeria",
-    full: "Kawo, Kaduna State, Nigeria",
+    full: "Kaduna, Nigeria",
   },
   socials: {
     x: { handle: "@nextwaveorg", url: "https://x.com/nextwaveorg" },
@@ -30,7 +30,7 @@ export const SITE = {
   ],
   bootcamp: {
     status: "Active",
-    location: "Kawo, Kaduna",
+    location: "Kaduna",
     tracks: [
       "Foundations (Primary & Secondary)",
       "Specializations (Undergraduate)",

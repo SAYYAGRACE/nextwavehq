@@ -128,8 +128,8 @@ function ContactPage() {
                         {SITE.location.area}, {SITE.location.city}
                       </div>
                       <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                        The Nextwave Bootcamp runs live in Kawo, Kaduna — including approved tracks
-                        for primary and secondary school students.
+                        The Nextwave Bootcamp runs live in Kaduna — including approved tracks for
+                        primary and secondary school students.
                       </p>
                     </div>
                   </div>

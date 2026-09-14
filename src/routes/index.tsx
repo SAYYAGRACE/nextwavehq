@@ -84,7 +84,7 @@ export const Route = createFileRoute("/")({
             "A youth-led deep-tech movement bridging Africa's gap in AI, biotechnology, and digital health — originating from Northern Nigeria.",
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Kawo, Kaduna",
+            addressLocality: "Kaduna",
             addressCountry: "NG",
           },
           sameAs: ["https://x.com/nextwaveorg", "https://instagram.com/nextwaveafrica"],

@@ -134,7 +134,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           knowsAbout: ["AI & Data Science", "Biotechnology & Health", "Digital Health Policy"],
           address: {
             "@type": "PostalAddress",
-            addressLocality: "Kawo, Kaduna",
+            addressLocality: "Kaduna",
             addressCountry: "NG",
           },
           contactPoint: {

@@ -8,21 +8,21 @@ import { TiltCard } from "./TiltCard";
 const PHOTOS = [
   {
     src: session01,
-    alt: "Nextwave Bootcamp session in motion — Kawo, Kaduna",
+    alt: "Nextwave Bootcamp session in motion — Kaduna",
     w: 1280,
     h: 960,
     span: "",
   },
   {
     src: session02,
-    alt: "Nextwave Bootcamp — students at work, Kawo, Kaduna",
+    alt: "Nextwave Bootcamp — students at work, Kaduna",
     w: 960,
     h: 1280,
     span: "",
   },
   {
     src: session03,
-    alt: "Nextwave Bootcamp classroom — Kawo, Kaduna",
+    alt: "Nextwave Bootcamp classroom — Kaduna",
     w: 1280,
     h: 864,
     span: "sm:col-span-2 lg:col-span-1",
@@ -61,7 +61,7 @@ export function SessionGallery() {
         ))}
       </div>
       <p className="mt-4 text-xs tracking-widest uppercase text-muted-foreground">
-        Live session · Kawo, Kaduna · 2026
+        Live session · Kaduna · 2026
       </p>
     </div>
   );
