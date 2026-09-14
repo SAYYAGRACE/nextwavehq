@@ -14,9 +14,13 @@ import {
   SearchCheck,
   Reply,
   Sparkles,
+  Phone,
+  MessageCircle,
+  ExternalLink,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { NEXTWAVE_EMAIL } from "@/lib/email-config";
+import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -104,25 +108,91 @@ function ContactPage() {
           <div className="mt-16 grid gap-6 lg:grid-cols-[1fr_2fr]">
             <Reveal delay={100}>
               <aside className="space-y-4">
-                {[
-                  { icon: Mail, t: "Direct Email", v: NEXTWAVE_EMAIL },
-                  { icon: Building2, t: "Operations", v: "Nextwave Infotech" },
-                  { icon: MapPin, t: "Headquarters", v: "Kaduna State, Nigeria" },
-                ].map((c) => (
-                  <SpotlightCard key={c.t} className="glass rounded-2xl p-5">
+                <SpotlightCard className="glass rounded-2xl p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
+                      <MapPin className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                        Operating Location
+                      </div>
+                      <div className="mt-1 text-sm text-white">
+                        {SITE.location.area}, {SITE.location.city}
+                      </div>
+                      <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                        The Nextwave Bootcamp runs live in Kawo, Kaduna — including approved tracks
+                        for primary and secondary school students.
+                      </p>
+                    </div>
+                  </div>
+                </SpotlightCard>
+                <SpotlightCard className="glass rounded-2xl p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
+                      <Mail className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                        Email
+                      </div>
+                      <div className="mt-1 text-sm text-white break-words">{NEXTWAVE_EMAIL}</div>
+                    </div>
+                  </div>
+                </SpotlightCard>
+                {SITE.phone.display !== "TBD — add WhatsApp/phone" && (
+                  <SpotlightCard className="glass rounded-2xl p-5">
                     <div className="flex items-start gap-4">
                       <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
-                        <c.icon className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
+                        <Phone className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
                       </div>
                       <div className="min-w-0">
                         <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
-                          {c.t}
+                          Phone / WhatsApp
                         </div>
-                        <div className="mt-1 text-sm text-white break-words">{c.v}</div>
+                        <div className="mt-1 text-sm text-white break-words">
+                          {SITE.phone.display}
+                        </div>
                       </div>
                     </div>
                   </SpotlightCard>
-                ))}
+                )}
+                <SpotlightCard className="glass rounded-2xl p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
+                      <Building2 className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                        Organization
+                      </div>
+                      <div className="mt-1 text-sm text-white">{SITE.name}</div>
+                    </div>
+                  </div>
+                </SpotlightCard>
+                <div className="flex flex-wrap gap-2">
+                  {SITE.phone.whatsapp && (
+                    <a
+                      href={`https://wa.me/${SITE.phone.whatsapp.replace(/\D/g, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-brand-purple/50 bg-brand-purple/10 px-4 py-2 text-xs text-brand-glow hover:bg-brand-purple/20 transition-colors"
+                    >
+                      <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
+                    </a>
+                  )}
+                  {Object.values(SITE.socials).map((s) => (
+                    <a
+                      key={s.handle}
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.04] px-4 py-2 text-xs text-muted-foreground hover:text-white transition-colors"
+                    >
+                      <ExternalLink className="h-3 w-3" /> {s.handle}
+                    </a>
+                  ))}
+                </div>
               </aside>
             </Reveal>
 

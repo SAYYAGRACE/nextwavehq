@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
+import { SessionGallery } from "@/components/SessionGallery";
 import {
   ArrowRight,
   CheckCircle2,
@@ -34,6 +35,32 @@ export const Route = createFileRoute("/projects")({
       { property: "og:url", content: "/projects" },
     ],
     links: [{ rel: "canonical", href: "/projects" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Course",
+          name: "The Nextwave Bootcamp",
+          description:
+            "A high-impact, metrics-driven pipeline transforming local technical talent into high-performing industry engineering assets — operating live in Kawo, Kaduna.",
+          provider: {
+            "@type": "Organization",
+            name: "Nextwave Infotech",
+            url: "https://nextwave.com.ng",
+          },
+          educationalLevel: "Beginner to Advanced",
+          locationCreated: { "@type": "Place", name: "Kawo, Kaduna, Nigeria" },
+          inLanguage: "en",
+          isAccessibleForFree: true,
+          hasCourseInstance: {
+            "@type": "CourseInstance",
+            courseMode: "offline",
+            courseWorkload: "Full program — 4 phases",
+          },
+        }),
+      },
+    ],
   }),
   component: ProjectsPage,
 });
@@ -186,6 +213,10 @@ function Bootcamp() {
           {PHASES[active].body}
         </p>
       </motion.div>
+
+      <div className="mt-12">
+        <SessionGallery />
+      </div>
 
       {/* B2B CTA */}
       <div className="mt-10 relative overflow-hidden rounded-2xl glass-strong p-8 sm:p-10">

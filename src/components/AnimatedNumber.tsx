@@ -33,7 +33,7 @@ export function AnimatedNumber({
 
   return (
     <span ref={ref} className="tabular-nums">
-      {reduced ? `${value}${suffix}` : `0${suffix}`}
+      {`${value}${suffix}`}
     </span>
   );
 }

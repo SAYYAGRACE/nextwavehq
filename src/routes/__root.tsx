@@ -8,11 +8,14 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { PwaRegister } from "@/components/PwaRegister";
 import { BackToTop } from "@/components/BackToTop";
+import { DEFAULT_LOCALE } from "@/i18n/config";
 
 function NotFoundComponent() {
   return (
@@ -128,7 +131,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           description:
             "A strategic, youth-driven ecosystem positioning the African continent at the forefront of AI, biotechnology, and digital health innovation, originating from Northern Nigeria.",
           knowsAbout: ["AI & Data Science", "Biotechnology & Health", "Digital Health Policy"],
-          address: { "@type": "PostalAddress", addressLocality: "Kaduna", addressCountry: "NG" },
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Kawo, Kaduna",
+            addressCountry: "NG",
+          },
+          contactPoint: {
+            "@type": "ContactPoint",
+            contactType: "customer support",
+            email: "info@nextwave.com.ng",
+          },
         }),
       },
     ],
@@ -163,7 +175,7 @@ const THEME_BOOT_SCRIPT = `
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang={DEFAULT_LOCALE}>
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
@@ -185,6 +197,8 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <BackToTop />
+      <Analytics />
+      <SpeedInsights />
     </QueryClientProvider>
   );
 }

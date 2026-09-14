@@ -31,6 +31,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import nerdhavenLogo from "../assets/nerdhaven.png";
+import { SessionGallery } from "@/components/SessionGallery";
+import { PartnerStrip } from "@/components/PartnerStrip";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
+import { SITE } from "@/lib/site";
 
 const stagger: Variants = {
   hidden: {},
@@ -59,6 +63,37 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: FAQS.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "EducationalOrganization",
+          name: "Nextwave Infotech",
+          url: "https://nextwave.com.ng",
+          description:
+            "A youth-led deep-tech movement bridging Africa's gap in AI, biotechnology, and digital health — originating from Northern Nigeria.",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Kawo, Kaduna",
+            addressCountry: "NG",
+          },
+          sameAs: ["https://x.com/nextwaveorg", "https://instagram.com/nextwaveafrica"],
+        }),
+      },
+    ],
   }),
   component: HomePage,
 });
@@ -75,9 +110,16 @@ function HomePage() {
         <StatsBand />
         <TenetsSection />
         <BootcampTimeline />
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 mt-20 lg:mt-28">
+          <SessionGallery />
+        </div>
         <NerdHaven />
         <FaqSection />
         <CtaBand />
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 mt-20 lg:mt-28">
+          <NewsletterSignup />
+        </div>
+        <PartnerStrip />
       </main>
       <SiteFooter />
     </div>
