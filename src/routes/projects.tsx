@@ -19,6 +19,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import nerdhavenLogo from "../assets/nerdhaven.png";
+import { submitForm } from "@/lib/form-submit";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -283,13 +284,14 @@ function NerdHaven() {
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) return setState("err");
     setState("loading");
-    const { supabase } = await import("@/integrations/supabase/client");
-    const { error } = await supabase.from("waitlist_signups").insert({
-      email: email.trim().toLowerCase(),
-      source: "nerdhaven-projects",
+    const result = await submitForm({
+      data: {
+        kind: "waitlist",
+        email: email.trim().toLowerCase(),
+        source: "nerdhaven-projects",
+      },
     });
-    if (error) {
-      if (error.code === "23505") return setState("dup");
+    if (result === "err") {
       return setState("err");
     }
     setState("ok");
@@ -297,7 +299,7 @@ function NerdHaven() {
   }
 
   return (
-    <section className="relative mx-auto max-w-7xl px-6 lg:px-10 mt-20 lg:mt-28">
+    <section className="relative mx-auto max-w-7xl px-6 lg:px-10 mt-14 lg:mt-20">
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <span className="text-xs tracking-[0.2em] uppercase text-brand-glow">
           Pillar 02 · Future Infrastructure

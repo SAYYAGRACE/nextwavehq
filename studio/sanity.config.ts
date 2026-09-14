@@ -1,6 +1,7 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { article } from "./schemas/article";
+import { submission } from "./schemas/submission";
 
 export default defineConfig({
   name: "nextwave",
@@ -9,6 +10,6 @@ export default defineConfig({
   dataset: process.env.SANITY_STUDIO_DATASET ?? "production",
   plugins: [structureTool()],
   schema: {
-    types: [article],
+    types: [article, submission],
   },
 });

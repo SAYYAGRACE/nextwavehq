@@ -40,6 +40,7 @@ import { SessionGallery } from "@/components/SessionGallery";
 import { PartnerStrip } from "@/components/PartnerStrip";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { SITE } from "@/lib/site";
+import { submitForm } from "@/lib/form-submit";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -645,13 +646,14 @@ function NerdHaven() {
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) return setState("err");
     setState("loading");
-    const { supabase } = await import("@/integrations/supabase/client");
-    const { error } = await supabase.from("waitlist_signups").insert({
-      email: email.trim().toLowerCase(),
-      source: "nerdhaven-home",
+    const result = await submitForm({
+      data: {
+        kind: "waitlist",
+        email: email.trim().toLowerCase(),
+        source: "nerdhaven-home",
+      },
     });
-    if (error) {
-      if (error.code === "23505") return setState("dup");
+    if (result === "err") {
       return setState("err");
     }
     setState("ok");
@@ -659,7 +661,7 @@ function NerdHaven() {
   }
 
   return (
-    <section id="nerdhaven" className="relative py-24 lg:py-32">
+    <section id="nerdhaven" className="relative py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
           <div className="relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-12 lg:p-16">

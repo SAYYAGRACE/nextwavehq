@@ -21,7 +21,7 @@ import {
   MessageCircle,
   ExternalLink,
 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { submitForm } from "@/lib/form-submit";
 import { NEXTWAVE_EMAIL } from "@/lib/email-config";
 import { SITE } from "@/lib/site";
 
@@ -73,15 +73,18 @@ function ContactPage() {
 
     setSubmitting(true);
     setSubmitError(null);
-    const { error } = await supabase.from("contact_submissions").insert({
-      name: form.name.trim(),
-      organization: form.org.trim(),
-      email: form.email.trim(),
-      intent: form.intent,
-      message: form.message.trim(),
+    const result = await submitForm({
+      data: {
+        kind: "contact",
+        email: form.email.trim(),
+        name: form.name.trim(),
+        organization: form.org.trim(),
+        intent: form.intent,
+        message: form.message.trim(),
+      },
     });
     setSubmitting(false);
-    if (error) {
+    if (result === "err") {
       setSubmitError("Something went wrong. Please try again.");
       return;
     }

@@ -16,7 +16,6 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { PwaRegister } from "@/components/PwaRegister";
 import { BackToTop } from "@/components/BackToTop";
 import { AIChat } from "@/components/AIChat";
-import { CursorGlow } from "@/components/CursorGlow";
 import { DEFAULT_LOCALE } from "@/i18n/config";
 
 function NotFoundComponent() {
@@ -198,7 +197,6 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
-      <CursorGlow />
       <BackToTop />
       <AIChat />
       <Analytics />

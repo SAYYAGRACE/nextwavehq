@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Mail, CheckCircle2, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { submitForm } from "@/lib/form-submit";
 
 type State = "idle" | "loading" | "ok" | "dup" | "err";
 
@@ -23,12 +23,10 @@ export function NewsletterSignup({
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) return setState("err");
     setState("loading");
-    const { error } = await supabase.from("waitlist_signups").insert({
-      email: email.trim().toLowerCase(),
-      source,
+    const result = await submitForm({
+      data: { kind: "newsletter", email: email.trim().toLowerCase(), source },
     });
-    if (error) {
-      if (error.code === "23505") return setState("dup");
+    if (result === "err") {
       return setState("err");
     }
     setState("ok");
