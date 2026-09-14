@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { PwaRegister } from "@/components/PwaRegister";
 import { BackToTop } from "@/components/BackToTop";
+import { AIChat } from "@/components/AIChat";
 import { DEFAULT_LOCALE } from "@/i18n/config";
 
 function NotFoundComponent() {
@@ -197,6 +198,7 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <BackToTop />
+      <AIChat />
       <Analytics />
       <SpeedInsights />
     </QueryClientProvider>

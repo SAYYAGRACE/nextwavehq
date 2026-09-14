@@ -193,13 +193,13 @@ function Hero() {
             className="mt-20 grid grid-cols-3 gap-6 sm:gap-10 w-full max-w-2xl"
           >
             {[
-              { k: 3, text: undefined, v: "Tech verticals" },
-              { k: 4, text: undefined, v: "Bootcamp phases" },
-              { k: undefined, text: "∞", v: "Borderless reach" },
+              { k: 300, suffix: "+", v: "Learners reached" },
+              { k: 15, suffix: "+", v: "Partner schools" },
+              { k: 20, suffix: "+", v: "Mentors & instructors" },
             ].map((s) => (
               <div key={s.v} className="text-center">
                 <div className="text-2xl sm:text-3xl font-bold gradient-text tabular-nums">
-                  {s.text ?? <AnimatedNumber value={s.k as number} />}
+                  <AnimatedNumber value={s.k} suffix={s.suffix} />
                 </div>
                 <div className="mt-1 text-[11px] sm:text-xs tracking-widest uppercase text-muted-foreground">
                   {s.v}
@@ -394,10 +394,10 @@ function FocusAreas() {
 }
 
 const STATS = [
-  { value: 3, label: "Deep-tech verticals" },
-  { value: 4, label: "Bootcamp phases" },
-  { value: 4, label: "Operating tenets" },
-  { value: 3, label: "Academy tracks" },
+  { value: 300, suffix: "+", label: "Learners reached" },
+  { value: 15, suffix: "+", label: "Partner schools" },
+  { value: 8, suffix: "+", label: "Industry partners" },
+  { value: 20, suffix: "+", label: "Mentors & instructors" },
 ];
 
 function StatsBand() {
@@ -409,7 +409,7 @@ function StatsBand() {
             {STATS.map((s) => (
               <div key={s.label} className="bg-background px-8 py-10 text-center">
                 <div className="text-4xl sm:text-5xl font-bold gradient-text">
-                  <AnimatedNumber value={s.value} />
+                  <AnimatedNumber value={s.value} suffix={s.suffix} />
                 </div>
                 <div className="mt-2 text-xs tracking-widest uppercase text-muted-foreground">
                   {s.label}

@@ -6,7 +6,7 @@ type State = "idle" | "loading" | "ok" | "dup" | "err";
 
 export function NewsletterSignup({
   title = "Get Nextwave updates.",
-  description = "Cohort windows, bootcamp results, NerdHaven launches and partnership news — straight to your inbox. No noise.",
+  description = "Program updates, bootcamp results, NerdHaven launches and partnership news — straight to your inbox. No noise.",
   source = "newsletter",
   className = "",
 }: {

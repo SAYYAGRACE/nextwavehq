@@ -16,6 +16,8 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NewsIndexRouteImport } from './routes/news.index'
+import { Route as NewsSlugRouteImport } from './routes/news.$slug'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
@@ -53,6 +55,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsSlugRoute = NewsSlugRouteImport.update({
+  id: '/news/$slug',
+  path: '/news/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -73,6 +85,8 @@ export interface FileRoutesByFullPath {
   '/team': typeof TeamRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/news/$slug': typeof NewsSlugRoute
+  '/news/': typeof NewsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -83,6 +97,8 @@ export interface FileRoutesByTo {
   '/team': typeof TeamRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/news/$slug': typeof NewsSlugRoute
+  '/news': typeof NewsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -95,6 +111,8 @@ export interface FileRoutesById {
   '/team': typeof TeamRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/news/$slug': typeof NewsSlugRoute
+  '/news/': typeof NewsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -107,6 +125,8 @@ export interface FileRouteTypes {
     | '/team'
     | '/admin'
     | '/dashboard'
+    | '/news/$slug'
+    | '/news/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -117,6 +137,8 @@ export interface FileRouteTypes {
     | '/team'
     | '/admin'
     | '/dashboard'
+    | '/news/$slug'
+    | '/news'
   id:
     | '__root__'
     | '/'
@@ -128,6 +150,8 @@ export interface FileRouteTypes {
     | '/team'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
+    | '/news/$slug'
+    | '/news/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -138,6 +162,8 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ProjectsRoute: typeof ProjectsRoute
   TeamRoute: typeof TeamRoute
+  NewsSlugRoute: typeof NewsSlugRoute
+  NewsIndexRoute: typeof NewsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -191,6 +217,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/news/': {
+      id: '/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/$slug': {
+      id: '/news/$slug'
+      path: '/news/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof NewsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -229,6 +269,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ProjectsRoute: ProjectsRoute,
   TeamRoute: TeamRoute,
+  NewsSlugRoute: NewsSlugRoute,
+  NewsIndexRoute: NewsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

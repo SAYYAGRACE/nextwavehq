@@ -3,9 +3,15 @@ export const SITE = {
   legalName: "Nextwave Infotech",
   domain: "https://nextwave.com.ng",
   email: "info@nextwave.com.ng",
+  metrics: {
+    learners: 300,
+    schools: 15,
+    partners: 8,
+    mentors: 20,
+  },
   phone: {
-    display: "TBD — add WhatsApp/phone",
-    whatsapp: "", // e.g. "+2348012345678" (international format, no spaces)
+    display: "+234 806 654 9337",
+    whatsapp: "+2348066549337",
   },
   location: {
     area: "Kawo, Kaduna",
@@ -30,12 +36,5 @@ export const SITE = {
       "Specializations (Undergraduate)",
       "Growth Hub (Founders & SMEs)",
     ],
-    cohort: {
-      running: true,
-      label: "Current cohort — in session",
-      number: "Cohort 01",
-      // dates + enrolments to be confirmed
-      details: "",
-    },
   },
 } as const;
