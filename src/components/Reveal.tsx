@@ -1,36 +1,19 @@
-import { motion, useReducedMotion, type Variants } from "motion/react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0 },
-};
-
-export function Reveal({
-  children,
-  className = "",
-  delay = 0,
-}: {
+type RevealProps = {
   children: ReactNode;
   className?: string;
   delay?: number;
-}) {
-  const prefersReducedMotion = useReducedMotion();
+};
+
+export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
+  const style: CSSProperties | undefined = delay
+    ? ({ animationDelay: `${delay}ms` } as CSSProperties)
+    : undefined;
 
   return (
-    <motion.div
-      className={className}
-      variants={prefersReducedMotion ? undefined : fadeUp}
-      initial={prefersReducedMotion ? "visible" : "hidden"}
-      whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{
-        duration: 0.6,
-        delay,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-    >
+    <div className={`reveal ${className}`} style={style}>
       {children}
-    </motion.div>
+    </div>
   );
 }

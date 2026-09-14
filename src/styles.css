@@ -410,6 +410,42 @@
     .text-shimmer-anim { animation: none; }
     .float-style { animation: none; }
   }
+
+  /* ============ SSR-SAFE REVEALS (pure CSS, no JS gating) ============ */
+  .reveal {
+    animation: reveal-up 0.7s var(--ease-smooth) both;
+  }
+  @keyframes reveal-up {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .kt-letter {
+    display: inline-block;
+    animation: kt-in 0.7s var(--ease-smooth) both;
+  }
+  @keyframes kt-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.6em) rotateX(45deg);
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+  }
+  .fade-in-late {
+    animation: fadem-in 1.2s var(--ease-smooth) both;
+    animation-delay: 1.4s;
+  }
+  @keyframes fadem-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .kt-letter, .fade-in-late { animation: none !important; }
+  }
 }
 
 /* ============ Light-mode compatibility ============ */

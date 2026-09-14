@@ -15,7 +15,7 @@ export const SITE = {
   },
   location: {
     area: "Kawo, Kaduna",
-    city: "Kaduna State",
+    city: "Nigeria",
     country: "Nigeria",
     full: "Kawo, Kaduna State, Nigeria",
   },

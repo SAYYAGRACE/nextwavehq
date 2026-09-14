@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useReducedMotion, useScroll, useTransform, type Variants } from "motion/react";
+import { useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useState, type FormEvent } from "react";
 import {
   Activity,
@@ -40,15 +40,6 @@ import { SessionGallery } from "@/components/SessionGallery";
 import { PartnerStrip } from "@/components/PartnerStrip";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { SITE } from "@/lib/site";
-
-const stagger: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
-};
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
-};
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -115,13 +106,13 @@ function HomePage() {
         <StatsBand />
         <TenetsSection />
         <BootcampTimeline />
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 mt-20 lg:mt-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 mt-14 lg:mt-20">
           <SessionGallery />
         </div>
         <NerdHaven />
         <FaqSection />
         <CtaBand />
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 mt-20 lg:mt-28">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 mt-14 lg:mt-20">
           <NewsletterSignup />
         </div>
         <PartnerStrip />
@@ -135,58 +126,49 @@ function Hero() {
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
-  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   return (
-    <section className="relative min-h-[92vh] pt-36 pb-24 lg:pt-48 lg:pb-32 overflow-hidden flex items-center">
+    <section className="relative min-h-[78vh] pt-28 pb-16 lg:pt-36 lg:pb-20 overflow-hidden flex items-center">
       <Aurora className="opacity-60" />
       <div className="absolute inset-0 grid-bg opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
       <div className="absolute inset-0 radial-glow" />
       <HeroCanvas />
 
-      <motion.div
-        style={prefersReducedMotion ? undefined : { y, opacity }}
+      <div
+        style={prefersReducedMotion ? undefined : { y }}
         className="relative mx-auto max-w-7xl px-6 lg:px-10 w-full"
       >
-        <motion.div
-          className="flex flex-col items-center text-center max-w-4xl mx-auto"
-          variants={prefersReducedMotion ? undefined : stagger}
-          initial={prefersReducedMotion ? "visible" : "hidden"}
-          animate="visible"
-        >
-          <motion.div variants={fadeUp}>
+        <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+          <div className="reveal">
             <span className="relative inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs tracking-[0.14em] uppercase text-muted-foreground">
               <span className="absolute -inset-px rounded-full border border-brand-purple/30 opacity-60" />
               <Sparkles className="h-3 w-3 text-brand-glow" />
               Originating from Northern Nigeria
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h1
-            variants={fadeUp}
-            className="mt-8 text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.03] tracking-tight"
+          <h1
+            className="reveal mt-6 text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.03] tracking-tight"
+            style={{ animationDelay: "80ms" }}
           >
-            <KineticText
-              text="Empowering Africa's Youth"
-              className="gradient-text block"
-            />
+            <KineticText text="Empowering Africa's Youth" className="gradient-text block" />
             <br />
             <span className="text-white block mt-1">to lead the next</span>
             <span className="text-white block text-shimmer-anim">technological revolution.</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            variants={fadeUp}
-            className="mt-7 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed"
+          <p
+            className="reveal mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed"
+            style={{ animationDelay: "160ms" }}
           >
             Nextwave is a strategic, youth-driven ecosystem positioning the African continent at the
             forefront of AI, biotechnology, and digital health innovation, beginning from Northern
             Nigeria.
-          </motion.p>
+          </p>
 
-          <motion.div
-            variants={fadeUp}
-            className="mt-10 flex flex-col sm:flex-row items-center gap-3"
+          <div
+            className="reveal mt-8 flex flex-col sm:flex-row items-center gap-3"
+            style={{ animationDelay: "240ms" }}
           >
             <Magnetic strength={0.35}>
               <Link
@@ -204,11 +186,11 @@ function Hero() {
             >
               Partner With Us
             </Link>
-          </motion.div>
+          </div>
 
-          <motion.div
-            variants={fadeUp}
-            className="mt-16 grid grid-cols-3 gap-4 sm:gap-10 w-full max-w-3xl"
+          <div
+            className="reveal mt-12 grid grid-cols-3 gap-3 sm:gap-6 w-full max-w-3xl"
+            style={{ animationDelay: "320ms" }}
           >
             {[
               { k: 300, suffix: "+", v: "Learners reached" },
@@ -217,7 +199,7 @@ function Hero() {
             ].map((s, i) => (
               <div
                 key={s.v}
-                className={`relative rounded-2xl glass px-4 py-6 float-style hover-lift ${
+                className={`relative rounded-2xl glass px-4 py-5 float-style hover-lift ${
                   i === 1 ? "float-delay-1" : i === 2 ? "float-delay-2" : ""
                 }`}
               >
@@ -230,25 +212,17 @@ function Hero() {
                 </div>
               </div>
             ))}
-          </motion.div>
-        </motion.div>
-      </motion.div>
+          </div>
+        </div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 text-muted-foreground"
+      <div
+        className="fade-in-late absolute bottom-6 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 text-muted-foreground"
         aria-hidden
       >
         <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
-        <motion.div
-          animate={prefersReducedMotion ? undefined : { y: [0, 6, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ChevronDown className="h-4 w-4" />
-        </motion.div>
-      </motion.div>
+        <ChevronDown className="h-4 w-4 animate-bounce" />
+      </div>
     </section>
   );
 }
@@ -322,7 +296,7 @@ const CHALLENGES = [
 
 function ChallengeSection() {
   return (
-    <section className="relative py-24 lg:py-32">
+    <section className="relative py-16 lg:py-20">
       <div className="section-divider absolute top-0 inset-x-0" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16 items-start">
@@ -351,7 +325,10 @@ function ChallengeSection() {
           <div className="grid gap-5 sm:grid-cols-1">
             {CHALLENGES.map((c, i) => (
               <Reveal key={c.title} delay={i * 90}>
-                <TiltCard maxTilt={6} className="spotlight glass gradient-border rounded-2xl p-7 hover-lift">
+                <TiltCard
+                  maxTilt={6}
+                  className="spotlight glass gradient-border rounded-2xl p-7 hover-lift"
+                >
                   <div className="flex gap-5 items-start">
                     <div className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-hairline bg-white/[0.03] overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/20 via-transparent to-brand-purple/20 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -395,7 +372,7 @@ const FOCUS = [
 
 function FocusAreas() {
   return (
-    <section className="relative py-24 lg:py-32">
+    <section className="relative py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
           <div className="max-w-2xl">
@@ -411,7 +388,7 @@ function FocusAreas() {
         </Reveal>
 
         <Reveal delay={120}>
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
             {FOCUS.map((f, i) => (
               <TiltCard key={f.title} maxTilt={8}>
                 <div className="group h-full">
@@ -451,7 +428,7 @@ const STATS = [
 
 function StatsBand() {
   return (
-    <section className="relative py-14 lg:py-20">
+    <section className="relative py-10 lg:py-14">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
           <div className="relative overflow-hidden rounded-3xl">
@@ -509,7 +486,7 @@ const TENETS = [
 
 function TenetsSection() {
   return (
-    <section className="relative py-24 lg:py-28">
+    <section className="relative py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
           <SectionEyebrow>How We Think</SectionEyebrow>
@@ -526,7 +503,7 @@ function TenetsSection() {
           </div>
         </Reveal>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {TENETS.map((t, i) => (
             <Reveal key={t.title} delay={160 + i * 80}>
               <TiltCard maxTilt={7} className="h-full">
@@ -574,7 +551,7 @@ const PHASES = [
 
 function BootcampTimeline() {
   return (
-    <section className="relative py-24 lg:py-32">
+    <section className="relative py-16 lg:py-20">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
@@ -593,7 +570,7 @@ function BootcampTimeline() {
         </Reveal>
 
         <Reveal delay={100}>
-          <div className="mt-16 relative">
+          <div className="mt-12 relative">
             <div className="hidden lg:block absolute top-[52px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
             <div className="grid gap-5 lg:grid-cols-4">
               {PHASES.map((p, i) => (
@@ -814,7 +791,7 @@ const FAQS = [
 
 function FaqSection() {
   return (
-    <section className="relative py-24 lg:py-28">
+    <section className="relative py-16 lg:py-20">
       <div className="mx-auto max-w-4xl px-6 lg:px-10">
         <Reveal>
           <div className="text-center">
@@ -852,7 +829,7 @@ function FaqSection() {
 
 function CtaBand() {
   return (
-    <section className="relative py-20 lg:py-28">
+    <section className="relative py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
           <div className="relative overflow-hidden rounded-3xl glass-strong px-8 py-14 sm:px-14 text-center border border-brand-purple/20">
@@ -860,15 +837,9 @@ function CtaBand() {
             <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-96 w-96 rounded-full bg-brand-purple/25 blur-[130px]" />
             <div className="absolute inset-0 grid-bg opacity-20 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
             <div className="relative">
-              <motion.div
-                initial={{ scale: 0, rotate: -20 }}
-                whileInView={{ scale: 1, rotate: 0 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 200, damping: 14, delay: 0.1 }}
-                className="mx-auto grid h-16 w-16 place-items-center rounded-2xl gradient-border glass"
-              >
+              <div className="relative grid h-16 w-16 place-items-center rounded-2xl gradient-border glass mx-auto">
                 <Rocket className="h-7 w-7 text-brand-glow" strokeWidth={1.5} />
-              </motion.div>
+              </div>
               <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
                 Ready to build <span className="gradient-text">Africa's next wave?</span>
               </h2>

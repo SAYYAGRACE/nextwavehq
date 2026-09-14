@@ -6,7 +6,7 @@ import { Aurora } from "./Aurora";
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-32 border-t border-hairline overflow-hidden">
+    <footer className="relative mt-20 border-t border-hairline overflow-hidden">
       <Aurora className="opacity-20" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10 py-16">

@@ -47,7 +47,7 @@ function TeamPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 pb-20 lg:pt-44 overflow-hidden">
+      <main className="relative pt-28 pb-16 lg:pt-36 overflow-hidden">
         <Aurora className="opacity-30" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
@@ -63,7 +63,7 @@ function TeamPage() {
             </p>
           </Reveal>
 
-          <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {LEADERS.map((p, i) => (
               <Reveal key={p.name} delay={(i % 3) * 80}>
                 <TiltCard maxTilt={6} className="h-full">
@@ -97,7 +97,7 @@ function TeamPage() {
           </div>
 
           <Reveal delay={120}>
-            <div className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-5 rounded-3xl glass-strong p-8 sm:p-10 overflow-hidden relative">
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-5 rounded-3xl glass-strong p-8 sm:p-10 overflow-hidden relative">
               <div className="absolute -top-24 -right-20 h-64 w-64 rounded-full bg-brand-blue/20 blur-[110px]" />
               <div className="relative">
                 <h3 className="text-xl sm:text-2xl font-semibold text-white">

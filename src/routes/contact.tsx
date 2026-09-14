@@ -92,7 +92,7 @@ function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 pb-20 lg:pt-44 overflow-hidden">
+      <main className="relative pt-28 pb-16 lg:pt-36 overflow-hidden">
         <Aurora className="opacity-40" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
@@ -109,7 +109,7 @@ function ContactPage() {
             </div>
           </Reveal>
 
-          <div className="mt-16 grid gap-6 lg:grid-cols-[1fr_2fr]">
+          <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_2fr]">
             <Reveal delay={100}>
               <aside className="space-y-4">
                 <SpotlightCard className="glass rounded-2xl p-5">
@@ -292,7 +292,7 @@ function ContactPage() {
           </div>
 
           <Reveal delay={120}>
-            <div className="mt-16 grid gap-5 sm:grid-cols-3">
+            <div className="mt-12 grid gap-5 sm:grid-cols-3">
               {[
                 {
                   icon: SearchCheck,

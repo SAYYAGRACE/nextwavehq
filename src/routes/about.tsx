@@ -52,7 +52,7 @@ function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 pb-20 lg:pt-44 overflow-hidden">
+      <main className="relative pt-28 pb-16 lg:pt-36 overflow-hidden">
         <Aurora className="opacity-35" />
         <div className="absolute inset-0 grid-bg opacity-30 [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)]" />
         <div className="absolute inset-0 radial-glow" />
@@ -66,7 +66,7 @@ function AboutPage() {
           </Reveal>
 
           <Reveal delay={100}>
-            <div className="mt-16 max-w-3xl">
+            <div className="mt-12 max-w-3xl">
               <h2 className="text-2xl sm:text-3xl font-semibold text-white leading-tight">
                 A passionate collective positioning Africa at the forefront of emerging
                 technologies.
@@ -82,7 +82,7 @@ function AboutPage() {
           </Reveal>
 
           <Reveal delay={160}>
-            <blockquote className="relative mt-16 max-w-4xl rounded-3xl glass-strong border border-hairline px-8 py-10 sm:px-12 sm:py-12 overflow-hidden">
+            <blockquote className="relative mt-12 max-w-4xl rounded-3xl glass-strong border border-hairline px-8 py-10 sm:px-12 sm:py-12 overflow-hidden">
               <div className="absolute -top-24 -left-16 h-64 w-64 rounded-full bg-brand-purple/20 blur-[110px]" />
               <div className="absolute inset-0 grid-bg opacity-20 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
               <p className="relative text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
@@ -95,7 +95,7 @@ function AboutPage() {
             </blockquote>
           </Reveal>
 
-          <div className="mt-20 grid gap-6 lg:grid-cols-2">
+          <div className="mt-14 grid gap-6 lg:grid-cols-2">
             <Reveal>
               <SpotlightCard className="relative overflow-hidden rounded-2xl glass-strong p-8 sm:p-10 min-h-[340px]">
                 <div className="absolute inset-0 grid-bg opacity-50 [mask-image:radial-gradient(circle_at_30%_30%,black,transparent_70%)]" />
@@ -208,7 +208,7 @@ function AboutPage() {
             </Reveal>
           </div>
 
-          <div className="mt-16 grid gap-5 sm:grid-cols-3">
+          <div className="mt-12 grid gap-5 sm:grid-cols-3">
             {DRIVES.map((d, i) => (
               <Reveal key={d.title} delay={i * 90}>
                 <TiltCard maxTilt={7} className="h-full">

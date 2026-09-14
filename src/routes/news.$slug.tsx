@@ -26,7 +26,7 @@ function NewsDetailPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 lg:pt-44 overflow-hidden">
+      <main className="relative pt-28 lg:pt-36 overflow-hidden">
         <Aurora className="opacity-30" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-3xl px-6 lg:px-10">

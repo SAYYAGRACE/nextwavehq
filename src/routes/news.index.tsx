@@ -46,7 +46,7 @@ function NewsIndexPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 lg:pt-44 overflow-hidden">
+      <main className="relative pt-28 lg:pt-36 overflow-hidden">
         <Aurora className="opacity-30" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
@@ -63,7 +63,7 @@ function NewsIndexPage() {
 
           {articles.length === 0 ? (
             <Reveal delay={100}>
-              <div className="mt-16 rounded-3xl glass-strong p-12 sm:p-16 text-center">
+              <div className="mt-12 rounded-3xl glass-strong p-12 sm:p-16 text-center">
                 <Newspaper className="mx-auto h-10 w-10 text-brand-glow" strokeWidth={1.5} />
                 <h2 className="mt-6 text-2xl font-bold text-white">News is landing soon.</h2>
                 <p className="mx-auto mt-3 max-w-md text-muted-foreground leading-relaxed">
@@ -81,7 +81,7 @@ function NewsIndexPage() {
               </div>
             </Reveal>
           ) : (
-            <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {articles.map((a, i) => (
                 <Reveal key={a._id} delay={(i % 3) * 80}>
                   <Link to="/news/$slug" params={{ slug: a.slug }} className="group block h-full">

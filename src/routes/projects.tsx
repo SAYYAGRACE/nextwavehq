@@ -71,7 +71,7 @@ function ProjectsPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 lg:pt-44 overflow-hidden">
+      <main className="relative pt-28 lg:pt-36 overflow-hidden">
         <Aurora className="opacity-40" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
@@ -147,7 +147,7 @@ function Bootcamp() {
   const [active, setActive] = useState(0);
 
   return (
-    <section className="relative mx-auto max-w-7xl px-6 lg:px-10 mt-24 lg:mt-32">
+    <section className="relative mx-auto max-w-7xl px-6 lg:px-10 mt-16 lg:mt-20">
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <span className="text-xs tracking-[0.2em] uppercase text-brand-glow">
           Pillar 01 · Active Initiative
@@ -200,7 +200,7 @@ function Bootcamp() {
 
       <motion.div
         key={active}
-        initial={{ opacity: 0, y: 10 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         className="mt-6 glass-strong rounded-2xl p-7 sm:p-10 min-h-[180px] relative overflow-hidden border border-brand-purple/20"
@@ -297,7 +297,7 @@ function NerdHaven() {
   }
 
   return (
-    <section className="relative mx-auto max-w-7xl px-6 lg:px-10 mt-28 lg:mt-40">
+    <section className="relative mx-auto max-w-7xl px-6 lg:px-10 mt-20 lg:mt-28">
       <div className="flex flex-wrap items-center gap-3 mb-6">
         <span className="text-xs tracking-[0.2em] uppercase text-brand-glow">
           Pillar 02 · Future Infrastructure
