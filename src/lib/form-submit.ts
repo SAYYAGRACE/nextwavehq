@@ -12,6 +12,48 @@ type SubmissionInput = {
   source?: string;
 };
 
+const RECIPIENT_EMAIL =
+  process.env.NEXTWAVE_EMAIL ??
+  process.env.CONTACT_EMAIL ??
+  process.env.OPS_EMAIL ??
+  "info@nextwave.com.ng";
+
+function buildEmail(input: SubmissionInput): { subject: string; text: string } {
+  const head =
+    input.kind === "contact"
+      ? "New Contact Form Submission"
+      : input.kind === "newsletter"
+        ? "New Newsletter Signup"
+        : "New NerdHaven Waitlist Signup";
+  const lines = [`Type: ${input.kind}`, `Email: ${input.email}`];
+  if (input.name) lines.push(`Name: ${input.name}`);
+  if (input.organization) lines.push(`Organization: ${input.organization}`);
+  if (input.intent) lines.push(`Intent: ${input.intent}`);
+  if (input.message) lines.push(`Message: ${input.message}`);
+  if (input.source) lines.push(`Source: ${input.source}`);
+  return { subject: `[Nextwave] ${head}`, text: lines.join("\n") };
+}
+
+async function sendEmail(input: SubmissionInput): Promise<boolean> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return false;
+  const from = process.env.RESEND_FROM_EMAIL ?? "Nextwave <onboarding@resend.dev>";
+  const { subject, text } = buildEmail(input);
+  try {
+    const res = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ from, to: [RECIPIENT_EMAIL], subject, text }),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 async function writeSubmission(input: SubmissionInput): Promise<"ok" | "err"> {
   const token = process.env.SANITY_API_TOKEN;
   const projectId = process.env.SANITY_PROJECT_ID ?? import.meta.env?.VITE_SANITY_PROJECT_ID;
@@ -60,5 +102,8 @@ export const submitForm = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
     if (!validEmail) return "err";
-    return writeSubmission(data);
+    const written = await writeSubmission(data);
+    if (written === "err") return "err";
+    await sendEmail(data);
+    return "ok";
   });
