@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion } from "motion/react";
 import { useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
+import { Reveal } from "@/components/Reveal";
 import {
   ArrowRight,
   CheckCircle2,
@@ -43,14 +45,33 @@ function ProjectsPage() {
       <main className="relative pt-32 lg:pt-44">
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
-          <SectionEyebrow>Projects & Initiatives</SectionEyebrow>
-          <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-4xl">
-            Architecting Africa's <span className="gradient-text">deep-tech pipeline.</span>
-          </h1>
-          <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
-            Two pillars. One ecosystem. Active initiatives on the ground and future infrastructure
-            engineered for the continent.
-          </p>
+          <Reveal>
+            <SectionEyebrow>Projects & Initiatives</SectionEyebrow>
+            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-4xl">
+              Architecting Africa's <span className="gradient-text">deep-tech pipeline.</span>
+            </h1>
+            <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+              Two pillars. One ecosystem. Active initiatives on the ground and future infrastructure
+              engineered for the continent.
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="mt-10 flex flex-wrap gap-2.5">
+              {[
+                "Bootcamp · Active",
+                "4-Stage Pipeline",
+                "NerdHaven · In Development",
+                "3 Learning Tracks",
+              ].map((chip) => (
+                <span
+                  key={chip}
+                  className="rounded-full border border-hairline bg-white/[0.03] px-4 py-1.5 text-xs text-muted-foreground"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </Reveal>
         </div>
 
         <Bootcamp />
@@ -147,7 +168,13 @@ function Bootcamp() {
         ))}
       </div>
 
-      <div className="mt-6 glass-strong rounded-2xl p-7 sm:p-10 min-h-[180px]">
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        className="mt-6 glass-strong rounded-2xl p-7 sm:p-10 min-h-[180px]"
+      >
         <div className="flex items-baseline gap-4">
           <span className="text-5xl font-bold gradient-text">{PHASES[active].n}</span>
           <div>
@@ -158,7 +185,7 @@ function Bootcamp() {
         <p className="mt-5 text-muted-foreground leading-relaxed max-w-3xl">
           {PHASES[active].body}
         </p>
-      </div>
+      </motion.div>
 
       {/* B2B CTA */}
       <div className="mt-10 relative overflow-hidden rounded-2xl glass-strong p-8 sm:p-10">

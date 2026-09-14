@@ -150,7 +150,29 @@
     background: var(--brand-purple);
     color: white;
   }
+  :focus-visible {
+    outline: 2px solid var(--brand-purple);
+    outline-offset: 2px;
+  }
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--brand-purple) 45%, transparent);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in oklab, var(--brand-purple) 70%, transparent);
+    background-clip: content-box;
+  }
 }
+
 
 @layer utilities {
   .glass {
@@ -210,23 +232,35 @@
   .radial-glow {
     background: var(--gradient-glow);
   }
-  .reveal {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  .marquee {
+    animation: marquee 32s linear infinite;
   }
-  .reveal-visible {
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+      300px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      color-mix(in oklab, var(--brand-glow) 12%, transparent) 0%,
+      transparent 65%
+    );
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .spotlight:hover::after {
     opacity: 1;
-    transform: none;
   }
   @media (prefers-reduced-motion: reduce) {
-    .reveal,
-    .reveal-visible {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
     .marquee { animation: none; }
   }
 }

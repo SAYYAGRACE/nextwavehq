@@ -1,24 +1,35 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useReducedMotion, type Variants } from "motion/react";
-import { useState } from "react";
+import { motion, useReducedMotion, useScroll, useTransform, type Variants } from "motion/react";
+import { useState, type FormEvent } from "react";
 import {
   Activity,
   ArrowRight,
   ArrowUpRight,
   BrainCircuit,
+  Building2,
   Dna,
   Globe2,
   Layers,
   ShieldPlus,
   CheckCircle2,
+  Rocket,
   Sparkles,
   Trophy,
+  Users,
 } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { HeroCanvas } from "@/components/HeroCanvas";
+import { SpotlightCard } from "@/components/SpotlightCard";
+import { AnimatedNumber } from "@/components/AnimatedNumber";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import nerdhavenLogo from "../assets/nerdhaven.png";
 
 const stagger: Variants = {
@@ -58,10 +69,15 @@ function HomePage() {
       <SiteHeader />
       <main>
         <Hero />
+        <MarqueeBand />
+        <ChallengeSection />
         <FocusAreas />
+        <StatsBand />
         <TenetsSection />
         <BootcampTimeline />
         <NerdHaven />
+        <FaqSection />
+        <CtaBand />
       </main>
       <SiteFooter />
     </div>
@@ -70,6 +86,8 @@ function HomePage() {
 
 function Hero() {
   const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
 
   return (
     <section className="relative pt-32 pb-24 lg:pt-44 lg:pb-32 overflow-hidden">
@@ -77,7 +95,10 @@ function Hero() {
       <div className="absolute inset-0 radial-glow" />
       <HeroCanvas />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+      <motion.div
+        style={prefersReducedMotion ? undefined : { y }}
+        className="relative mx-auto max-w-7xl px-6 lg:px-10"
+      >
         <motion.div
           className="flex flex-col items-center text-center max-w-4xl mx-auto"
           variants={prefersReducedMotion ? undefined : stagger}
@@ -130,12 +151,14 @@ function Hero() {
             className="mt-20 grid grid-cols-3 gap-6 sm:gap-10 w-full max-w-2xl"
           >
             {[
-              { k: "3", v: "Tech verticals" },
-              { k: "01", v: "Active bootcamp" },
-              { k: "∞", v: "Borderless reach" },
+              { k: 3, text: undefined, v: "Tech verticals" },
+              { k: 4, text: undefined, v: "Bootcamp phases" },
+              { k: undefined, text: "∞", v: "Borderless reach" },
             ].map((s) => (
               <div key={s.v} className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold gradient-text">{s.k}</div>
+                <div className="text-2xl sm:text-3xl font-bold gradient-text tabular-nums">
+                  {s.text ?? <AnimatedNumber value={s.k as number} />}
+                </div>
                 <div className="mt-1 text-[11px] sm:text-xs tracking-widest uppercase text-muted-foreground">
                   {s.v}
                 </div>
@@ -143,6 +166,121 @@ function Hero() {
             ))}
           </motion.div>
         </motion.div>
+      </motion.div>
+    </section>
+  );
+}
+
+const MARQUEE = [
+  "AI & Data Science",
+  "Biotechnology & Health",
+  "Digital Health Policy",
+  "Nextwave Bootcamp",
+  "NerdHaven Academy",
+];
+
+function MarqueeBand() {
+  const reduced = useReducedMotion();
+  if (reduced) {
+    return (
+      <div className="border-y border-hairline bg-white/[0.02] px-6 py-5 overflow-hidden">
+        <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
+          {MARQUEE.map((m) => (
+            <span key={m} className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
+              {m}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div
+      className="border-y border-hairline bg-white/[0.02] py-5 overflow-hidden"
+      aria-hidden="false"
+    >
+      <div className="marquee flex w-max whitespace-nowrap">
+        {[0, 1].map((dup) => (
+          <div key={dup} className="flex shrink-0 items-center" aria-hidden={dup === 1}>
+            {MARQUEE.map((m) => (
+              <span
+                key={m}
+                className="mx-8 flex items-center gap-16 text-xs tracking-[0.2em] uppercase text-muted-foreground"
+              >
+                {m}
+                <Sparkles className="h-3.5 w-3.5 text-brand-purple/60" />
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const CHALLENGES = [
+  {
+    icon: BrainCircuit,
+    title: "A widening frontier",
+    body: "Deep tech is outpacing local skill ecosystems. Without deliberate pipelines, regions become consumers of technology they never helped build.",
+  },
+  {
+    icon: Globe2,
+    title: "Talent without on-ramps",
+    body: "Exceptionally analytical young minds across Northern Nigeria lack structured pathways from discovery to industry-grade deployment.",
+  },
+  {
+    icon: Building2,
+    title: "Infra built elsewhere",
+    body: "Policy, data, and health infrastructure get architected abroad — we exist to build them here, on the ground, from first principles.",
+  },
+];
+
+function ChallengeSection() {
+  return (
+    <section className="relative py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16 items-start">
+          <Reveal>
+            <div className="lg:sticky lg:top-28">
+              <SectionEyebrow>The Moment</SectionEyebrow>
+              <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+                Africa can't afford to sit out the{" "}
+                <span className="gradient-text">deep-tech century.</span>
+              </h2>
+              <p className="mt-4 text-muted-foreground leading-relaxed">
+                Every frontier technology creates two kinds of societies: the architects and the
+                consumers. Nextwave is our continent's answer — a deliberate, team-built pathway
+                from raw talent to world-class engineering.
+              </p>
+              <Link
+                to="/about"
+                className="group mt-8 inline-flex items-center gap-2 text-sm font-medium text-brand-glow hover:text-white transition-colors"
+              >
+                Read our story
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          </Reveal>
+
+          <div className="grid gap-5 sm:grid-cols-1">
+            {CHALLENGES.map((c, i) => (
+              <Reveal key={c.title} delay={i * 90}>
+                <SpotlightCard className="glass gradient-border rounded-2xl p-7">
+                  <div className="flex gap-5 items-start">
+                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
+                      <c.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">{c.title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
+                    </div>
+                  </div>
+                </SpotlightCard>
+              </Reveal>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -189,13 +327,7 @@ function FocusAreas() {
         <Reveal delay={120}>
           <div className="mt-14 grid gap-5 md:grid-cols-3">
             {FOCUS.map((f) => (
-              <motion.article
-                key={f.title}
-                className="group relative glass gradient-border rounded-2xl p-7 hover:-translate-y-1"
-                whileHover={{ y: -6 }}
-                whileTap={{ scale: 0.985 }}
-                transition={{ type: "spring", stiffness: 400, damping: 22 }}
-              >
+              <SpotlightCard key={f.title} className="glass gradient-border rounded-2xl p-7 h-full">
                 <div className="flex items-center justify-between">
                   <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
                     <f.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
@@ -210,7 +342,37 @@ function FocusAreas() {
                   <span>Research · Advocacy</span>
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
-              </motion.article>
+              </SpotlightCard>
+            ))}
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+const STATS = [
+  { value: 3, label: "Deep-tech verticals" },
+  { value: 4, label: "Bootcamp phases" },
+  { value: 4, label: "Operating tenets" },
+  { value: 3, label: "Academy tracks" },
+];
+
+function StatsBand() {
+  return (
+    <section className="relative py-14 lg:py-20">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <Reveal>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-3xl border border-hairline bg-hairline">
+            {STATS.map((s) => (
+              <div key={s.label} className="bg-background px-8 py-10 text-center">
+                <div className="text-4xl sm:text-5xl font-bold gradient-text">
+                  <AnimatedNumber value={s.value} />
+                </div>
+                <div className="mt-2 text-xs tracking-widest uppercase text-muted-foreground">
+                  {s.label}
+                </div>
+              </div>
             ))}
           </div>
         </Reveal>
@@ -264,18 +426,13 @@ function TenetsSection() {
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {TENETS.map((t, i) => (
             <Reveal key={t.title} delay={160 + i * 80}>
-              <motion.article
-                className="group h-full glass gradient-border rounded-2xl p-7 hover:-translate-y-1"
-                whileHover={{ y: -6 }}
-                whileTap={{ scale: 0.985 }}
-                transition={{ type: "spring", stiffness: 400, damping: 22 }}
-              >
+              <SpotlightCard className="h-full glass gradient-border rounded-2xl p-7">
                 <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
                   <t.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
                 </div>
                 <h3 className="mt-6 text-lg font-semibold text-white">{t.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
-              </motion.article>
+              </SpotlightCard>
             </Reveal>
           ))}
         </div>
@@ -336,12 +493,7 @@ function BootcampTimeline() {
                   <div className="hidden lg:flex absolute -top-2 left-1/2 -translate-x-1/2 h-5 w-5 items-center justify-center">
                     <span className="h-2.5 w-2.5 rounded-full bg-brand-glow shadow-[0_0_12px_var(--brand-glow)]" />
                   </div>
-                  <motion.article
-                    className="glass gradient-border rounded-2xl p-6 h-full hover:-translate-y-1"
-                    whileHover={{ y: -6 }}
-                    whileTap={{ scale: 0.985 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 22 }}
-                  >
+                  <SpotlightCard className="glass gradient-border rounded-2xl p-6 h-full">
                     <div className="flex items-baseline justify-between">
                       <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
                         Phase {p.n}
@@ -352,7 +504,7 @@ function BootcampTimeline() {
                     </div>
                     <h3 className="mt-4 text-lg font-semibold text-white">{p.title}</h3>
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-                  </motion.article>
+                  </SpotlightCard>
                 </div>
               ))}
             </div>
@@ -400,7 +552,7 @@ function NerdHaven() {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "ok" | "err" | "loading" | "dup">("idle");
 
-  async function submit(e: React.FormEvent) {
+  async function submit(e: FormEvent) {
     e.preventDefault();
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) return setState("err");
@@ -431,6 +583,10 @@ function NerdHaven() {
                 <img
                   src={nerdhavenLogo}
                   alt="NerdHaven logo"
+                  width={64}
+                  height={64}
+                  loading="lazy"
+                  decoding="async"
                   className="h-16 w-16 object-contain"
                 />
               </div>
@@ -458,12 +614,9 @@ function NerdHaven() {
         <Reveal delay={150}>
           <div className="relative mt-12 grid gap-4 md:grid-cols-3">
             {TRACKS.map((t) => (
-              <motion.div
+              <SpotlightCard
                 key={t.n}
                 className="rounded-2xl border border-hairline bg-white/[0.02] p-6 backdrop-blur-sm"
-                whileHover={{ y: -4 }}
-                whileTap={{ scale: 0.985 }}
-                transition={{ type: "spring", stiffness: 400, damping: 22 }}
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
@@ -475,7 +628,7 @@ function NerdHaven() {
                 </div>
                 <h3 className="mt-5 text-lg font-semibold text-white">{t.title}</h3>
                 <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
-              </motion.div>
+              </SpotlightCard>
             ))}
           </div>
         </Reveal>
@@ -520,6 +673,109 @@ function NerdHaven() {
               Please enter a valid email address.
             </p>
           )}
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+const FAQS = [
+  {
+    q: "Who is Nextwave for?",
+    a: "Young learners, educators, partner companies, and organizations across Nigeria — especially Northern Nigeria — who want to be part of Africa's deep-tech future. We work across schools, universities, and industry.",
+  },
+  {
+    q: "How does the Nextwave Bootcamp work?",
+    a: "It's a four-phase pipeline: Strategic Outreach masterclasses, a rigorous Aptitude Challenge, Industry Immersion inside premier IT companies, and Launchpad Deployment into high-impact internships for exceptional candidates.",
+  },
+  {
+    q: "What is NerdHaven?",
+    a: "NerdHaven is Nextwave's upcoming borderless digital academy — a learning platform with three tracks spanning foundations, specializations, and business-oriented growth skills. Join the waitlist to secure early access.",
+  },
+  {
+    q: "How can my company become a Partner Host Company?",
+    a: "Partner host companies host top bootcamp candidates, shadowing senior engineers in live workflows. Reach out via the contact page and the team will work through engagement terms with you.",
+  },
+  {
+    q: "How do I get involved or volunteer?",
+    a: "Use the contact form and select the Volunteer Application intent. The operations team reviews every submission and responds directly.",
+  },
+];
+
+function FaqSection() {
+  return (
+    <section className="relative py-24 lg:py-28">
+      <div className="mx-auto max-w-4xl px-6 lg:px-10">
+        <Reveal>
+          <div className="text-center">
+            <SectionEyebrow>Questions</SectionEyebrow>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+              Quick <span className="gradient-text">answers.</span>
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed max-w-xl mx-auto">
+              Everything you need to know about the movement, the bootcamp, and NerdHaven.
+            </p>
+          </div>
+        </Reveal>
+        <Reveal delay={120}>
+          <Accordion type="single" collapsible className="mt-12 w-full space-y-3">
+            {FAQS.map((f, i) => (
+              <AccordionItem
+                key={f.q}
+                value={`item-${i}`}
+                className="glass gradient-border rounded-2xl border-0 px-6"
+              >
+                <AccordionTrigger className="flex-1 text-left text-base font-semibold text-white py-5 [&[data-state=open]>svg]:rotate-180 [&>svg]:transition-transform [&>svg]:text-brand-glow">
+                  {f.q}
+                </AccordionTrigger>
+                <AccordionContent className="pb-5 text-sm leading-relaxed text-muted-foreground">
+                  {f.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function CtaBand() {
+  return (
+    <section className="relative py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-3xl glass-strong px-8 py-14 sm:px-14 text-center">
+            <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-96 w-96 rounded-full bg-brand-purple/25 blur-[130px]" />
+            <div className="absolute inset-0 grid-bg opacity-20 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
+            <div className="relative">
+              <Rocket className="mx-auto h-9 w-9 text-brand-glow" strokeWidth={1.5} />
+              <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+                Ready to build <span className="gradient-text">Africa's next wave?</span>
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-muted-foreground leading-relaxed">
+                Whether you're a learner, a partner host company, or an organization aligned with
+                our mission — there's a seat at the table.
+              </p>
+              <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03]"
+                  style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+                >
+                  Join the Movement
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+                <Link
+                  to="/projects"
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white glass-strong hover:bg-white/5 transition-colors"
+                >
+                  <Users className="h-4 w-4" />
+                  See Our Initiatives
+                </Link>
+              </div>
+            </div>
+          </div>
         </Reveal>
       </div>
     </section>

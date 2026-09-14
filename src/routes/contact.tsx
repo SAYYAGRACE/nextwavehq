@@ -3,7 +3,18 @@ import { useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
-import { Send, CheckCircle2, Mail, MapPin, Building2 } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
+import { SpotlightCard } from "@/components/SpotlightCard";
+import {
+  Send,
+  CheckCircle2,
+  Mail,
+  MapPin,
+  Building2,
+  SearchCheck,
+  Reply,
+  Sparkles,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { NEXTWAVE_EMAIL } from "@/lib/email-config";
 
@@ -77,37 +88,43 @@ function ContactPage() {
       <main className="relative pt-32 pb-20 lg:pt-44">
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
-          <div className="text-center max-w-3xl mx-auto">
-            <SectionEyebrow>Contact</SectionEyebrow>
-            <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white">
-              Establish <span className="gradient-text">Strategic Contact.</span>
-            </h1>
-            <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
-              Reach out to the Nextwave operations team for partnerships, talent programs, or
-              corporate alignment.
-            </p>
-          </div>
+          <Reveal>
+            <div className="text-center max-w-3xl mx-auto">
+              <SectionEyebrow>Contact</SectionEyebrow>
+              <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white">
+                Establish <span className="gradient-text">Strategic Contact.</span>
+              </h1>
+              <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
+                Reach out to the Nextwave operations team for partnerships, talent programs, or
+                corporate alignment.
+              </p>
+            </div>
+          </Reveal>
 
           <div className="mt-16 grid gap-6 lg:grid-cols-[1fr_2fr]">
-            <aside className="space-y-4">
-              {[
-                { icon: Mail, t: "Direct Email", v: NEXTWAVE_EMAIL },
-                { icon: Building2, t: "Operations", v: "Nextwave Infotech" },
-                { icon: MapPin, t: "Headquarters", v: "Kaduna State, Nigeria" },
-              ].map((c) => (
-                <div key={c.t} className="glass rounded-2xl p-5 flex items-start gap-4">
-                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
-                    <c.icon className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
-                      {c.t}
+            <Reveal delay={100}>
+              <aside className="space-y-4">
+                {[
+                  { icon: Mail, t: "Direct Email", v: NEXTWAVE_EMAIL },
+                  { icon: Building2, t: "Operations", v: "Nextwave Infotech" },
+                  { icon: MapPin, t: "Headquarters", v: "Kaduna State, Nigeria" },
+                ].map((c) => (
+                  <SpotlightCard key={c.t} className="glass rounded-2xl p-5">
+                    <div className="flex items-start gap-4">
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
+                        <c.icon className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                          {c.t}
+                        </div>
+                        <div className="mt-1 text-sm text-white break-words">{c.v}</div>
+                      </div>
                     </div>
-                    <div className="mt-1 text-sm text-white truncate">{c.v}</div>
-                  </div>
-                </div>
-              ))}
-            </aside>
+                  </SpotlightCard>
+                ))}
+              </aside>
+            </Reveal>
 
             <form onSubmit={submit} noValidate className="glass-strong rounded-2xl p-6 sm:p-10">
               {sent && (
@@ -197,6 +214,41 @@ function ContactPage() {
               </div>
             </form>
           </div>
+
+          <Reveal delay={120}>
+            <div className="mt-16 grid gap-5 sm:grid-cols-3">
+              {[
+                {
+                  icon: SearchCheck,
+                  t: "We review",
+                  v: "The operations team reviews every submission against our engagement criteria.",
+                },
+                {
+                  icon: Reply,
+                  t: "We reply",
+                  v: "You receive a direct response from the team — generally within a few business days.",
+                },
+                {
+                  icon: Sparkles,
+                  t: "We align",
+                  v: "From partnership terms to program alignment, we define the next step collaboratively.",
+                },
+              ].map((s, i) => (
+                <SpotlightCard key={s.t} className="glass gradient-border rounded-2xl p-7 h-full">
+                  <div className="flex items-center gap-3">
+                    <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
+                      <s.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-xs tracking-widest uppercase text-muted-foreground">
+                      Step 0{i + 1}
+                    </span>
+                  </div>
+                  <h3 className="mt-6 text-lg font-semibold text-white">{s.t}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.v}</p>
+                </SpotlightCard>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </main>
       <SiteFooter />

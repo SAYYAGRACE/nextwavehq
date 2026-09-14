@@ -12,22 +12,32 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { PwaRegister } from "@/components/PwaRegister";
+import { BackToTop } from "@/components/BackToTop";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
+      <div className="absolute inset-0 grid-bg opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
+      <div className="absolute inset-0 radial-glow" />
+      <div className="relative max-w-md text-center">
+        <h1 className="text-8xl font-bold gradient-text tracking-tight">404</h1>
+        <h2 className="mt-4 text-xl font-semibold text-white">Page not found</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           The page you're looking for doesn't exist or has been moved.
         </p>
-        <div className="mt-6">
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-2">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium text-white transition-all hover:scale-[1.03]"
+            style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
           >
-            Go home
+            Back home
+          </Link>
+          <Link
+            to="/projects"
+            className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium text-white glass-strong transition-all hover:bg-white/5"
+          >
+            Explore our work
           </Link>
         </div>
       </div>
@@ -43,27 +53,28 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4">
+      <div className="absolute inset-0 grid-bg opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
+      <div className="absolute inset-0 radial-glow" />
+      <div className="relative max-w-md text-center">
+        <h1 className="text-4xl font-bold tracking-tight text-white">This page didn't load</h1>
+        <p className="mt-3 text-sm text-muted-foreground">
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <div className="mt-7 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium text-white transition-all hover:scale-[1.03]"
+            style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
           >
             Try again
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="inline-flex items-center justify-center rounded-full border border-hairline bg-white/[0.03] px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/5"
           >
             Go home
           </a>
@@ -100,6 +111,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "A youth-led deep-tech movement bridging Africa's gap in AI, biotechnology, and digital health, originating from Northern Nigeria.",
       },
+      { property: "og:image", content: "https://nextwave.com.ng/og.jpg" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: "https://nextwave.com.ng/og.jpg" },
       { name: "theme-color", content: "#0a0a12" },
     ],
     scripts: [
@@ -169,6 +184,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <BackToTop />
     </QueryClientProvider>
   );
 }
