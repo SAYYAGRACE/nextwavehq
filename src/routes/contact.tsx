@@ -124,13 +124,7 @@ function ContactPage() {
                       <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
                         Operating Location
                       </div>
-                      <div className="mt-1 text-sm text-white">
-                        {SITE.location.area}, {SITE.location.city}
-                      </div>
-                      <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                        The Nextwave Bootcamp runs live in Kaduna — including approved tracks for
-                        primary and secondary school students.
-                      </p>
+                      <div className="mt-1 text-sm text-white">Kaduna State</div>
                     </div>
                   </div>
                 </SpotlightCard>
