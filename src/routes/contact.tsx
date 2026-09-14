@@ -5,6 +5,9 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { SpotlightCard } from "@/components/SpotlightCard";
+import { TiltCard } from "@/components/TiltCard";
+import { Magnetic } from "@/components/Magnetic";
+import { Aurora } from "@/components/Aurora";
 import {
   Send,
   CheckCircle2,
@@ -89,7 +92,8 @@ function ContactPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 pb-20 lg:pt-44">
+      <main className="relative pt-32 pb-20 lg:pt-44 overflow-hidden">
+        <Aurora className="opacity-40" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
           <Reveal>
@@ -272,15 +276,17 @@ function ContactPage() {
               </div>
 
               <div className="mt-8 flex justify-end">
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03] hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
-                  style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
-                >
-                  {submitting ? "Transmitting..." : "Transmit Message"}
-                  <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </button>
+                <Magnetic strength={0.3}>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.04] hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
+                    style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+                  >
+                    {submitting ? "Transmitting..." : "Transmit Message"}
+                    <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </button>
+                </Magnetic>
               </div>
             </form>
           </div>
@@ -304,18 +310,20 @@ function ContactPage() {
                   v: "From partnership terms to program alignment, we define the next step collaboratively.",
                 },
               ].map((s, i) => (
-                <SpotlightCard key={s.t} className="glass gradient-border rounded-2xl p-7 h-full">
-                  <div className="flex items-center gap-3">
-                    <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
-                      <s.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                <TiltCard key={s.t} maxTilt={7} className="h-full">
+                  <SpotlightCard className="group glass gradient-border rounded-2xl p-7 h-full overflow-hidden">
+                    <div className="flex items-center gap-3">
+                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:scale-110 transition-transform duration-300">
+                        <s.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                      </div>
+                      <span className="text-xs tracking-widest uppercase text-muted-foreground">
+                        Step 0{i + 1}
+                      </span>
                     </div>
-                    <span className="text-xs tracking-widest uppercase text-muted-foreground">
-                      Step 0{i + 1}
-                    </span>
-                  </div>
-                  <h3 className="mt-6 text-lg font-semibold text-white">{s.t}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.v}</p>
-                </SpotlightCard>
+                    <h3 className="mt-6 text-lg font-semibold text-white">{s.t}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.v}</p>
+                  </SpotlightCard>
+                </TiltCard>
               ))}
             </div>
           </Reveal>

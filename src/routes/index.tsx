@@ -16,13 +16,18 @@ import {
   Sparkles,
   Trophy,
   Users,
+  ChevronDown,
 } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { HeroCanvas } from "@/components/HeroCanvas";
+import { Aurora } from "@/components/Aurora";
 import { SpotlightCard } from "@/components/SpotlightCard";
+import { TiltCard } from "@/components/TiltCard";
+import { Magnetic } from "@/components/Magnetic";
+import { KineticText } from "@/components/KineticText";
 import { AnimatedNumber } from "@/components/AnimatedNumber";
 import {
   Accordion,
@@ -130,16 +135,18 @@ function Hero() {
   const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   return (
-    <section className="relative pt-32 pb-24 lg:pt-44 lg:pb-32 overflow-hidden">
+    <section className="relative min-h-[92vh] pt-36 pb-24 lg:pt-48 lg:pb-32 overflow-hidden flex items-center">
+      <Aurora className="opacity-60" />
       <div className="absolute inset-0 grid-bg opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
       <div className="absolute inset-0 radial-glow" />
       <HeroCanvas />
 
       <motion.div
-        style={prefersReducedMotion ? undefined : { y }}
-        className="relative mx-auto max-w-7xl px-6 lg:px-10"
+        style={prefersReducedMotion ? undefined : { y, opacity }}
+        className="relative mx-auto max-w-7xl px-6 lg:px-10 w-full"
       >
         <motion.div
           className="flex flex-col items-center text-center max-w-4xl mx-auto"
@@ -148,18 +155,26 @@ function Hero() {
           animate="visible"
         >
           <motion.div variants={fadeUp}>
-            <SectionEyebrow>Originating from Northern Nigeria</SectionEyebrow>
+            <span className="relative inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs tracking-[0.14em] uppercase text-muted-foreground">
+              <span className="absolute -inset-px rounded-full border border-brand-purple/30 opacity-60" />
+              <Sparkles className="h-3 w-3 text-brand-glow" />
+              Originating from Northern Nigeria
+            </span>
           </motion.div>
+
           <motion.h1
             variants={fadeUp}
-            className="mt-6 text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight"
+            className="mt-8 text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.03] tracking-tight"
           >
-            <span className="gradient-text">Empowering Africa's Youth</span>
+            <KineticText
+              text="Empowering Africa's Youth"
+              className="gradient-text block"
+            />
             <br />
-            <span className="text-white">to lead the next</span>
-            <br />
-            <span className="text-white">technological revolution.</span>
+            <span className="text-white block mt-1">to lead the next</span>
+            <span className="text-white block text-shimmer-anim">technological revolution.</span>
           </motion.h1>
+
           <motion.p
             variants={fadeUp}
             className="mt-7 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed"
@@ -168,21 +183,24 @@ function Hero() {
             forefront of AI, biotechnology, and digital health innovation, beginning from Northern
             Nigeria.
           </motion.p>
+
           <motion.div
             variants={fadeUp}
             className="mt-10 flex flex-col sm:flex-row items-center gap-3"
           >
+            <Magnetic strength={0.35}>
+              <Link
+                to="/contact"
+                className="group inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-medium text-white transition-all hover:scale-[1.04] active:scale-[0.99] pulse-glow"
+                style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+              >
+                Join the Movement
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Magnetic>
             <Link
               to="/contact"
-              className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03]"
-              style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
-            >
-              Join the Movement
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white glass-strong hover:bg-white/5 transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white glass-strong hover:bg-white/5 hover:scale-[1.03] transition-all"
             >
               Partner With Us
             </Link>
@@ -190,23 +208,45 @@ function Hero() {
 
           <motion.div
             variants={fadeUp}
-            className="mt-20 grid grid-cols-3 gap-6 sm:gap-10 w-full max-w-2xl"
+            className="mt-16 grid grid-cols-3 gap-4 sm:gap-10 w-full max-w-3xl"
           >
             {[
               { k: 300, suffix: "+", v: "Learners reached" },
               { k: 15, suffix: "+", v: "Partner schools" },
               { k: 20, suffix: "+", v: "Mentors & instructors" },
-            ].map((s) => (
-              <div key={s.v} className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold gradient-text tabular-nums">
+            ].map((s, i) => (
+              <div
+                key={s.v}
+                className={`relative rounded-2xl glass px-4 py-6 float-style hover-lift ${
+                  i === 1 ? "float-delay-1" : i === 2 ? "float-delay-2" : ""
+                }`}
+              >
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none" />
+                <div className="relative text-2xl sm:text-4xl font-bold gradient-text tabular-nums">
                   <AnimatedNumber value={s.k} suffix={s.suffix} />
                 </div>
-                <div className="mt-1 text-[11px] sm:text-xs tracking-widest uppercase text-muted-foreground">
+                <div className="relative mt-1.5 text-[10px] sm:text-xs tracking-widest uppercase text-muted-foreground">
                   {s.v}
                 </div>
               </div>
             ))}
           </motion.div>
+        </motion.div>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 text-muted-foreground"
+        aria-hidden
+      >
+        <span className="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
+        <motion.div
+          animate={prefersReducedMotion ? undefined : { y: [0, 6, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="h-4 w-4" />
         </motion.div>
       </motion.div>
     </section>
@@ -238,16 +278,18 @@ function MarqueeBand() {
   }
   return (
     <div
-      className="border-y border-hairline bg-white/[0.02] py-5 overflow-hidden"
+      className="relative border-y border-hairline bg-white/[0.02] py-5 overflow-hidden"
       aria-hidden="false"
     >
+      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
       <div className="marquee flex w-max whitespace-nowrap">
         {[0, 1].map((dup) => (
           <div key={dup} className="flex shrink-0 items-center" aria-hidden={dup === 1}>
             {MARQUEE.map((m) => (
               <span
                 key={m}
-                className="mx-8 flex items-center gap-16 text-xs tracking-[0.2em] uppercase text-muted-foreground"
+                className="mx-8 flex items-center gap-16 text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-brand-glow transition-colors"
               >
                 {m}
                 <Sparkles className="h-3.5 w-3.5 text-brand-purple/60" />
@@ -281,6 +323,7 @@ const CHALLENGES = [
 function ChallengeSection() {
   return (
     <section className="relative py-24 lg:py-32">
+      <div className="section-divider absolute top-0 inset-x-0" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16 items-start">
           <Reveal>
@@ -300,7 +343,7 @@ function ChallengeSection() {
                 className="group mt-8 inline-flex items-center gap-2 text-sm font-medium text-brand-glow hover:text-white transition-colors"
               >
                 Read our story
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </Reveal>
@@ -308,17 +351,18 @@ function ChallengeSection() {
           <div className="grid gap-5 sm:grid-cols-1">
             {CHALLENGES.map((c, i) => (
               <Reveal key={c.title} delay={i * 90}>
-                <SpotlightCard className="glass gradient-border rounded-2xl p-7">
+                <TiltCard maxTilt={6} className="spotlight glass gradient-border rounded-2xl p-7 hover-lift">
                   <div className="flex gap-5 items-start">
-                    <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
-                      <c.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                    <div className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-hairline bg-white/[0.03] overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-brand-blue/20 via-transparent to-brand-purple/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <c.icon className="relative h-5 w-5 text-brand-glow" strokeWidth={1.5} />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-white">{c.title}</h3>
                       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
                     </div>
                   </div>
-                </SpotlightCard>
+                </TiltCard>
               </Reveal>
             ))}
           </div>
@@ -368,23 +412,28 @@ function FocusAreas() {
 
         <Reveal delay={120}>
           <div className="mt-14 grid gap-5 md:grid-cols-3">
-            {FOCUS.map((f) => (
-              <SpotlightCard key={f.title} className="glass gradient-border rounded-2xl p-7 h-full">
-                <div className="flex items-center justify-between">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
-                    <f.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
-                  </div>
-                  <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
-                    {f.tag}
-                  </span>
+            {FOCUS.map((f, i) => (
+              <TiltCard key={f.title} maxTilt={8}>
+                <div className="group h-full">
+                  <SpotlightCard className="glass gradient-border rounded-2xl p-7 h-full overflow-hidden relative">
+                    <div className="absolute -top-20 -right-20 h-40 w-40 rounded-full bg-brand-purple/15 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="flex items-center justify-between">
+                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:scale-110 transition-transform duration-300">
+                        <f.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                      </div>
+                      <span className="text-[10px] tracking-widest uppercase text-muted-foreground bg-white/[0.03] border border-hairline rounded-full px-3 py-1">
+                        {f.tag}
+                      </span>
+                    </div>
+                    <h3 className="mt-7 text-xl font-semibold text-white">{f.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+                    <div className="mt-8 pt-5 border-t border-hairline flex items-center justify-between text-xs text-muted-foreground">
+                      <span>Research · Advocacy</span>
+                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-brand-glow" />
+                    </div>
+                  </SpotlightCard>
                 </div>
-                <h3 className="mt-7 text-xl font-semibold text-white">{f.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
-                <div className="mt-8 pt-5 border-t border-hairline flex items-center justify-between text-xs text-muted-foreground">
-                  <span>Research · Advocacy</span>
-                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </div>
-              </SpotlightCard>
+              </TiltCard>
             ))}
           </div>
         </Reveal>
@@ -405,17 +454,29 @@ function StatsBand() {
     <section className="relative py-14 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-3xl border border-hairline bg-hairline">
-            {STATS.map((s) => (
-              <div key={s.label} className="bg-background px-8 py-10 text-center">
-                <div className="text-4xl sm:text-5xl font-bold gradient-text">
-                  <AnimatedNumber value={s.value} suffix={s.suffix} />
+          <div className="relative overflow-hidden rounded-3xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-brand-blue/10 via-brand-purple/10 to-brand-glow/10" />
+            <div className="absolute inset-0 grid-bg opacity-20 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_80%)]" />
+            <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded-3xl border border-hairline bg-hairline">
+              {STATS.map((s, i) => (
+                <div
+                  key={s.label}
+                  className={`group bg-background/80 backdrop-blur-sm px-8 py-12 text-center hover:bg-background/95 transition-colors duration-300 ${
+                    i % 2 === 1 ? "lg:border-x lg:border-hairline/50" : ""
+                  }`}
+                >
+                  <div className="relative">
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-12 bg-gradient-to-r from-transparent via-brand-purple/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="text-4xl sm:text-5xl font-bold gradient-text">
+                      <AnimatedNumber value={s.value} suffix={s.suffix} />
+                    </div>
+                    <div className="mt-2 text-xs tracking-widest uppercase text-muted-foreground">
+                      {s.label}
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-2 text-xs tracking-widest uppercase text-muted-foreground">
-                  {s.label}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </Reveal>
       </div>
@@ -468,13 +529,18 @@ function TenetsSection() {
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {TENETS.map((t, i) => (
             <Reveal key={t.title} delay={160 + i * 80}>
-              <SpotlightCard className="h-full glass gradient-border rounded-2xl p-7">
-                <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
-                  <t.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+              <TiltCard maxTilt={7} className="h-full">
+                <div className="group h-full">
+                  <SpotlightCard className="h-full glass gradient-border rounded-2xl p-7 overflow-hidden relative">
+                    <div className="absolute -bottom-16 -left-16 h-32 w-32 rounded-full bg-brand-blue/10 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:scale-110 group-hover:border-brand-purple/40 transition-all duration-300">
+                      <t.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                    </div>
+                    <h3 className="mt-6 text-lg font-semibold text-white">{t.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
+                  </SpotlightCard>
                 </div>
-                <h3 className="mt-6 text-lg font-semibold text-white">{t.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
-              </SpotlightCard>
+              </TiltCard>
             </Reveal>
           ))}
         </div>
@@ -533,20 +599,23 @@ function BootcampTimeline() {
               {PHASES.map((p, i) => (
                 <div key={p.n} className="group relative">
                   <div className="hidden lg:flex absolute -top-2 left-1/2 -translate-x-1/2 h-5 w-5 items-center justify-center">
-                    <span className="h-2.5 w-2.5 rounded-full bg-brand-glow shadow-[0_0_12px_var(--brand-glow)]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-brand-glow shadow-[0_0_12px_var(--brand-glow)] group-hover:shadow-[0_0_24px_var(--brand-glow)] transition-shadow" />
                   </div>
-                  <SpotlightCard className="glass gradient-border rounded-2xl p-6 h-full">
-                    <div className="flex items-baseline justify-between">
-                      <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
-                        Phase {p.n}
-                      </span>
-                      <span className="text-3xl font-bold text-white/10 group-hover:text-brand-purple/40 transition-colors">
-                        0{i + 1}
-                      </span>
-                    </div>
-                    <h3 className="mt-4 text-lg font-semibold text-white">{p.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-                  </SpotlightCard>
+                  <TiltCard maxTilt={8} className="h-full">
+                    <SpotlightCard className="glass gradient-border rounded-2xl p-6 h-full overflow-hidden">
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
+                          Phase {p.n}
+                        </span>
+                        <span className="text-3xl font-bold text-white/10 group-hover:text-brand-purple/40 transition-colors">
+                          0{i + 1}
+                        </span>
+                      </div>
+                      <h3 className="mt-4 text-lg font-semibold text-white">{p.title}</h3>
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
+                      <div className="mt-5 h-1 w-10 rounded-full bg-gradient-to-r from-brand-blue to-brand-purple opacity-30 group-hover:w-16 group-hover:opacity-100 transition-all duration-500" />
+                    </SpotlightCard>
+                  </TiltCard>
                 </div>
               ))}
             </div>
@@ -656,21 +725,20 @@ function NerdHaven() {
         <Reveal delay={150}>
           <div className="relative mt-12 grid gap-4 md:grid-cols-3">
             {TRACKS.map((t) => (
-              <SpotlightCard
-                key={t.n}
-                className="rounded-2xl border border-hairline bg-white/[0.02] p-6 backdrop-blur-sm"
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
-                    Track {t.n}
-                  </span>
-                  <span className="text-[10px] tracking-widest uppercase text-brand-glow">
-                    {t.target}
-                  </span>
+              <TiltCard key={t.n} maxTilt={7} className="h-full">
+                <div className="group h-full rounded-2xl border border-hairline bg-white/[0.02] p-6 backdrop-blur-sm hover:border-brand-purple/30 transition-colors duration-300">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                      Track {t.n}
+                    </span>
+                    <span className="rounded-full border border-brand-glow/30 bg-brand-glow/10 px-3 py-0.5 text-[10px] tracking-widest uppercase text-brand-glow">
+                      {t.target}
+                    </span>
+                  </div>
+                  <h3 className="mt-5 text-lg font-semibold text-white">{t.title}</h3>
+                  <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
                 </div>
-                <h3 className="mt-5 text-lg font-semibold text-white">{t.title}</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
-              </SpotlightCard>
+              </TiltCard>
             ))}
           </div>
         </Reveal>
@@ -787,11 +855,20 @@ function CtaBand() {
     <section className="relative py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
-          <div className="relative overflow-hidden rounded-3xl glass-strong px-8 py-14 sm:px-14 text-center">
+          <div className="relative overflow-hidden rounded-3xl glass-strong px-8 py-14 sm:px-14 text-center border border-brand-purple/20">
+            <Aurora className="opacity-30" />
             <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-96 w-96 rounded-full bg-brand-purple/25 blur-[130px]" />
             <div className="absolute inset-0 grid-bg opacity-20 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
             <div className="relative">
-              <Rocket className="mx-auto h-9 w-9 text-brand-glow" strokeWidth={1.5} />
+              <motion.div
+                initial={{ scale: 0, rotate: -20 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", stiffness: 200, damping: 14, delay: 0.1 }}
+                className="mx-auto grid h-16 w-16 place-items-center rounded-2xl gradient-border glass"
+              >
+                <Rocket className="h-7 w-7 text-brand-glow" strokeWidth={1.5} />
+              </motion.div>
               <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
                 Ready to build <span className="gradient-text">Africa's next wave?</span>
               </h2>
@@ -800,14 +877,16 @@ function CtaBand() {
                 our mission — there's a seat at the table.
               </p>
               <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Link
-                  to="/contact"
-                  className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03]"
-                  style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
-                >
-                  Join the Movement
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </Link>
+                <Magnetic strength={0.3}>
+                  <Link
+                    to="/contact"
+                    className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.04]"
+                    style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+                  >
+                    Join the Movement
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </Magnetic>
                 <Link
                   to="/projects"
                   className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white glass-strong hover:bg-white/5 transition-colors"

@@ -6,6 +6,8 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { SessionGallery } from "@/components/SessionGallery";
+import { Magnetic } from "@/components/Magnetic";
+import { Aurora } from "@/components/Aurora";
 import {
   ArrowRight,
   CheckCircle2,
@@ -69,7 +71,8 @@ function ProjectsPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 lg:pt-44">
+      <main className="relative pt-32 lg:pt-44 overflow-hidden">
+        <Aurora className="opacity-40" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
           <Reveal>
@@ -200,9 +203,10 @@ function Bootcamp() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-6 glass-strong rounded-2xl p-7 sm:p-10 min-h-[180px]"
+        className="mt-6 glass-strong rounded-2xl p-7 sm:p-10 min-h-[180px] relative overflow-hidden border border-brand-purple/20"
       >
-        <div className="flex items-baseline gap-4">
+        <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-brand-purple/15 blur-[80px]" />
+        <div className="relative flex items-baseline gap-4">
           <span className="text-5xl font-bold gradient-text">{PHASES[active].n}</span>
           <div>
             <h3 className="text-xl font-semibold text-white">{PHASES[active].title}</h3>
@@ -233,14 +237,16 @@ function Bootcamp() {
               Become a Partner Host Company to open holiday internships for our top-tier finalists.
             </p>
           </div>
-          <Link
-            to="/contact"
-            className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03] whitespace-nowrap"
-            style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
-          >
-            Apply for Enterprise Partnership
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-          </Link>
+          <Magnetic strength={0.3}>
+            <Link
+              to="/contact"
+              className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03] whitespace-nowrap"
+              style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+            >
+              Apply for Enterprise Partnership
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </Magnetic>
         </div>
       </div>
     </section>

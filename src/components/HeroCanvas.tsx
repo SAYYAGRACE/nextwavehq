@@ -10,6 +10,7 @@ interface Particle {
   vy: number;
   alpha: number;
   phase: number;
+  hue: number;
 }
 
 export function HeroCanvas() {
@@ -26,6 +27,13 @@ export function HeroCanvas() {
     let frame: number;
     let t = 0;
     let particles: Particle[] = [];
+    const mouse = { x: -999, y: -999 };
+
+    const onPointerMove = (e: PointerEvent) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -35,61 +43,78 @@ export function HeroCanvas() {
 
       const w = window.innerWidth;
       const h = canvas.height / dpr;
-      const count = Math.min(70, Math.max(24, Math.floor(w / 22)));
+      const count = Math.min(80, Math.max(30, Math.floor(w / 18)));
       particles = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
-        r: Math.random() * 1.6 + 0.4,
-        vx: (Math.random() - 0.5) * 0.12,
-        vy: -(Math.random() * 0.18 + 0.03),
-        alpha: Math.random() * 0.5 + 0.15,
+        r: Math.random() * 1.8 + 0.4,
+        vx: (Math.random() - 0.5) * 0.14,
+        vy: (Math.random() - 0.5) * 0.14,
+        alpha: Math.random() * 0.55 + 0.15,
         phase: Math.random() * Math.PI * 2,
+        hue: 250 + Math.random() * 40,
       }));
     };
 
     resize();
     window.addEventListener("resize", resize);
 
-    const blobs = [
-      { x: 0.25, y: 0.3, rx: 0.3, ry: 0.15, color: "100,120,240", speed: 0.0007, phase: 0 },
-      { x: 0.7, y: 0.55, rx: 0.28, ry: 0.14, color: "130,80,240", speed: 0.0005, phase: 2.1 },
-      { x: 0.5, y: 0.7, rx: 0.35, ry: 0.12, color: "80,160,230", speed: 0.0009, phase: 4.2 },
-    ];
-
     const draw = () => {
       const w = window.innerWidth;
       const h = canvas.height / (window.devicePixelRatio || 1);
       ctx.clearRect(0, 0, w, h);
 
-      blobs.forEach((b) => {
-        const cx = b.x * w + Math.sin(t * b.speed + b.phase) * w * 0.08;
-        const cy = b.y * h + Math.cos(t * b.speed * 1.3 + b.phase) * h * 0.06;
-        const rx = b.rx * w;
-        const ry = b.ry * h;
-
-        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(rx, ry));
-        grad.addColorStop(0, `rgba(${b.color}, 0.22)`);
-        grad.addColorStop(0.6, `rgba(${b.color}, 0.08)`);
-        grad.addColorStop(1, `rgba(${b.color}, 0)`);
-
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
+
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 160) {
+          const force = ((160 - dist) / 160) * 0.003;
+          p.vx -= dx * force;
+          p.vy -= dy * force;
+        }
+
+        p.vx *= 0.998;
+        p.vy *= 0.998;
+
         if (p.y < -4) {
           p.y = h + 4;
           p.x = Math.random() * w;
         }
         if (p.x < -4) p.x = w + 4;
         if (p.x > w + 4) p.x = -4;
+        if (p.y > h + 4) {
+          p.y = -4;
+          p.x = Math.random() * w;
+        }
+      }
 
+      const maxLineDist = 120;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i];
+          const b = particles[j];
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d = dx * dx + dy * dy;
+          if (d < maxLineDist * maxLineDist) {
+            const alpha = (1 - Math.sqrt(d) / maxLineDist) * 0.12;
+            ctx.strokeStyle = `rgba(160, 140, 240, ${alpha.toFixed(3)})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (const p of particles) {
         const twinkle = p.alpha * (0.6 + 0.4 * Math.sin(t * 0.03 + p.phase));
-        ctx.fillStyle = `rgba(190, 180, 255, ${twinkle.toFixed(3)})`;
+        ctx.fillStyle = `hsla(${p.hue}, 70%, 75%, ${twinkle.toFixed(3)})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
@@ -104,6 +129,7 @@ export function HeroCanvas() {
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onPointerMove);
     };
   }, []);
 
@@ -111,7 +137,7 @@ export function HeroCanvas() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 h-full w-full"
+      className="pointer-events-none absolute inset-0 h-full w-full opacity-80"
     />
   );
 }

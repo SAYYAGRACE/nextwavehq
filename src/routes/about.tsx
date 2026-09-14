@@ -4,6 +4,9 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { SpotlightCard } from "@/components/SpotlightCard";
+import { TiltCard } from "@/components/TiltCard";
+import { Aurora } from "@/components/Aurora";
+import { KineticText } from "@/components/KineticText";
 import { BrainCircuit, Building2, Compass, MapPin, Scale } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
@@ -49,7 +52,8 @@ function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 pb-20 lg:pt-44">
+      <main className="relative pt-32 pb-20 lg:pt-44 overflow-hidden">
+        <Aurora className="opacity-35" />
         <div className="absolute inset-0 grid-bg opacity-30 [mask-image:radial-gradient(ellipse_at_top,black_20%,transparent_70%)]" />
         <div className="absolute inset-0 radial-glow" />
 
@@ -57,7 +61,7 @@ function AboutPage() {
           <Reveal>
             <SectionEyebrow>The Movement</SectionEyebrow>
             <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white max-w-4xl">
-              About the <span className="gradient-text">Nextwave Movement.</span>
+              <KineticText text="About the Nextwave Movement." className="gradient-text" />{" "}
             </h1>
           </Reveal>
 
@@ -207,13 +211,17 @@ function AboutPage() {
           <div className="mt-16 grid gap-5 sm:grid-cols-3">
             {DRIVES.map((d, i) => (
               <Reveal key={d.title} delay={i * 90}>
-                <SpotlightCard className="glass gradient-border rounded-2xl p-7 h-full">
-                  <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
-                    <d.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                <TiltCard maxTilt={7} className="h-full">
+                  <div className="group h-full">
+                    <SpotlightCard className="glass gradient-border rounded-2xl p-7 h-full overflow-hidden">
+                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:scale-110 group-hover:border-brand-purple/40 transition-all duration-300">
+                        <d.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                      </div>
+                      <h3 className="mt-6 text-lg font-semibold text-white">{d.title}</h3>
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{d.body}</p>
+                    </SpotlightCard>
                   </div>
-                  <h3 className="mt-6 text-lg font-semibold text-white">{d.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{d.body}</p>
-                </SpotlightCard>
+                </TiltCard>
               </Reveal>
             ))}
           </div>

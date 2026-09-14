@@ -3,6 +3,7 @@ import { PortableText } from "@portabletext/react";
 import { CalendarDays, ArrowLeft, Newspaper } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { Aurora } from "@/components/Aurora";
 import { fetchArticleBySlug, type NewsArticle } from "@/lib/cms";
 
 export const Route = createFileRoute("/news/$slug")({
@@ -25,7 +26,8 @@ function NewsDetailPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 lg:pt-44">
+      <main className="relative pt-32 lg:pt-44 overflow-hidden">
+        <Aurora className="opacity-30" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-3xl px-6 lg:px-10">
           <Link

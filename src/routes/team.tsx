@@ -4,6 +4,8 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { SpotlightCard } from "@/components/SpotlightCard";
+import { TiltCard } from "@/components/TiltCard";
+import { Aurora } from "@/components/Aurora";
 import { Linkedin, Github, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/team")({
@@ -45,7 +47,8 @@ function TeamPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="relative pt-32 pb-20 lg:pt-44">
+      <main className="relative pt-32 pb-20 lg:pt-44 overflow-hidden">
+        <Aurora className="opacity-30" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
           <Reveal>
@@ -63,29 +66,32 @@ function TeamPage() {
           <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {LEADERS.map((p, i) => (
               <Reveal key={p.name} delay={(i % 3) * 80}>
-                <SpotlightCard className="group rounded-2xl glass gradient-border p-7 h-full">
-                  <div className="relative aspect-[4/3] rounded-xl border border-hairline bg-gradient-to-br from-white/[0.04] to-white/[0.01] overflow-hidden">
-                    <div className="absolute inset-0 grid place-items-center">
-                      <div className="text-5xl font-bold text-white/10 tracking-tight">
-                        {initials(p.name)}
+                <TiltCard maxTilt={6} className="h-full">
+                  <SpotlightCard className="group rounded-2xl glass gradient-border p-7 h-full overflow-hidden">
+                    <div className="relative aspect-[4/3] rounded-xl border border-hairline bg-gradient-to-br from-white/[0.04] to-white/[0.01] overflow-hidden">
+                      <div className="absolute inset-0 grid place-items-center">
+                        <div className="text-5xl font-bold text-white/10 tracking-tight group-hover:text-brand-purple/40 transition-colors duration-300">
+                          {initials(p.name)}
+                        </div>
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+                    <div className="mt-6">
+                      <h3 className="text-lg font-semibold text-white">{p.name}</h3>
+                      <p className="mt-1.5 text-sm text-brand-glow/90">{p.title}</p>
+                    </div>
+                    <div className="mt-6 pt-5 border-t border-hairline flex items-center justify-between">
+                      <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                        Nextwave Infotech
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <SocialIcon icon={Linkedin} label={`${p.name} on LinkedIn`} />
+                        <SocialIcon icon={Github} label={`${p.name} on GitHub`} />
                       </div>
                     </div>
-                    <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
-                  </div>
-                  <div className="mt-6">
-                    <h3 className="text-lg font-semibold text-white">{p.name}</h3>
-                    <p className="mt-1.5 text-sm text-brand-glow/90">{p.title}</p>
-                  </div>
-                  <div className="mt-6 pt-5 border-t border-hairline flex items-center justify-between">
-                    <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
-                      Nextwave Infotech
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <SocialIcon icon={Linkedin} label={`${p.name} on LinkedIn`} />
-                      <SocialIcon icon={Github} label={`${p.name} on GitHub`} />
-                    </div>
-                  </div>
-                </SpotlightCard>
+                  </SpotlightCard>
+                </TiltCard>
               </Reveal>
             ))}
           </div>

@@ -1,13 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { SITE } from "@/lib/site";
-import { ExternalLink, MessageCircle } from "lucide-react";
+import { ExternalLink, MessageCircle, Mail, MapPin } from "lucide-react";
+import { Aurora } from "./Aurora";
 
 export function SiteFooter() {
   return (
-    <footer className="relative mt-32 border-t border-hairline">
+    <footer className="relative mt-32 border-t border-hairline overflow-hidden">
+      <Aurora className="opacity-20" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-16">
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-10 py-16">
         <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
           <div>
             <div className="flex items-center gap-2.5">
@@ -26,7 +28,7 @@ export function SiteFooter() {
                   href={`https://wa.me/${SITE.phone.whatsapp.replace(/\D/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.04] px-4 py-2 text-xs text-muted-foreground hover:text-white hover:border-brand-purple/50 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.04] px-4 py-2 text-xs text-muted-foreground hover:text-white hover:border-brand-purple/50 hover:shadow-[0_0_20px_color-mix(in_oklab,var(--brand-purple)_30%,transparent)] transition-all"
                 >
                   <MessageCircle className="h-3.5 w-3.5" />
                   WhatsApp
@@ -36,7 +38,7 @@ export function SiteFooter() {
                 href={SITE.socials.x.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.04] px-4 py-2 text-xs text-muted-foreground hover:text-white hover:border-brand-purple/50 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.04] px-4 py-2 text-xs text-muted-foreground hover:text-white hover:border-brand-purple/50 transition-all"
               >
                 <ExternalLink className="h-3 w-3" />
                 {SITE.socials.x.handle}
@@ -45,7 +47,7 @@ export function SiteFooter() {
                 href={SITE.socials.instagram.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.04] px-4 py-2 text-xs text-muted-foreground hover:text-white hover:border-brand-purple/50 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.04] px-4 py-2 text-xs text-muted-foreground hover:text-white hover:border-brand-purple/50 transition-all"
               >
                 <ExternalLink className="h-3 w-3" />
                 {SITE.socials.instagram.handle}
@@ -70,27 +72,43 @@ export function SiteFooter() {
               { to: "/contact", label: "Volunteer" },
             ]}
           />
-          <FooterCol
-            title="Location"
-            links={[
-              { to: "/contact", label: `${SITE.location.area}, ${SITE.location.city}` },
-              { to: "/contact", label: SITE.email },
-            ]}
-            suffix={
-              <p className="mt-4 text-xs text-muted-foreground leading-relaxed">
-                {SITE.location.full}
-                <br />
-                {SITE.name}
-              </p>
-            }
-          />
+          <div>
+            <h4 className="text-xs font-semibold tracking-widest uppercase text-white/90">
+              Location
+            </h4>
+            <ul className="mt-4 space-y-2.5">
+              <li>
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
+                >
+                  <MapPin className="h-3.5 w-3.5 text-brand-glow/70 group-hover:text-brand-glow" />
+                  {SITE.location.area}, {SITE.location.city}
+                </Link>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="group inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
+                >
+                  <Mail className="h-3.5 w-3.5 text-brand-glow/70 group-hover:text-brand-glow" />
+                  {SITE.email}
+                </a>
+              </li>
+            </ul>
+            <p className="mt-4 text-xs text-muted-foreground leading-relaxed">
+              {SITE.location.full}
+              <br />
+              {SITE.name}
+            </p>
+          </div>
         </div>
 
         <div className="mt-14 pt-8 border-t border-hairline flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
             © 2024–2026 {SITE.legalName}. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground bg-white/[0.03] border border-hairline rounded-full px-4 py-1.5">
             Engineered in {SITE.location.area} · Built for the continent.
           </p>
         </div>
@@ -116,8 +134,9 @@ function FooterCol({
           <li key={i}>
             <Link
               to={l.to}
-              className="text-sm text-muted-foreground hover:text-white transition-colors"
+              className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-white transition-colors"
             >
+              <span className="h-px w-0 bg-brand-glow group-hover:w-3 transition-all duration-300" />
               {l.label}
             </Link>
           </li>
