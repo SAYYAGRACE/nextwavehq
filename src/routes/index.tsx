@@ -153,7 +153,6 @@ function Hero() {
             style={{ animationDelay: "80ms" }}
           >
             <KineticText text="Empowering Africa's Youth" className="gradient-text block" />
-            <br />
             <span className="text-white block mt-1">to lead the next</span>
             <span className="text-white block text-shimmer-anim">technological revolution.</span>
           </h1>
