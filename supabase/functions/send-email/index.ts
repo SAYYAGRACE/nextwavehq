@@ -37,9 +37,9 @@ serve(async (req) => {
 
     const body: SendGridBody = {
       personalizations: [{
-        to: [{ email: isContact ? "nextwavehq@outlook.com" : payload.to }],
+        to: [{ email: isContact ? "info@nextwave.com.ng" : payload.to }],
       }],
-      from: { email: "nextwavehq@outlook.com", name: "Nextwave" },
+      from: { email: "info@nextwave.com.ng", name: "Nextwave" },
       subject,
       content: [{ type: "text/html", value: html }],
     };

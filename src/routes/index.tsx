@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import { useState } from "react";
 import {
   Activity,
@@ -17,7 +18,17 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
+import { HeroCanvas } from "@/components/HeroCanvas";
 import nerdhavenLogo from "../assets/nerdhaven.png";
+
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+};
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -58,28 +69,46 @@ function HomePage() {
 }
 
 function Hero() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <section className="relative pt-32 pb-24 lg:pt-44 lg:pb-32 overflow-hidden">
       <div className="absolute inset-0 grid-bg opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
       <div className="absolute inset-0 radial-glow" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-brand-purple/20 blur-[120px]" />
+      <HeroCanvas />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          <SectionEyebrow>Originating from Northern Nigeria</SectionEyebrow>
-          <h1 className="mt-6 text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight">
+        <motion.div
+          className="flex flex-col items-center text-center max-w-4xl mx-auto"
+          variants={prefersReducedMotion ? undefined : stagger}
+          initial={prefersReducedMotion ? "visible" : "hidden"}
+          animate="visible"
+        >
+          <motion.div variants={fadeUp}>
+            <SectionEyebrow>Originating from Northern Nigeria</SectionEyebrow>
+          </motion.div>
+          <motion.h1
+            variants={fadeUp}
+            className="mt-6 text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight"
+          >
             <span className="gradient-text">Empowering Africa's Youth</span>
             <br />
             <span className="text-white">to lead the next</span>
             <br />
             <span className="text-white">technological revolution.</span>
-          </h1>
-          <p className="mt-7 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+          </motion.h1>
+          <motion.p
+            variants={fadeUp}
+            className="mt-7 text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed"
+          >
             Nextwave is a strategic, youth-driven ecosystem positioning the African continent at the
             forefront of AI, biotechnology, and digital health innovation, beginning from Northern
             Nigeria.
-          </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center gap-3">
+          </motion.p>
+          <motion.div
+            variants={fadeUp}
+            className="mt-10 flex flex-col sm:flex-row items-center gap-3"
+          >
             <Link
               to="/contact"
               className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03]"
@@ -94,9 +123,12 @@ function Hero() {
             >
               Partner With Us
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="mt-20 grid grid-cols-3 gap-6 sm:gap-10 w-full max-w-2xl">
+          <motion.div
+            variants={fadeUp}
+            className="mt-20 grid grid-cols-3 gap-6 sm:gap-10 w-full max-w-2xl"
+          >
             {[
               { k: "3", v: "Tech verticals" },
               { k: "01", v: "Active bootcamp" },
@@ -109,8 +141,8 @@ function Hero() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
@@ -157,9 +189,12 @@ function FocusAreas() {
         <Reveal delay={120}>
           <div className="mt-14 grid gap-5 md:grid-cols-3">
             {FOCUS.map((f) => (
-              <article
+              <motion.article
                 key={f.title}
-                className="group relative glass gradient-border rounded-2xl p-7 transition-all hover:-translate-y-1"
+                className="group relative glass gradient-border rounded-2xl p-7 hover:-translate-y-1"
+                whileHover={{ y: -6 }}
+                whileTap={{ scale: 0.985 }}
+                transition={{ type: "spring", stiffness: 400, damping: 22 }}
               >
                 <div className="flex items-center justify-between">
                   <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
@@ -175,7 +210,7 @@ function FocusAreas() {
                   <span>Research · Advocacy</span>
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
-              </article>
+              </motion.article>
             ))}
           </div>
         </Reveal>
@@ -229,13 +264,18 @@ function TenetsSection() {
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {TENETS.map((t, i) => (
             <Reveal key={t.title} delay={160 + i * 80}>
-              <article className="group h-full glass gradient-border rounded-2xl p-7 transition-all hover:-translate-y-1">
+              <motion.article
+                className="group h-full glass gradient-border rounded-2xl p-7 hover:-translate-y-1"
+                whileHover={{ y: -6 }}
+                whileTap={{ scale: 0.985 }}
+                transition={{ type: "spring", stiffness: 400, damping: 22 }}
+              >
                 <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03]">
                   <t.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
                 </div>
                 <h3 className="mt-6 text-lg font-semibold text-white">{t.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
-              </article>
+              </motion.article>
             </Reveal>
           ))}
         </div>
@@ -296,7 +336,12 @@ function BootcampTimeline() {
                   <div className="hidden lg:flex absolute -top-2 left-1/2 -translate-x-1/2 h-5 w-5 items-center justify-center">
                     <span className="h-2.5 w-2.5 rounded-full bg-brand-glow shadow-[0_0_12px_var(--brand-glow)]" />
                   </div>
-                  <article className="glass gradient-border rounded-2xl p-6 h-full transition-all hover:-translate-y-1">
+                  <motion.article
+                    className="glass gradient-border rounded-2xl p-6 h-full hover:-translate-y-1"
+                    whileHover={{ y: -6 }}
+                    whileTap={{ scale: 0.985 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 22 }}
+                  >
                     <div className="flex items-baseline justify-between">
                       <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
                         Phase {p.n}
@@ -307,7 +352,7 @@ function BootcampTimeline() {
                     </div>
                     <h3 className="mt-4 text-lg font-semibold text-white">{p.title}</h3>
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-                  </article>
+                  </motion.article>
                 </div>
               ))}
             </div>
@@ -413,9 +458,12 @@ function NerdHaven() {
         <Reveal delay={150}>
           <div className="relative mt-12 grid gap-4 md:grid-cols-3">
             {TRACKS.map((t) => (
-              <div
+              <motion.div
                 key={t.n}
                 className="rounded-2xl border border-hairline bg-white/[0.02] p-6 backdrop-blur-sm"
+                whileHover={{ y: -4 }}
+                whileTap={{ scale: 0.985 }}
+                transition={{ type: "spring", stiffness: 400, damping: 22 }}
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
@@ -427,7 +475,7 @@ function NerdHaven() {
                 </div>
                 <h3 className="mt-5 text-lg font-semibold text-white">{t.title}</h3>
                 <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </Reveal>

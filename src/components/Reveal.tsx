@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { motion, useReducedMotion, type Variants } from "motion/react";
+import type { ReactNode } from "react";
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0 },
+};
 
 export function Reveal({
   children,
@@ -9,32 +15,22 @@ export function Reveal({
   className?: string;
   delay?: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  const prefersReducedMotion = useReducedMotion();
 
   return (
-    <div
-      ref={ref}
-      className={`reveal ${visible ? "reveal-visible" : ""} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
+    <motion.div
+      className={className}
+      variants={prefersReducedMotion ? undefined : fadeUp}
+      initial={prefersReducedMotion ? "visible" : "hidden"}
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{
+        duration: 0.6,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

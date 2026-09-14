@@ -37,15 +37,27 @@ function AuthPage() {
     const message = error?.message ?? String(error ?? "Authentication failed");
     const normalized = message.toLowerCase();
 
-    if (normalized.includes("invalid login credentials") || normalized.includes("invalid email or password") || normalized.includes("invalid password")) {
+    if (
+      normalized.includes("invalid login credentials") ||
+      normalized.includes("invalid email or password") ||
+      normalized.includes("invalid password")
+    ) {
       return "Invalid email or password. Please double-check your credentials and try again.";
     }
 
-    if (normalized.includes("user not confirmed") || normalized.includes("email not confirmed") || normalized.includes("confirmation")) {
+    if (
+      normalized.includes("user not confirmed") ||
+      normalized.includes("email not confirmed") ||
+      normalized.includes("confirmation")
+    ) {
       return "Your email address must be confirmed first. Check your inbox or spam folder for the verification email.";
     }
 
-    if (normalized.includes("user not found") || normalized.includes("email not found") || normalized.includes("no user found")) {
+    if (
+      normalized.includes("user not found") ||
+      normalized.includes("email not found") ||
+      normalized.includes("no user found")
+    ) {
       return "No account exists for that email. Please sign up first or use a different email.";
     }
 
@@ -80,7 +92,7 @@ function AuthPage() {
         });
         if (error) throw error;
         setSuccess(
-          "Account created. Check your inbox or spam folder for a confirmation email before signing in. If you don’t receive an email, contact nextwavehq@outlook.com."
+          "Account created. Check your inbox or spam folder for a confirmation email before signing in. If you don’t receive an email, contact info@nextwave.com.ng.",
         );
         setMode("signin");
         setPassword("");
@@ -99,12 +111,12 @@ function AuthPage() {
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-md px-6">
           <div className="text-center">
-              <h1 className="mt-6 text-3xl sm:text-4xl font-bold tracking-tight text-white">
-                {mode === "signin" ? "Sign in" : "Create account"}
-              </h1>
-              <p className="mt-3 text-sm text-muted-foreground">
-                Sign in with your email to continue.
-              </p>
+            <h1 className="mt-6 text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              {mode === "signin" ? "Sign in" : "Create account"}
+            </h1>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Sign in with your email to continue.
+            </p>
           </div>
 
           <form onSubmit={submit} className="mt-10 glass-strong rounded-2xl p-6 sm:p-8 space-y-5">
@@ -120,7 +132,8 @@ function AuthPage() {
             )}
             {mode === "signup" && (
               <p className="text-xs text-muted-foreground leading-5">
-                Supabase handles confirmation email delivery. If you do not receive an email, check your spam folder or contact nextwavehq@outlook.com.
+                Supabase handles confirmation email delivery. If you do not receive an email, check
+                your spam folder or contact info@nextwave.com.ng.
               </p>
             )}
             <label className="block">
@@ -134,7 +147,9 @@ function AuthPage() {
               />
             </label>
             <label className="block">
-              <span className="text-xs tracking-widest uppercase text-muted-foreground">Password</span>
+              <span className="text-xs tracking-widest uppercase text-muted-foreground">
+                Password
+              </span>
               <input
                 type="password"
                 required
@@ -163,7 +178,9 @@ function AuthPage() {
           </form>
 
           <p className="mt-2 text-center text-xs text-muted-foreground">
-            <Link to="/" className="hover:text-white">← Back to site</Link>
+            <Link to="/" className="hover:text-white">
+              ← Back to site
+            </Link>
           </p>
         </div>
       </main>

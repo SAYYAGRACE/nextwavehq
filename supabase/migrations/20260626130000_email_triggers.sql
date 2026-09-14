@@ -44,7 +44,7 @@ BEGIN
       headers := '{"Content-Type":"application/json","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxqd3Jvd2x4a2thZ3Z3eGV1bmd3Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4Mjg5NzUzNSwiZXhwIjoyMDk4NDczNTM1fQ.PwKfpuWXg4vxRLDurmh7eah9DiENITjekjKTuTPFle8"}'::jsonb,
       body := jsonb_build_object(
         'type', 'contact',
-        'to', 'nextwavehq@outlook.com',
+        'to', 'info@nextwave.com.ng',
         'name', NEW.name,
         'email', NEW.email,
         'intent', NEW.intent,
