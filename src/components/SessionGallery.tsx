@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from "react";
 import session01 from "../assets/bootcamp/session-01.jpeg";
 import session02 from "../assets/bootcamp/session-02-portrait.jpeg";
 import session03 from "../assets/bootcamp/session-03.jpeg";
@@ -46,6 +47,30 @@ const PHOTOS = [
 ];
 
 export function SessionGallery() {
+  const [active, setActive] = useState<number | null>(null);
+
+  const close = useCallback(() => setActive(null), []);
+  const step = useCallback(
+    (dir: 1 | -1) =>
+      setActive((cur) => (cur === null ? cur : (cur + dir + PHOTOS.length) % PHOTOS.length)),
+    [],
+  );
+
+  useEffect(() => {
+    if (active === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+      if (e.key === "ArrowRight") step(1);
+      if (e.key === "ArrowLeft") step(-1);
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [active, close, step]);
+
   return (
     <div>
       <h3 className="text-lg font-semibold text-white mb-5">
@@ -62,6 +87,12 @@ export function SessionGallery() {
                     Live session
                   </span>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => setActive(i)}
+                  aria-label={`View full image: ${p.alt}`}
+                  className="absolute inset-0 z-20 cursor-zoom-in"
+                />
                 <img
                   src={p.src}
                   alt={p.alt}
@@ -77,8 +108,97 @@ export function SessionGallery() {
         ))}
       </div>
       <p className="mt-4 text-xs tracking-widest uppercase text-muted-foreground">
-        Live session · Kaduna · 2026
+        Click any photo to view it in full
       </p>
+
+      {active !== null && PHOTOS[active] && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+          onClick={close}
+          role="dialog"
+          aria-modal="true"
+          aria-label={PHOTOS[active].alt}
+        >
+          <button
+            type="button"
+            onClick={close}
+            aria-label="Close full image"
+            className="absolute top-4 right-4 z-10 grid h-10 w-10 place-items-center rounded-full border border-hairline bg-white/5 text-white/90 hover:bg-white/15 transition-colors"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              className="h-5 w-5"
+            >
+              <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
+            </svg>
+          </button>
+
+          {PHOTOS.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  step(-1);
+                }}
+                aria-label="Previous photo"
+                className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 grid h-11 w-11 place-items-center rounded-full border border-hairline bg-black/40 text-white/90 hover:bg-white/15 transition-colors"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  className="h-5 w-5"
+                >
+                  <path d="M15 5l-7 7 7 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  step(1);
+                }}
+                aria-label="Next photo"
+                className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 grid h-11 w-11 place-items-center rounded-full border border-hairline bg-black/40 text-white/90 hover:bg-white/15 transition-colors"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                  className="h-5 w-5"
+                >
+                  <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </>
+          )}
+
+          <figure
+            className="max-w-full max-h-full flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={PHOTOS[active].src}
+              alt={PHOTOS[active].alt}
+              className="max-h-[82vh] max-w-full rounded-lg object-contain shadow-2xl"
+            />
+            <figcaption className="mt-4 text-center text-sm text-white/80">
+              {PHOTOS[active].alt}
+              {PHOTOS.length > 1 && (
+                <span className="ml-2 text-white/40">
+                  {active + 1} / {PHOTOS.length}
+                </span>
+              )}
+            </figcaption>
+          </figure>
+        </div>
+      )}
     </div>
   );
 }
