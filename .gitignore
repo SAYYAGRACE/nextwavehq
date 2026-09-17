@@ -38,3 +38,6 @@ supabase/.temp/
 /scratches/
 WhatsApp_Image_*.png
 /images.jpeg
+
+# Source WhatsApp session photos (copied into src/assets/bootcamp)
+WhatsApp Image *.jpeg

@@ -1,6 +1,8 @@
 import session01 from "../assets/bootcamp/session-01.jpeg";
 import session02 from "../assets/bootcamp/session-02-portrait.jpeg";
 import session03 from "../assets/bootcamp/session-03.jpeg";
+import session04 from "../assets/bootcamp/session-04-portrait.jpeg";
+import session05 from "../assets/bootcamp/session-05-portrait.jpeg";
 import { SpotlightCard } from "./SpotlightCard";
 import { Reveal } from "./Reveal";
 import { TiltCard } from "./TiltCard";
@@ -25,6 +27,20 @@ const PHOTOS = [
     alt: "Nextwave Bootcamp classroom — Kaduna",
     w: 1280,
     h: 864,
+    span: "sm:col-span-2 lg:col-span-1",
+  },
+  {
+    src: session04,
+    alt: "Nextwave Bootcamp live session in motion — Kaduna",
+    w: 698,
+    h: 1080,
+    span: "",
+  },
+  {
+    src: session05,
+    alt: "Nextwave Bootcamp students fully engaged — Kaduna",
+    w: 726,
+    h: 1080,
     span: "sm:col-span-2 lg:col-span-1",
   },
 ];
