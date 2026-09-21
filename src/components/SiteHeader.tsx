@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, Menu, Sparkles, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { ScrollProgress } from "./ScrollProgress";
@@ -41,9 +41,27 @@ export function SiteHeader() {
           : "bg-transparent"
       }`}
     >
+      <Link
+        to="/projects"
+        aria-label="Remote SIWES coming soon — learn more"
+        className="group block border-b border-hairline/70 bg-gradient-to-r from-brand-purple/15 via-transparent to-brand-purple/10"
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2.5 px-6 py-2 lg:px-10">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-purple/30 bg-brand-purple/10 px-2.5 py-0.5 text-[10px] font-semibold tracking-widest uppercase text-brand-glow">
+            <Sparkles className="h-3 w-3" />
+            New
+          </span>
+          <span className="text-[13px] font-medium text-white/90">Remote SIWES coming soon</span>
+          <ArrowRight className="h-3.5 w-3.5 text-brand-glow transition-transform duration-300 group-hover:translate-x-1" />
+        </div>
+      </Link>
+
       <div className="mx-auto max-w-7xl px-6 lg:px-10 h-16 lg:h-[72px] flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5 group" onClick={() => setOpen(false)}>
-          <motion.span whileHover={{ scale: 1.08, rotate: 6 }} transition={{ type: "spring", stiffness: 300, damping: 15 }}>
+          <motion.span
+            whileHover={{ scale: 1.08, rotate: 6 }}
+            transition={{ type: "spring", stiffness: 300, damping: 15 }}
+          >
             <Logo variant="square" className="h-7 w-7 lg:h-8 lg:w-8" />
           </motion.span>
           <span className="text-base lg:text-lg font-semibold tracking-tight text-white">
@@ -51,7 +69,10 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1 rounded-full glass px-2 py-1.5" aria-label="Primary">
+        <nav
+          className="hidden md:flex items-center gap-1 rounded-full glass px-2 py-1.5"
+          aria-label="Primary"
+        >
           {NAV.map((item) => (
             <Link
               key={item.to}

@@ -12,11 +12,45 @@ type SubmissionInput = {
   source?: string;
 };
 
-const RECIPIENT_EMAIL =
-  process.env.NEXTWAVE_EMAIL ??
-  process.env.CONTACT_EMAIL ??
-  process.env.OPS_EMAIL ??
-  "info@nextwave.com.ng";
+const RECIPIENT_EMAIL = "info@nextwave.com.ng";
+
+const SANITY_PROJECT_ID =
+  process.env.VITE_SANITY_PROJECT_ID ?? process.env.SANITY_PROJECT_ID ?? "nffdmmjo";
+const SANITY_DATASET =
+  process.env.VITE_SANITY_DATASET ?? process.env.SANITY_DATASET ?? "production";
+const SANITY_API_VERSION = "2024-01-01";
+
+async function writeSubmission(input: SubmissionInput): Promise<boolean> {
+  const token = process.env.SANITY_API_TOKEN;
+  if (!token) return false;
+  const document: Record<string, unknown> = {
+    _type: "submission",
+    kind: input.kind,
+    email: input.email.trim().toLowerCase(),
+    source: input.source?.trim() || "web",
+    createdAt: new Date().toISOString(),
+  };
+  if (input.name?.trim()) document.name = input.name.trim();
+  if (input.organization?.trim()) document.organization = input.organization.trim();
+  if (input.intent?.trim()) document.intent = input.intent.trim();
+  if (input.message?.trim()) document.message = input.message.trim();
+  try {
+    const res = await fetch(
+      `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/mutate/${SANITY_DATASET}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ mutations: [{ create: document }] }),
+      },
+    );
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
 
 function buildEmail(input: SubmissionInput): { subject: string; text: string } {
   const head =
@@ -31,13 +65,14 @@ function buildEmail(input: SubmissionInput): { subject: string; text: string } {
   if (input.intent) lines.push(`Intent: ${input.intent}`);
   if (input.message) lines.push(`Message: ${input.message}`);
   if (input.source) lines.push(`Source: ${input.source}`);
+  lines.push("", "Sent from the Nextwave website (nextwave.com.ng).");
   return { subject: `[Nextwave] ${head}`, text: lines.join("\n") };
 }
 
 async function sendEmail(input: SubmissionInput): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return false;
-  const from = process.env.RESEND_FROM_EMAIL ?? "Nextwave <onboarding@resend.dev>";
+  const from = process.env.RESEND_FROM_EMAIL ?? "Nextwave <no-reply@nextwave.com.ng>";
   const { subject, text } = buildEmail(input);
   try {
     const res = await fetch("https://api.resend.com/emails", {
@@ -51,40 +86,6 @@ async function sendEmail(input: SubmissionInput): Promise<boolean> {
     return res.ok;
   } catch {
     return false;
-  }
-}
-
-async function writeSubmission(input: SubmissionInput): Promise<"ok" | "err"> {
-  const token = process.env.SANITY_API_TOKEN;
-  const projectId = process.env.SANITY_PROJECT_ID ?? import.meta.env?.VITE_SANITY_PROJECT_ID;
-  const dataset =
-    process.env.SANITY_DATASET ??
-    (import.meta.env?.VITE_SANITY_DATASET as string | undefined) ??
-    "production";
-  if (!token || !projectId) return "err";
-  try {
-    const { createClient } = await import("@sanity/client");
-    const client = createClient({
-      projectId,
-      dataset,
-      apiVersion: "2024-01-01",
-      useCdn: false,
-      token,
-    });
-    await client.create({
-      _type: "submission",
-      kind: input.kind,
-      email: input.email.trim().toLowerCase(),
-      name: input.name?.trim() || undefined,
-      organization: input.organization?.trim() || undefined,
-      intent: input.intent?.trim() || undefined,
-      message: input.message?.trim() || undefined,
-      source: input.source?.trim() || "web",
-      createdAt: new Date().toISOString(),
-    });
-    return "ok";
-  } catch {
-    return "err";
   }
 }
 
@@ -102,8 +103,7 @@ export const submitForm = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
     if (!validEmail) return "err";
-    const written = await writeSubmission(data);
-    if (written === "err") return "err";
-    await sendEmail(data);
-    return "ok";
+    const [written, emailed] = await Promise.all([writeSubmission(data), sendEmail(data)]);
+    if (written || emailed) return "ok";
+    return "err";
   });
