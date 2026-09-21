@@ -30,8 +30,6 @@ const LEADERS = [
   { name: "Muhammad Khalifa", title: "Co-Founder and Chief Executive Officer (CEO)" },
   { name: "Ahmad Sani", title: "Founder and Chief Operating Officer (COO)" },
   { name: "Muhsin Haruna", title: "Co-Founder and Head of Operations" },
-  { name: "Asiya Halilu", title: "Head of Programs" },
-  { name: "Amina Samari", title: "Head of Marketing" },
   { name: "Ahmad Salisu", title: "Communications Manager" },
 ];
 
