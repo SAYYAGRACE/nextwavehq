@@ -19,7 +19,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import nerdhavenLogo from "../assets/nerdhaven.png";
-import { submitForm } from "@/lib/form-submit";
+import { postSubmission } from "@/lib/submit";
 
 export const Route = createFileRoute("/projects")({
   head: () => ({
@@ -284,12 +284,10 @@ function NerdHaven() {
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) return setState("err");
     setState("loading");
-    const result = await submitForm({
-      data: {
-        kind: "waitlist",
-        email: email.trim().toLowerCase(),
-        source: "nerdhaven-projects",
-      },
+    const result = await postSubmission({
+      kind: "waitlist",
+      email: email.trim().toLowerCase(),
+      source: "nerdhaven-projects",
     });
     if (result === "err") {
       return setState("err");

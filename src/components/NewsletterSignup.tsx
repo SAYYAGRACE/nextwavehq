@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { Mail, CheckCircle2, Loader2 } from "lucide-react";
-import { submitForm } from "@/lib/form-submit";
+import { postSubmission } from "@/lib/submit";
 
 type State = "idle" | "loading" | "ok" | "dup" | "err";
 
@@ -23,8 +23,10 @@ export function NewsletterSignup({
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) return setState("err");
     setState("loading");
-    const result = await submitForm({
-      data: { kind: "newsletter", email: email.trim().toLowerCase(), source },
+    const result = await postSubmission({
+      kind: "newsletter",
+      email: email.trim().toLowerCase(),
+      source,
     });
     if (result === "err") {
       return setState("err");

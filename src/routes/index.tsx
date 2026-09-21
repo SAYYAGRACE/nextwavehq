@@ -40,7 +40,7 @@ import { SessionGallery } from "@/components/SessionGallery";
 import { PartnerStrip } from "@/components/PartnerStrip";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { SITE } from "@/lib/site";
-import { submitForm } from "@/lib/form-submit";
+import { postSubmission } from "@/lib/submit";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -645,12 +645,10 @@ function NerdHaven() {
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) return setState("err");
     setState("loading");
-    const result = await submitForm({
-      data: {
-        kind: "waitlist",
-        email: email.trim().toLowerCase(),
-        source: "nerdhaven-home",
-      },
+    const result = await postSubmission({
+      kind: "waitlist",
+      email: email.trim().toLowerCase(),
+      source: "nerdhaven-home",
     });
     if (result === "err") {
       return setState("err");

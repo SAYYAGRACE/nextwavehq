@@ -21,7 +21,7 @@ import {
   MessageCircle,
   ExternalLink,
 } from "lucide-react";
-import { submitForm } from "@/lib/form-submit";
+import { postSubmission } from "@/lib/submit";
 import { NEXTWAVE_EMAIL } from "@/lib/email-config";
 import { SITE } from "@/lib/site";
 
@@ -73,15 +73,13 @@ function ContactPage() {
 
     setSubmitting(true);
     setSubmitError(null);
-    const result = await submitForm({
-      data: {
-        kind: "contact",
-        email: form.email.trim(),
-        name: form.name.trim(),
-        organization: form.org.trim(),
-        intent: form.intent,
-        message: form.message.trim(),
-      },
+    const result = await postSubmission({
+      kind: "contact",
+      email: form.email.trim(),
+      name: form.name.trim(),
+      organization: form.org.trim(),
+      intent: form.intent,
+      message: form.message.trim(),
     });
     setSubmitting(false);
     if (result === "err") {
