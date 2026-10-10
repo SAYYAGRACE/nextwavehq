@@ -226,7 +226,13 @@ async function handleResendWebhook(request: Request): Promise<Response> {
 
 async function handleDispatch(request: Request): Promise<Response> {
   const secret = process.env.NTRI_CRON_SECRET;
-  if (!secret || request.headers.get("x-ntri-cron-secret") !== secret) {
+  const vercelSecret = process.env.CRON_SECRET;
+  const bearer = request.headers.get("authorization");
+  const authorized =
+    (secret && request.headers.get("x-ntri-cron-secret") === secret) ||
+    (vercelSecret && bearer === `Bearer ${vercelSecret}`) ||
+    (secret && bearer === `Bearer ${secret}`);
+  if (!authorized) {
     return json({ ok: false, error: "unauthorized" }, 401);
   }
   const client = serviceClient();

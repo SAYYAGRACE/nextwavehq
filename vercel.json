@@ -6,6 +6,12 @@
       "config": { "distDir": ".output/public" }
     }
   ],
+  "crons": [
+    {
+      "path": "/api/emails/dispatch",
+      "schedule": "0 8 * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
