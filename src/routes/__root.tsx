@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { PwaRegister } from "@/components/PwaRegister";
 import { BackToTop } from "@/components/BackToTop";
 import { AIChat } from "@/components/AIChat";
+import { CookieNotice } from "@/components/CookieNotice";
 import { DEFAULT_LOCALE } from "@/i18n/config";
 
 function NotFoundComponent() {
@@ -199,6 +200,7 @@ function RootComponent() {
       <Outlet />
       <BackToTop />
       <AIChat />
+      <CookieNotice />
       <Analytics />
       <SpeedInsights />
     </QueryClientProvider>

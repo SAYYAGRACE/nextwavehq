@@ -35,9 +35,17 @@ export const Route = createFileRoute("/projects")({
         property: "og:description",
         content: "Active initiatives and future infrastructure from Nextwave.",
       },
-      { property: "og:url", content: "/projects" },
+      { property: "og:url", content: "https://nextwave.com.ng/projects" },
+      { property: "og:image", content: "https://nextwave.com.ng/og.jpg" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Projects — Nextwave" },
+      {
+        name: "twitter:description",
+        content: "Active initiatives and future infrastructure from Nextwave.",
+      },
+      { name: "twitter:image", content: "https://nextwave.com.ng/og.jpg" },
     ],
-    links: [{ rel: "canonical", href: "/projects" }],
+    links: [{ rel: "canonical", href: "https://nextwave.com.ng/projects" }],
     scripts: [
       {
         type: "application/ld+json",

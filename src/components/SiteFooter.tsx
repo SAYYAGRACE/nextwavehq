@@ -105,9 +105,25 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-14 pt-8 border-t border-hairline flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
-            © 2024–2026 {SITE.legalName}. All rights reserved.
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2">
+            <p className="text-xs text-muted-foreground">
+              © 2024–2026 {SITE.legalName}. All rights reserved.
+            </p>
+            <div className="flex items-center gap-4 text-xs">
+              <Link
+                to="/privacy"
+                className="text-muted-foreground hover:text-white transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                to="/terms"
+                className="text-muted-foreground hover:text-white transition-colors"
+              >
+                Terms of Service
+              </Link>
+            </div>
+          </div>
           <p className="text-xs text-muted-foreground bg-white/[0.03] border border-hairline rounded-full px-4 py-1.5">
             Engineered in {SITE.location.area} · Built for the continent.
           </p>

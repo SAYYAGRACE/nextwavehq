@@ -45,7 +45,7 @@ import { postSubmission } from "@/lib/submit";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nextwave — Empowering Africa's Youth to Lead the Next Tech Revolution" },
+      { title: "Nextwave — Empowering Africa's Youth in Deep Tech" },
       {
         name: "description",
         content:
@@ -57,9 +57,24 @@ export const Route = createFileRoute("/")({
         content:
           "A youth-led deep-tech movement bridging Africa's gap in AI, biotechnology, and digital health.",
       },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: "https://nextwave.com.ng" },
+      {
+        property: "og:image",
+        content: "https://nextwave.com.ng/og.jpg",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content: "Nextwave — Empowering Africa's Youth in Deep Tech",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "A youth-led deep-tech movement bridging Africa's gap in AI, biotechnology, and digital health.",
+      },
+      { name: "twitter:image", content: "https://nextwave.com.ng/og.jpg" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://nextwave.com.ng" }],
     scripts: [
       {
         type: "application/ld+json",
