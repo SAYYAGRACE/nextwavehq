@@ -15,14 +15,13 @@ import {
 import { SchoolDirectory } from "@/components/readiness/SchoolDirectory";
 import { DownloadAggregates } from "@/components/readiness/DownloadAggregates";
 import {
-  SAMPLE_DATA_ENABLED,
   getFilterOptions,
   getLgaAverages,
   getPillarAverages,
-  getPublishedRecords,
   getStats,
   getTierDistribution,
   getTrends,
+  loadPublishedRecords,
 } from "@/lib/readiness/store";
 
 export const Route = createFileRoute("/readiness/")({
@@ -82,10 +81,11 @@ export const Route = createFileRoute("/readiness/")({
       },
     ],
   }),
-  loader: () => {
-    const records = getPublishedRecords();
+  loader: async () => {
+    const { records, usingSample } = await loadPublishedRecords();
     return {
       records,
+      usingSample,
       options: getFilterOptions(records),
       stats: getStats(records),
       tiers: getTierDistribution(records),
@@ -118,7 +118,8 @@ function StatCard({
 }
 
 function ReadinessDashboard() {
-  const { records, options, stats, tiers, pillars, lgas, trends } = Route.useLoaderData();
+  const { records, usingSample, options, stats, tiers, pillars, lgas, trends } =
+    Route.useLoaderData();
 
   return (
     <div className="min-h-screen bg-background">
@@ -143,7 +144,7 @@ function ReadinessDashboard() {
             </p>
           </Reveal>
 
-          {SAMPLE_DATA_ENABLED && (
+          {usingSample && (
             <Reveal delay={40}>
               <div className="mt-8">
                 <SampleDataBanner />

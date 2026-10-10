@@ -1,26 +1,47 @@
-import { PILLARS, TIERS_BY_KEY, type PillarKey } from "./rubric";
+import { PILLARS, TIERS_BY_KEY, type PillarKey, type TierKey } from "./rubric";
 import { SAMPLE_ASSESSMENTS, SAMPLE_SCHOOLS } from "./sample-data";
 import { scoreAssessment } from "./scoring";
 import type {
   Assessment,
+  EvidenceType,
+  IndicatorScore,
   LgaAverage,
   PillarAverage,
   ReadinessStats,
   School,
   SchoolFilters,
+  SchoolType,
   SchoolWithAssessment,
   TierDatum,
   Trend,
 } from "./types";
-import type { TierKey } from "./rubric";
 
 /**
- * Single flag to remove all sample data. When Supabase is live, flip this to
- * false and populate LIVE_SCHOOLS / LIVE_ASSESSMENTS from the public views.
+ * Public dashboard reads the read-only Supabase views (published + consent
+ * granted only) when they are configured. If Supabase is missing or unreachable
+ * the site falls back to the clearly-labelled sample data below.
  */
 export const SAMPLE_DATA_ENABLED = true;
 
 export const LGA_AGGREGATE_THRESHOLD = 5;
+
+let liveCache: { records: SchoolWithAssessment[]; usingSample: boolean } | null = null;
+
+function supabaseConfig(): { url?: string; key?: string } {
+  let url: unknown;
+  let key: unknown;
+  try {
+    url = import.meta.env?.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL;
+    key = import.meta.env?.VITE_SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_PUBLISHABLE_KEY;
+  } catch {
+    url = process.env.SUPABASE_URL;
+    key = process.env.SUPABASE_PUBLISHABLE_KEY;
+  }
+  return {
+    url: typeof url === "string" ? url : undefined,
+    key: typeof key === "string" ? key : undefined,
+  };
+}
 
 function latestPublished(assessments: Assessment[]): Map<string, Assessment> {
   const bySchool = new Map<string, Assessment>();
@@ -30,6 +51,112 @@ function latestPublished(assessments: Assessment[]): Map<string, Assessment> {
     if (!existing || a.assessmentDate > existing.assessmentDate) bySchool.set(a.schoolId, a);
   }
   return bySchool;
+}
+
+async function loadLiveRecords(): Promise<SchoolWithAssessment[]> {
+  const { supabase } = await import("@/integrations/supabase/client");
+
+  const [schoolsRes, assessmentsRes, scoresRes] = await Promise.all([
+    supabase.from("public_schools").select("id,name,slug,lga,ward,type,level").order("name"),
+    supabase
+      .from("public_assessments")
+      .select("id,school_id,assessment_date,total_score,tier,published_at,rubric_version")
+      .order("assessment_date"),
+    supabase
+      .from("public_indicator_scores")
+      .select("assessment_id,pillar,indicator_key,score,evidence_type"),
+  ]);
+
+  if (schoolsRes.error) throw schoolsRes.error;
+  if (assessmentsRes.error) throw assessmentsRes.error;
+  if (scoresRes.error) throw scoresRes.error;
+
+  const schoolsById = new Map<string, School>();
+  for (const row of schoolsRes.data ?? []) {
+    if (!row || typeof row.id !== "string") continue;
+    schoolsById.set(row.id, {
+      id: row.id,
+      name: row.name ?? "",
+      slug: row.slug ?? "",
+      lga: row.lga ?? "",
+      ward: typeof row.ward === "string" ? row.ward : undefined,
+      type: (row.type ?? "public") as SchoolType,
+      level: (row.level ?? "primary") as School["level"],
+      consentStatus: "granted",
+      createdAt: "",
+    });
+  }
+
+  const scoresByAssessment = new Map<string, IndicatorScore[]>();
+  for (const row of scoresRes.data ?? []) {
+    if (!row || typeof row.assessment_id !== "string") continue;
+    const scores = scoresByAssessment.get(row.assessment_id) ?? [];
+    scores.push({
+      pillar: (row.pillar ?? "power") as PillarKey,
+      indicatorKey: row.indicator_key ?? "",
+      score: typeof row.score === "number" ? row.score : null,
+      evidenceType: (row.evidence_type ?? "observed") as EvidenceType,
+    });
+    scoresByAssessment.set(row.assessment_id, scores);
+  }
+
+  const assessmentsBySchool = new Map<string, Assessment[]>();
+  for (const row of assessmentsRes.data ?? []) {
+    if (!row || typeof row.school_id !== "string") continue;
+    const assessments = assessmentsBySchool.get(row.school_id) ?? [];
+    assessments.push({
+      id: row.id,
+      schoolId: row.school_id,
+      rubricVersion: row.rubric_version ?? "1.0",
+      assessmentDate: row.assessment_date ?? "",
+      status: "published",
+      totalScore: typeof row.total_score === "number" ? row.total_score : null,
+      tier: (row.tier ?? null) as TierKey | null,
+      publishedAt: typeof row.published_at === "string" ? row.published_at : null,
+      scores: scoresByAssessment.get(row.id) ?? [],
+    });
+    assessmentsBySchool.set(row.school_id, assessments);
+  }
+
+  const records: SchoolWithAssessment[] = [];
+  for (const [schoolId, assessments] of assessmentsBySchool) {
+    const school = schoolsById.get(schoolId);
+    if (!school) continue;
+    const history = [...assessments]
+      .filter((a) => a.status === "published")
+      .sort((a, b) => (a.assessmentDate < b.assessmentDate ? -1 : 1));
+    if (history.length === 0) continue;
+    const latest = history[history.length - 1];
+    school.createdAt = latest.publishedAt ?? "";
+    records.push({ school, assessment: latest, history });
+  }
+
+  return records.sort((a, b) => a.school.name.localeCompare(b.school.name));
+}
+
+/**
+ * Records for public display, loaded from Supabase when configured. Falls back
+ * to clearly-labelled sample data otherwise so the dashboard never crashes.
+ */
+export async function loadPublishedRecords(): Promise<{
+  records: SchoolWithAssessment[];
+  usingSample: boolean;
+}> {
+  if (liveCache) return liveCache;
+
+  const { url, key } = supabaseConfig();
+  if (!url || !key) {
+    liveCache = { records: getPublishedRecords(), usingSample: true };
+    return liveCache;
+  }
+
+  try {
+    liveCache = { records: await loadLiveRecords(), usingSample: false };
+  } catch (error) {
+    console.error("[readiness] live data unavailable; showing sample data", error);
+    liveCache = { records: getPublishedRecords(), usingSample: true };
+  }
+  return liveCache ?? { records: getPublishedRecords(), usingSample: true };
 }
 
 /** Schools that may be shown publicly: consent granted AND a published assessment. */

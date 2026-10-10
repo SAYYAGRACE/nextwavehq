@@ -18,10 +18,18 @@ import { SampleDataBanner } from "@/components/readiness/panels";
 import { CorrectionForm } from "@/components/readiness/CorrectionForm";
 import { scoreAssessment, strengthsAndGaps } from "@/lib/readiness/scoring";
 import { EVIDENCE_TYPES, PILLARS, type PillarKey } from "@/lib/readiness/rubric";
-import { SAMPLE_DATA_ENABLED, getSchoolBySlug } from "@/lib/readiness/store";
+import type { SchoolWithAssessment } from "@/lib/readiness/types";
+import { loadPublishedRecords } from "@/lib/readiness/store";
 
 export const Route = createFileRoute("/readiness/$slug")({
-  loader: ({ params }) => ({ record: getSchoolBySlug(params.slug), slug: params.slug }),
+  loader: async ({ params }) => {
+    const { records, usingSample } = await loadPublishedRecords();
+    return {
+      record: records.find((r) => r.school.slug === params.slug) ?? null,
+      usingSample,
+      slug: params.slug,
+    };
+  },
   head: ({ loaderData }) => {
     const r = loaderData?.record;
     const title = r
@@ -94,7 +102,7 @@ function fmt(iso: string) {
 }
 
 function SchoolProfile() {
-  const { record } = Route.useLoaderData();
+  const { record, usingSample } = Route.useLoaderData();
 
   return (
     <div className="min-h-screen bg-background">
@@ -119,7 +127,7 @@ function SchoolProfile() {
               </p>
             </div>
           ) : (
-            <ProfileBody record={record} />
+            <ProfileBody record={record} usingSample={usingSample} />
           )}
         </div>
       </main>
@@ -128,7 +136,13 @@ function SchoolProfile() {
   );
 }
 
-function ProfileBody({ record }: { record: NonNullable<ReturnType<typeof getSchoolBySlug>> }) {
+function ProfileBody({
+  record,
+  usingSample,
+}: {
+  record: SchoolWithAssessment;
+  usingSample: boolean;
+}) {
   const { school, assessment, history } = record;
   const result = scoreAssessment(assessment.scores);
   const { strengths, gaps } = strengthsAndGaps(result.pillars);
@@ -136,7 +150,7 @@ function ProfileBody({ record }: { record: NonNullable<ReturnType<typeof getScho
 
   return (
     <div className="mt-6">
-      {SAMPLE_DATA_ENABLED && (
+      {usingSample && (
         <div className="mb-6">
           <SampleDataBanner />
         </div>
