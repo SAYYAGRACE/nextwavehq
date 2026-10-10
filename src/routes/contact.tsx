@@ -26,6 +26,9 @@ import { NEXTWAVE_EMAIL } from "@/lib/email-config";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/contact")({
+  validateSearch: (search: Record<string, unknown>): { intent?: string } => ({
+    intent: typeof search.intent === "string" ? search.intent : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Contact — Establish Strategic Contact with Nextwave" },
@@ -56,8 +59,30 @@ export const Route = createFileRoute("/contact")({
 
 type Errors = Partial<Record<"name" | "org" | "email" | "intent" | "message", string>>;
 
+function intentFromParam(param?: string): string {
+  switch (param) {
+    case "assessment":
+      return "School Readiness Assessment";
+    case "partner":
+      return "Corporate Partnership Inquiry";
+    case "volunteer":
+      return "Volunteer Application";
+    case "media":
+      return "General Media & Public Relations";
+    default:
+      return "";
+  }
+}
+
 function ContactPage() {
-  const [form, setForm] = useState({ name: "", org: "", email: "", intent: "", message: "" });
+  const search = Route.useSearch();
+  const [form, setForm] = useState({
+    name: "",
+    org: "",
+    email: "",
+    intent: intentFromParam(search.intent),
+    message: "",
+  });
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -258,6 +283,7 @@ function ContactPage() {
                     }}
                   >
                     <option value="">Select Purpose of Engagement</option>
+                    <option>School Readiness Assessment</option>
                     <option>Corporate Partnership Inquiry</option>
                     <option>Training Program Alignment</option>
                     <option>Volunteer Application</option>

@@ -22,6 +22,9 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as NewsIndexRouteImport } from './routes/news.index'
 import { Route as NewsSlugRouteImport } from './routes/news.$slug'
+import { Route as ReadinessIndexRouteImport } from './routes/readiness.index'
+import { Route as ReadinessSlugRouteImport } from './routes/readiness.$slug'
+import { Route as ReadinessMethodologyRouteImport } from './routes/readiness.methodology'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -87,6 +90,21 @@ const NewsSlugRoute = NewsSlugRouteImport.update({
   path: '/news/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReadinessIndexRoute = ReadinessIndexRouteImport.update({
+  id: '/readiness/',
+  path: '/readiness/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReadinessSlugRoute = ReadinessSlugRouteImport.update({
+  id: '/readiness/$slug',
+  path: '/readiness/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReadinessMethodologyRoute = ReadinessMethodologyRouteImport.update({
+  id: '/readiness/methodology',
+  path: '/readiness/methodology',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -100,7 +118,10 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/news/$slug': typeof NewsSlugRoute
+  '/readiness/$slug': typeof ReadinessSlugRoute
+  '/readiness/methodology': typeof ReadinessMethodologyRoute
   '/news/': typeof NewsIndexRoute
+  '/readiness/': typeof ReadinessIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -114,7 +135,10 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/news/$slug': typeof NewsSlugRoute
+  '/readiness/$slug': typeof ReadinessSlugRoute
+  '/readiness/methodology': typeof ReadinessMethodologyRoute
   '/news': typeof NewsIndexRoute
+  '/readiness': typeof ReadinessIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -130,7 +154,10 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/news/$slug': typeof NewsSlugRoute
+  '/readiness/$slug': typeof ReadinessSlugRoute
+  '/readiness/methodology': typeof ReadinessMethodologyRoute
   '/news/': typeof NewsIndexRoute
+  '/readiness/': typeof ReadinessIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -146,7 +173,10 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/news/$slug'
+    | '/readiness/$slug'
+    | '/readiness/methodology'
     | '/news/'
+    | '/readiness/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -160,7 +190,10 @@ export interface FileRouteTypes {
     | '/admin'
     | '/dashboard'
     | '/news/$slug'
+    | '/readiness/$slug'
+    | '/readiness/methodology'
     | '/news'
+    | '/readiness'
   id:
     | '__root__'
     | '/'
@@ -175,7 +208,10 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/news/$slug'
+    | '/readiness/$slug'
+    | '/readiness/methodology'
     | '/news/'
+    | '/readiness/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -189,7 +225,10 @@ export interface RootRouteChildren {
   TeamRoute: typeof TeamRoute
   TermsRoute: typeof TermsRoute
   NewsSlugRoute: typeof NewsSlugRoute
+  ReadinessSlugRoute: typeof ReadinessSlugRoute
+  ReadinessMethodologyRoute: typeof ReadinessMethodologyRoute
   NewsIndexRoute: typeof NewsIndexRoute
+  ReadinessIndexRoute: typeof ReadinessIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -285,6 +324,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/readiness/': {
+      id: '/readiness/'
+      path: '/readiness'
+      fullPath: '/readiness/'
+      preLoaderRoute: typeof ReadinessIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/readiness/$slug': {
+      id: '/readiness/$slug'
+      path: '/readiness/$slug'
+      fullPath: '/readiness/$slug'
+      preLoaderRoute: typeof ReadinessSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/readiness/methodology': {
+      id: '/readiness/methodology'
+      path: '/readiness/methodology'
+      fullPath: '/readiness/methodology'
+      preLoaderRoute: typeof ReadinessMethodologyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -312,7 +372,10 @@ const rootRouteChildren: RootRouteChildren = {
   TeamRoute: TeamRoute,
   TermsRoute: TermsRoute,
   NewsSlugRoute: NewsSlugRoute,
+  ReadinessSlugRoute: ReadinessSlugRoute,
+  ReadinessMethodologyRoute: ReadinessMethodologyRoute,
   NewsIndexRoute: NewsIndexRoute,
+  ReadinessIndexRoute: ReadinessIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

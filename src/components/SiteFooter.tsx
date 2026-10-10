@@ -60,6 +60,7 @@ export function SiteFooter() {
             links={[
               { to: "/about", label: "About" },
               { to: "/projects", label: "Projects" },
+              { to: "/readiness", label: "Readiness" },
               { to: "/team", label: "Team" },
               { to: "/news", label: "Updates" },
             ]}
