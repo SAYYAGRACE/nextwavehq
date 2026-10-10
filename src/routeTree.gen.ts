@@ -18,13 +18,14 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as NewsIndexRouteImport } from './routes/news.index'
 import { Route as NewsSlugRouteImport } from './routes/news.$slug'
 import { Route as ReadinessIndexRouteImport } from './routes/readiness.index'
 import { Route as ReadinessSlugRouteImport } from './routes/readiness.$slug'
 import { Route as ReadinessMethodologyRouteImport } from './routes/readiness.methodology'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminEmailsRouteImport } from './routes/_authenticated/admin/emails'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,11 +71,6 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -105,6 +101,17 @@ const ReadinessMethodologyRoute = ReadinessMethodologyRouteImport.update({
   path: '/readiness/methodology',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminEmailsRoute =
+  AuthenticatedAdminEmailsRouteImport.update({
+    id: '/admin/emails',
+    path: '/admin/emails',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -115,13 +122,14 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/news/$slug': typeof NewsSlugRoute
   '/readiness/$slug': typeof ReadinessSlugRoute
   '/readiness/methodology': typeof ReadinessMethodologyRoute
   '/news/': typeof NewsIndexRoute
   '/readiness/': typeof ReadinessIndexRoute
+  '/admin/emails': typeof AuthenticatedAdminEmailsRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -132,13 +140,14 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/news/$slug': typeof NewsSlugRoute
   '/readiness/$slug': typeof ReadinessSlugRoute
   '/readiness/methodology': typeof ReadinessMethodologyRoute
   '/news': typeof NewsIndexRoute
   '/readiness': typeof ReadinessIndexRoute
+  '/admin/emails': typeof AuthenticatedAdminEmailsRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -151,13 +160,14 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/news/$slug': typeof NewsSlugRoute
   '/readiness/$slug': typeof ReadinessSlugRoute
   '/readiness/methodology': typeof ReadinessMethodologyRoute
   '/news/': typeof NewsIndexRoute
   '/readiness/': typeof ReadinessIndexRoute
+  '/_authenticated/admin/emails': typeof AuthenticatedAdminEmailsRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -170,13 +180,14 @@ export interface FileRouteTypes {
     | '/projects'
     | '/team'
     | '/terms'
-    | '/admin'
     | '/dashboard'
     | '/news/$slug'
     | '/readiness/$slug'
     | '/readiness/methodology'
     | '/news/'
     | '/readiness/'
+    | '/admin/emails'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -187,13 +198,14 @@ export interface FileRouteTypes {
     | '/projects'
     | '/team'
     | '/terms'
-    | '/admin'
     | '/dashboard'
     | '/news/$slug'
     | '/readiness/$slug'
     | '/readiness/methodology'
     | '/news'
     | '/readiness'
+    | '/admin/emails'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -205,13 +217,14 @@ export interface FileRouteTypes {
     | '/projects'
     | '/team'
     | '/terms'
-    | '/_authenticated/admin'
     | '/_authenticated/dashboard'
     | '/news/$slug'
     | '/readiness/$slug'
     | '/readiness/methodology'
     | '/news/'
     | '/readiness/'
+    | '/_authenticated/admin/emails'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -296,13 +309,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -345,17 +351,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReadinessMethodologyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/emails': {
+      id: '/_authenticated/admin/emails'
+      path: '/admin/emails'
+      fullPath: '/admin/emails'
+      preLoaderRoute: typeof AuthenticatedAdminEmailsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedAdminEmailsRoute: typeof AuthenticatedAdminEmailsRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedAdminEmailsRoute: AuthenticatedAdminEmailsRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

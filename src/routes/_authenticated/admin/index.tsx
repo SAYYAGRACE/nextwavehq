@@ -7,12 +7,24 @@ import StaffMessaging from "@/components/StaffMessaging";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
-  LogOut, Inbox, Mail, Trash2, RefreshCw, ShieldCheck, AlertTriangle,
-  Download, Search, Filter, BarChart3, ScrollText, X, TrendingUp,
+  LogOut,
+  Inbox,
+  Mail,
+  Trash2,
+  RefreshCw,
+  ShieldCheck,
+  AlertTriangle,
+  Download,
+  Search,
+  Filter,
+  BarChart3,
+  ScrollText,
+  X,
+  TrendingUp,
   CheckCircle2,
 } from "lucide-react";
 
-export const Route = createFileRoute("/_authenticated/admin")({
+export const Route = createFileRoute("/_authenticated/admin/")({
   head: () => ({
     meta: [
       { title: "Admin Dashboard — Nextwave" },
@@ -45,9 +57,7 @@ type AuditEntry = {
 type Tab = "overview" | "messages" | "contact" | "waitlist" | "audit";
 type DateRange = "all" | "7d" | "30d" | "90d";
 
-type DeleteTarget =
-  | { kind: "contact"; row: Contact }
-  | { kind: "waitlist"; row: Waitlist };
+type DeleteTarget = { kind: "contact"; row: Contact } | { kind: "waitlist"; row: Waitlist };
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -105,8 +115,12 @@ function AdminDashboard() {
     setLoading(false);
   }
 
-  useEffect(() => { checkRole(); }, []);
-  useEffect(() => { if (isAdmin) loadAll(); }, [isAdmin]);
+  useEffect(() => {
+    checkRole();
+  }, []);
+  useEffect(() => {
+    if (isAdmin) loadAll();
+  }, [isAdmin]);
 
   function flash(msg: string) {
     setToast(msg);
@@ -123,7 +137,12 @@ function AdminDashboard() {
     if (!toDelete) return;
     setDeleting(true);
     const rpc = toDelete.kind === "contact" ? "admin_delete_contact" : "admin_delete_waitlist";
-    const { error } = await (supabase.rpc as any)(rpc, { _id: toDelete.row.id });
+    const { error } = await (
+      supabase.rpc as unknown as (
+        fn: string,
+        args: { _id: string },
+      ) => Promise<{ error: { message: string } | null }>
+    )(rpc, { _id: toDelete.row.id });
     setDeleting(false);
     if (error) {
       flash(`Delete failed: ${error.message}`);
@@ -138,7 +157,8 @@ function AdminDashboard() {
     setToDelete(null);
     flash("Deleted · audit log updated");
     // refresh audit silently
-    supabase.rpc("get_admin_audit_log")
+    supabase
+      .rpc("get_admin_audit_log")
       .then(({ data }) => setAudit((data as AuditEntry[] | null) ?? []));
   }
 
@@ -184,7 +204,14 @@ function AdminDashboard() {
     if (tab === "contact" || tab === "overview") {
       rows = [
         ["created_at", "name", "organization", "email", "intent", "message"],
-        ...filteredContacts.map((c) => [c.created_at, c.name, c.organization, c.email, c.intent, c.message]),
+        ...filteredContacts.map((c) => [
+          c.created_at,
+          c.name,
+          c.organization,
+          c.email,
+          c.intent,
+          c.message,
+        ]),
       ];
       label = "contact";
     } else if (tab === "waitlist") {
@@ -195,10 +222,19 @@ function AdminDashboard() {
     } else {
       rows = [
         ["created_at", "admin_email", "action", "target_table", "target_id", "metadata"],
-        ...audit.map((a) => [a.created_at, a.admin_email ?? "", a.action, a.target_table, a.target_id ?? "", JSON.stringify(a.metadata)]),
+        ...audit.map((a) => [
+          a.created_at,
+          a.admin_email ?? "",
+          a.action,
+          a.target_table,
+          a.target_id ?? "",
+          JSON.stringify(a.metadata),
+        ]),
       ];
     }
-    const csv = rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const csv = rows
+      .map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -209,7 +245,11 @@ function AdminDashboard() {
   }
 
   if (isAdmin === null) {
-    return <div className="min-h-screen grid place-items-center bg-background text-muted-foreground">Loading…</div>;
+    return (
+      <div className="min-h-screen grid place-items-center bg-background text-muted-foreground">
+        Loading…
+      </div>
+    );
   }
 
   if (!isAdmin) {
@@ -219,7 +259,8 @@ function AdminDashboard() {
           <AlertTriangle className="mx-auto h-8 w-8 text-brand-glow" />
           <h1 className="mt-4 text-xl font-semibold text-foreground">Access restricted</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Your account ({userEmail}) is signed in but has not been granted the <code className="text-brand-glow">admin</code> role.
+            Your account ({userEmail}) is signed in but has not been granted the{" "}
+            <code className="text-brand-glow">admin</code> role.
           </p>
           <button
             onClick={signOut}
@@ -264,23 +305,54 @@ function AdminDashboard() {
       <main className="mx-auto max-w-7xl px-6 lg:px-10 py-8">
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 border-b border-hairline">
-          <TabBtn active={tab === "overview"} onClick={() => setTab("overview")} icon={<BarChart3 className="h-3.5 w-3.5" />} label="Overview" />
-          <TabBtn active={tab === "messages"} onClick={() => setTab("messages")} icon={<Mail className="h-3.5 w-3.5" />} label={`Messages`} />
+          <TabBtn
+            active={tab === "overview"}
+            onClick={() => setTab("overview")}
+            icon={<BarChart3 className="h-3.5 w-3.5" />}
+            label="Overview"
+          />
+          <TabBtn
+            active={tab === "messages"}
+            onClick={() => setTab("messages")}
+            icon={<Mail className="h-3.5 w-3.5" />}
+            label={`Messages`}
+          />
           {(erpRole === "ceo" || erpRole === "coo") && (
             <>
-              <TabBtn active={tab === "contact"} onClick={() => setTab("contact")} icon={<Inbox className="h-3.5 w-3.5" />} label={`Contact (${contacts.length})`} />
-              <TabBtn active={tab === "waitlist"} onClick={() => setTab("waitlist")} icon={<Mail className="h-3.5 w-3.5" />} label={`Waitlist (${waitlist.length})`} />
+              <TabBtn
+                active={tab === "contact"}
+                onClick={() => setTab("contact")}
+                icon={<Inbox className="h-3.5 w-3.5" />}
+                label={`Contact (${contacts.length})`}
+              />
+              <TabBtn
+                active={tab === "waitlist"}
+                onClick={() => setTab("waitlist")}
+                icon={<Mail className="h-3.5 w-3.5" />}
+                label={`Waitlist (${waitlist.length})`}
+              />
             </>
           )}
           {erpRole === "ceo" && (
-            <TabBtn active={tab === "audit"} onClick={() => setTab("audit")} icon={<ScrollText className="h-3.5 w-3.5" />} label={`Audit (${audit.length})`} />
+            <TabBtn
+              active={tab === "audit"}
+              onClick={() => setTab("audit")}
+              icon={<ScrollText className="h-3.5 w-3.5" />}
+              label={`Audit (${audit.length})`}
+            />
           )}
           <div className="ml-auto flex items-center gap-2 py-2">
-            <button onClick={loadAll} className="inline-flex items-center gap-2 rounded-full border border-hairline px-3 py-1.5 text-xs hover:bg-foreground/5">
+            <button
+              onClick={loadAll}
+              className="inline-flex items-center gap-2 rounded-full border border-hairline px-3 py-1.5 text-xs hover:bg-foreground/5"
+            >
               <RefreshCw className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`} /> Refresh
             </button>
             {tab !== "overview" && (
-              <button onClick={exportCSV} className="inline-flex items-center gap-2 rounded-full border border-hairline px-3 py-1.5 text-xs hover:bg-foreground/5">
+              <button
+                onClick={exportCSV}
+                className="inline-flex items-center gap-2 rounded-full border border-hairline px-3 py-1.5 text-xs hover:bg-foreground/5"
+              >
                 <Download className="h-3.5 w-3.5" /> Export CSV
               </button>
             )}
@@ -295,7 +367,11 @@ function AdminDashboard() {
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder={tab === "contact" ? "Search name, email, org, message…" : "Search email or source…"}
+                placeholder={
+                  tab === "contact"
+                    ? "Search name, email, org, message…"
+                    : "Search email or source…"
+                }
                 className="w-full rounded-full border border-hairline bg-surface pl-10 pr-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary"
               />
             </div>
@@ -308,12 +384,16 @@ function AdminDashboard() {
                   className="appearance-none rounded-full border border-hairline bg-surface pl-9 pr-8 py-2 text-sm focus:outline-none focus:border-primary"
                 >
                   <option value="all">All intents</option>
-                  {intents.map((i) => <option key={i} value={i}>{i}</option>)}
+                  {intents.map((i) => (
+                    <option key={i} value={i}>
+                      {i}
+                    </option>
+                  ))}
                 </select>
               </div>
             )}
             <div className="flex rounded-full border border-hairline overflow-hidden">
-              {(["all","7d","30d","90d"] as DateRange[]).map((r) => (
+              {(["all", "7d", "30d", "90d"] as DateRange[]).map((r) => (
                 <button
                   key={r}
                   onClick={() => setRange(r)}
@@ -325,7 +405,11 @@ function AdminDashboard() {
             </div>
             {(search || intent !== "all" || range !== "all") && (
               <button
-                onClick={() => { setSearch(""); setIntent("all"); setRange("all"); }}
+                onClick={() => {
+                  setSearch("");
+                  setIntent("all");
+                  setRange("all");
+                }}
                 className="inline-flex items-center gap-1 rounded-full border border-hairline px-3 py-2 text-xs text-muted-foreground hover:text-foreground"
               >
                 <X className="h-3 w-3" /> Clear
@@ -335,13 +419,14 @@ function AdminDashboard() {
         )}
 
         {/* OVERVIEW */}
-        {tab === "overview" && (
-          <Overview contacts={contacts} waitlist={waitlist} audit={audit} />
-        )}
+        {tab === "overview" && <Overview contacts={contacts} waitlist={waitlist} audit={audit} />}
 
         {/* MESSAGES */}
         {tab === "messages" && (
-          <StaffMessaging staffRole={erpRole === "ceo" || erpRole === "coo" ? erpRole : "member"} userEmail={userEmail} />
+          <StaffMessaging
+            staffRole={erpRole === "ceo" || erpRole === "coo" ? erpRole : "member"}
+            userEmail={userEmail}
+          />
         )}
 
         {/* CONTACT */}
@@ -360,17 +445,33 @@ function AdminDashboard() {
               </thead>
               <tbody>
                 {filteredContacts.length === 0 && (
-                  <tr><td colSpan={6} className="px-5 py-10 text-center text-muted-foreground">No submissions match.</td></tr>
+                  <tr>
+                    <td colSpan={6} className="px-5 py-10 text-center text-muted-foreground">
+                      No submissions match.
+                    </td>
+                  </tr>
                 )}
                 {filteredContacts.map((c) => (
-                  <tr key={c.id} onClick={() => setSelected(c)} className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] cursor-pointer transition">
-                    <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">{fmtDate(c.created_at)}</td>
+                  <tr
+                    key={c.id}
+                    onClick={() => setSelected(c)}
+                    className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] cursor-pointer transition"
+                  >
+                    <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">
+                      {fmtDate(c.created_at)}
+                    </td>
                     <td className="px-5 py-4">{c.name}</td>
                     <td className="px-5 py-4 text-muted-foreground">{c.organization}</td>
                     <td className="px-5 py-4 text-brand-glow">{c.email}</td>
                     <td className="px-5 py-4 text-muted-foreground">{c.intent}</td>
                     <td className="px-5 py-4 text-right">
-                      <button onClick={(e) => { e.stopPropagation(); setToDelete({ kind: "contact", row: c }); }} className="text-muted-foreground hover:text-destructive">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setToDelete({ kind: "contact", row: c });
+                        }}
+                        className="text-muted-foreground hover:text-destructive"
+                      >
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </td>
@@ -395,15 +496,27 @@ function AdminDashboard() {
               </thead>
               <tbody>
                 {filteredWaitlist.length === 0 && (
-                  <tr><td colSpan={4} className="px-5 py-10 text-center text-muted-foreground">No signups match.</td></tr>
+                  <tr>
+                    <td colSpan={4} className="px-5 py-10 text-center text-muted-foreground">
+                      No signups match.
+                    </td>
+                  </tr>
                 )}
                 {filteredWaitlist.map((w) => (
-                  <tr key={w.id} className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] transition">
-                    <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">{fmtDate(w.created_at)}</td>
+                  <tr
+                    key={w.id}
+                    className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] transition"
+                  >
+                    <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">
+                      {fmtDate(w.created_at)}
+                    </td>
                     <td className="px-5 py-4 text-brand-glow">{w.email}</td>
                     <td className="px-5 py-4 text-muted-foreground">{w.source}</td>
                     <td className="px-5 py-4 text-right">
-                      <button onClick={() => setToDelete({ kind: "waitlist", row: w })} className="text-muted-foreground hover:text-destructive">
+                      <button
+                        onClick={() => setToDelete({ kind: "waitlist", row: w })}
+                        className="text-muted-foreground hover:text-destructive"
+                      >
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </td>
@@ -430,20 +543,34 @@ function AdminDashboard() {
                 </thead>
                 <tbody>
                   {audit.length === 0 && (
-                    <tr><td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">No admin actions recorded yet.</td></tr>
+                    <tr>
+                      <td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">
+                        No admin actions recorded yet.
+                      </td>
+                    </tr>
                   )}
                   {audit.map((a) => (
                     <tr key={a.id} className="border-b border-hairline last:border-0">
-                      <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">{fmtDate(a.created_at)}</td>
+                      <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">
+                        {fmtDate(a.created_at)}
+                      </td>
                       <td className="px-5 py-4">{a.admin_email ?? "—"}</td>
                       <td className="px-5 py-4">
-                        <span className="rounded-full bg-destructive/10 text-destructive text-[10px] tracking-widest uppercase px-2.5 py-1">{a.action}</span>
+                        <span className="rounded-full bg-destructive/10 text-destructive text-[10px] tracking-widest uppercase px-2.5 py-1">
+                          {a.action}
+                        </span>
                       </td>
-                      <td className="px-5 py-4 text-muted-foreground font-mono text-xs">{a.target_table}</td>
+                      <td className="px-5 py-4 text-muted-foreground font-mono text-xs">
+                        {a.target_table}
+                      </td>
                       <td className="px-5 py-4 text-muted-foreground text-xs">
-                        {Object.entries(a.metadata).slice(0, 3).map(([k, v]) => (
-                          <span key={k} className="mr-3"><span className="text-foreground/60">{k}:</span> {String(v)}</span>
-                        ))}
+                        {Object.entries(a.metadata)
+                          .slice(0, 3)
+                          .map(([k, v]) => (
+                            <span key={k} className="mr-3">
+                              <span className="text-foreground/60">{k}:</span> {String(v)}
+                            </span>
+                          ))}
                       </td>
                     </tr>
                   ))}
@@ -456,22 +583,47 @@ function AdminDashboard() {
 
       {/* Submission detail modal */}
       {selected && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur grid place-items-center p-6" onClick={() => setSelected(null)}>
-          <div className="max-w-2xl w-full glass-strong rounded-2xl p-8" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur grid place-items-center p-6"
+          onClick={() => setSelected(null)}
+        >
+          <div
+            className="max-w-2xl w-full glass-strong rounded-2xl p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="text-[10px] tracking-widest uppercase text-muted-foreground">{fmtDate(selected.created_at)}</div>
+                <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                  {fmtDate(selected.created_at)}
+                </div>
                 <h2 className="mt-1 text-xl font-semibold">{selected.name}</h2>
-                <div className="mt-1 text-sm text-muted-foreground">{selected.organization} · <a className="text-brand-glow" href={`mailto:${selected.email}`}>{selected.email}</a></div>
+                <div className="mt-1 text-sm text-muted-foreground">
+                  {selected.organization} ·{" "}
+                  <a className="text-brand-glow" href={`mailto:${selected.email}`}>
+                    {selected.email}
+                  </a>
+                </div>
               </div>
-              <span className="text-[10px] tracking-widest uppercase text-brand-glow border border-brand-purple/40 bg-brand-purple/10 rounded-full px-3 py-1">{selected.intent}</span>
+              <span className="text-[10px] tracking-widest uppercase text-brand-glow border border-brand-purple/40 bg-brand-purple/10 rounded-full px-3 py-1">
+                {selected.intent}
+              </span>
             </div>
-            <div className="mt-6 rounded-xl bg-surface-elevated border border-hairline p-5 text-sm whitespace-pre-wrap leading-relaxed">{selected.message}</div>
+            <div className="mt-6 rounded-xl bg-surface-elevated border border-hairline p-5 text-sm whitespace-pre-wrap leading-relaxed">
+              {selected.message}
+            </div>
             <div className="mt-6 flex justify-end gap-2">
-              <button onClick={() => setToDelete({ kind: "contact", row: selected })} className="inline-flex items-center gap-2 rounded-full border border-destructive/40 text-destructive px-4 py-2 text-xs hover:bg-destructive/10">
+              <button
+                onClick={() => setToDelete({ kind: "contact", row: selected })}
+                className="inline-flex items-center gap-2 rounded-full border border-destructive/40 text-destructive px-4 py-2 text-xs hover:bg-destructive/10"
+              >
                 <Trash2 className="h-3.5 w-3.5" /> Delete
               </button>
-              <button onClick={() => setSelected(null)} className="rounded-full border border-hairline px-4 py-2 text-xs hover:bg-foreground/5">Close</button>
+              <button
+                onClick={() => setSelected(null)}
+                className="rounded-full border border-hairline px-4 py-2 text-xs hover:bg-foreground/5"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
@@ -499,16 +651,30 @@ function AdminDashboard() {
 
 function fmtDate(d: string) {
   return new Date(d).toLocaleString(undefined, {
-    year: "numeric", month: "short", day: "numeric",
-    hour: "2-digit", minute: "2-digit",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 
-function DataCard({ count, total, label, children }: { count: number; total: number; label: string; children: React.ReactNode }) {
+function DataCard({
+  count,
+  total,
+  label,
+  children,
+}: {
+  count: number;
+  total: number;
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <>
       <div className="mt-4 text-xs text-muted-foreground">
-        Showing <span className="text-foreground">{count}</span> of {total} {label}{count === 1 ? "" : "s"}
+        Showing <span className="text-foreground">{count}</span> of {total} {label}
+        {count === 1 ? "" : "s"}
       </div>
       <div className="mt-3 overflow-hidden rounded-2xl glass-strong">
         <div className="overflow-x-auto">{children}</div>
@@ -517,12 +683,24 @@ function DataCard({ count, total, label, children }: { count: number; total: num
   );
 }
 
-function TabBtn({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
+function TabBtn({
+  active,
+  onClick,
+  icon,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+}) {
   return (
     <button
       onClick={onClick}
       className={`inline-flex items-center gap-2 px-4 py-3 text-xs tracking-widest uppercase border-b-2 -mb-px transition ${
-        active ? "text-foreground border-primary" : "text-muted-foreground border-transparent hover:text-foreground"
+        active
+          ? "text-foreground border-primary"
+          : "text-muted-foreground border-transparent hover:text-foreground"
       }`}
     >
       {icon} {label}
@@ -530,7 +708,15 @@ function TabBtn({ active, onClick, icon, label }: { active: boolean; onClick: ()
   );
 }
 
-function Overview({ contacts, waitlist, audit }: { contacts: Contact[]; waitlist: Waitlist[]; audit: AuditEntry[] }) {
+function Overview({
+  contacts,
+  waitlist,
+  audit,
+}: {
+  contacts: Contact[];
+  waitlist: Waitlist[];
+  audit: AuditEntry[];
+}) {
   const now = Date.now();
   const since7 = now - 7 * 86400_000;
   const since30 = now - 30 * 86400_000;
@@ -544,7 +730,9 @@ function Overview({ contacts, waitlist, audit }: { contacts: Contact[]; waitlist
     acc[c.intent] = (acc[c.intent] ?? 0) + 1;
     return acc;
   }, {});
-  const intentRows = Object.entries(intentCounts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  const intentRows = Object.entries(intentCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6);
   const maxIntent = Math.max(1, ...intentRows.map(([, n]) => n));
 
   // 30-day daily chart
@@ -565,17 +753,29 @@ function Overview({ contacts, waitlist, audit }: { contacts: Contact[]; waitlist
     <div className="mt-8 grid gap-6">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KPI label="Contact (total)" value={contacts.length} delta={`+${contacts7} last 7d`} />
-        <KPI label="Contact (30d)" value={contacts30} delta={`${contacts.length ? Math.round(contacts30 / contacts.length * 100) : 0}% of all-time`} />
+        <KPI
+          label="Contact (30d)"
+          value={contacts30}
+          delta={`${contacts.length ? Math.round((contacts30 / contacts.length) * 100) : 0}% of all-time`}
+        />
         <KPI label="Waitlist (total)" value={waitlist.length} delta={`+${waitlist7} last 7d`} />
-        <KPI label="Waitlist (30d)" value={waitlist30} delta={`${waitlist.length ? Math.round(waitlist30 / waitlist.length * 100) : 0}% of all-time`} />
+        <KPI
+          label="Waitlist (30d)"
+          value={waitlist30}
+          delta={`${waitlist.length ? Math.round((waitlist30 / waitlist.length) * 100) : 0}% of all-time`}
+        />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 rounded-2xl glass-strong p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold inline-flex items-center gap-2"><TrendingUp className="h-4 w-4 text-brand-glow" /> Submissions · last 30 days</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Stacked: contact (purple) + waitlist (blue)</p>
+              <h3 className="text-sm font-semibold inline-flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-brand-glow" /> Submissions · last 30 days
+              </h3>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Stacked: contact (purple) + waitlist (blue)
+              </p>
             </div>
           </div>
           <div className="mt-6 flex items-end gap-1 h-40">
@@ -584,11 +784,23 @@ function Overview({ contacts, waitlist, audit }: { contacts: Contact[]; waitlist
               const hContact = (d.contacts / maxDay) * 100;
               const hWait = (d.waitlist / maxDay) * 100;
               return (
-                <div key={d.date} className="group relative flex-1 flex flex-col-reverse h-full" title={`${d.date}: ${d.contacts} contact · ${d.waitlist} waitlist`}>
-                  <div className="bg-primary/80 rounded-b-sm" style={{ height: `${hContact}%`, minHeight: d.contacts ? 2 : 0 }} />
-                  <div className="bg-brand-blue/70 rounded-t-sm" style={{ height: `${hWait}%`, minHeight: d.waitlist ? 2 : 0 }} />
+                <div
+                  key={d.date}
+                  className="group relative flex-1 flex flex-col-reverse h-full"
+                  title={`${d.date}: ${d.contacts} contact · ${d.waitlist} waitlist`}
+                >
+                  <div
+                    className="bg-primary/80 rounded-b-sm"
+                    style={{ height: `${hContact}%`, minHeight: d.contacts ? 2 : 0 }}
+                  />
+                  <div
+                    className="bg-brand-blue/70 rounded-t-sm"
+                    style={{ height: `${hWait}%`, minHeight: d.waitlist ? 2 : 0 }}
+                  />
                   {total > 0 && (
-                    <span className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100">{total}</span>
+                    <span className="pointer-events-none absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100">
+                      {total}
+                    </span>
                   )}
                 </div>
               );
@@ -604,7 +816,9 @@ function Overview({ contacts, waitlist, audit }: { contacts: Contact[]; waitlist
         <div className="rounded-2xl glass-strong p-6">
           <h3 className="text-sm font-semibold">Top contact intents</h3>
           <div className="mt-5 space-y-3">
-            {intentRows.length === 0 && <p className="text-xs text-muted-foreground">No data yet.</p>}
+            {intentRows.length === 0 && (
+              <p className="text-xs text-muted-foreground">No data yet.</p>
+            )}
             {intentRows.map(([k, n]) => (
               <div key={k}>
                 <div className="flex justify-between text-xs">
@@ -612,7 +826,13 @@ function Overview({ contacts, waitlist, audit }: { contacts: Contact[]; waitlist
                   <span className="text-muted-foreground">{n}</span>
                 </div>
                 <div className="mt-1 h-1.5 rounded-full bg-foreground/5 overflow-hidden">
-                  <div className="h-full rounded-full" style={{ width: `${(n / maxIntent) * 100}%`, background: "var(--gradient-brand)" }} />
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${(n / maxIntent) * 100}%`,
+                      background: "var(--gradient-brand)",
+                    }}
+                  />
                 </div>
               </div>
             ))}
@@ -621,15 +841,22 @@ function Overview({ contacts, waitlist, audit }: { contacts: Contact[]; waitlist
       </div>
 
       <div className="rounded-2xl glass-strong p-6">
-        <h3 className="text-sm font-semibold inline-flex items-center gap-2"><ScrollText className="h-4 w-4 text-brand-glow" /> Recent admin activity</h3>
+        <h3 className="text-sm font-semibold inline-flex items-center gap-2">
+          <ScrollText className="h-4 w-4 text-brand-glow" /> Recent admin activity
+        </h3>
         <ul className="mt-4 divide-y divide-hairline">
           {audit.slice(0, 5).map((a) => (
             <li key={a.id} className="py-2.5 flex items-center justify-between text-xs">
-              <span><span className="text-foreground">{a.admin_email ?? "admin"}</span> {a.action} <span className="font-mono text-muted-foreground">{a.target_table}</span></span>
+              <span>
+                <span className="text-foreground">{a.admin_email ?? "admin"}</span> {a.action}{" "}
+                <span className="font-mono text-muted-foreground">{a.target_table}</span>
+              </span>
               <span className="text-muted-foreground">{fmtDate(a.created_at)}</span>
             </li>
           ))}
-          {audit.length === 0 && <li className="py-2.5 text-xs text-muted-foreground">No admin actions yet.</li>}
+          {audit.length === 0 && (
+            <li className="py-2.5 text-xs text-muted-foreground">No admin actions yet.</li>
+          )}
         </ul>
       </div>
     </div>
@@ -647,7 +874,10 @@ function KPI({ label, value, delta }: { label: string; value: number; delta: str
 }
 
 function ConfirmDelete({
-  target, deleting, onCancel, onConfirm,
+  target,
+  deleting,
+  onCancel,
+  onConfirm,
 }: {
   target: DeleteTarget;
   deleting: boolean;
@@ -659,33 +889,53 @@ function ConfirmDelete({
   const ok = typed.trim().toLowerCase() === expected.toLowerCase();
 
   return (
-    <div className="fixed inset-0 z-[60] bg-black/65 backdrop-blur grid place-items-center p-6" onClick={onCancel}>
-      <div className="max-w-md w-full glass-strong rounded-2xl p-7" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 z-[60] bg-black/65 backdrop-blur grid place-items-center p-6"
+      onClick={onCancel}
+    >
+      <div
+        className="max-w-md w-full glass-strong rounded-2xl p-7"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center gap-3">
           <div className="grid place-items-center h-10 w-10 rounded-full bg-destructive/10 text-destructive">
             <AlertTriangle className="h-5 w-5" />
           </div>
           <div>
             <h3 className="text-base font-semibold">Permanently delete entry</h3>
-            <p className="text-xs text-muted-foreground">This action is logged to the audit trail.</p>
+            <p className="text-xs text-muted-foreground">
+              This action is logged to the audit trail.
+            </p>
           </div>
         </div>
         <div className="mt-5 rounded-xl border border-hairline bg-surface p-4 text-xs">
           {target.kind === "contact" ? (
             <>
-              <div><span className="text-muted-foreground">Name:</span> {target.row.name}</div>
-              <div><span className="text-muted-foreground">Email:</span> {target.row.email}</div>
-              <div><span className="text-muted-foreground">Intent:</span> {target.row.intent}</div>
+              <div>
+                <span className="text-muted-foreground">Name:</span> {target.row.name}
+              </div>
+              <div>
+                <span className="text-muted-foreground">Email:</span> {target.row.email}
+              </div>
+              <div>
+                <span className="text-muted-foreground">Intent:</span> {target.row.intent}
+              </div>
             </>
           ) : (
             <>
-              <div><span className="text-muted-foreground">Email:</span> {target.row.email}</div>
-              <div><span className="text-muted-foreground">Source:</span> {target.row.source}</div>
+              <div>
+                <span className="text-muted-foreground">Email:</span> {target.row.email}
+              </div>
+              <div>
+                <span className="text-muted-foreground">Source:</span> {target.row.source}
+              </div>
             </>
           )}
         </div>
         <p className="mt-5 text-xs text-muted-foreground">
-          Type <code className="text-foreground bg-foreground/5 px-1.5 py-0.5 rounded">{expected}</code> to confirm.
+          Type{" "}
+          <code className="text-foreground bg-foreground/5 px-1.5 py-0.5 rounded">{expected}</code>{" "}
+          to confirm.
         </p>
         <input
           autoFocus
@@ -695,13 +945,23 @@ function ConfirmDelete({
           placeholder={expected}
         />
         <div className="mt-5 flex justify-end gap-2">
-          <button onClick={onCancel} disabled={deleting} className="rounded-full border border-hairline px-4 py-2 text-xs hover:bg-foreground/5 disabled:opacity-50">Cancel</button>
+          <button
+            onClick={onCancel}
+            disabled={deleting}
+            className="rounded-full border border-hairline px-4 py-2 text-xs hover:bg-foreground/5 disabled:opacity-50"
+          >
+            Cancel
+          </button>
           <button
             onClick={onConfirm}
             disabled={!ok || deleting}
             className="inline-flex items-center gap-2 rounded-full bg-destructive text-destructive-foreground px-4 py-2 text-xs disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-90"
           >
-            {deleting ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+            {deleting ? (
+              <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Trash2 className="h-3.5 w-3.5" />
+            )}
             {deleting ? "Deleting…" : "Delete permanently"}
           </button>
         </div>

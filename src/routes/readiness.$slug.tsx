@@ -30,7 +30,9 @@ export const Route = createFileRoute("/readiness/$slug")({
     const desc = r
       ? `${r.school.name} (${r.school.lga}) scored ${r.assessment.totalScore}/100 on the Nextwave School Tech Readiness Index.`
       : "A school's technology-readiness profile from the Nextwave School Tech Readiness Index.";
-    const ogImage = "https://nextwave.com.ng/og.jpg";
+    const ogImage = r
+      ? `https://nextwave.com.ng/og/${r.school.slug}.png`
+      : "https://nextwave.com.ng/og.jpg";
     const url = r
       ? `https://nextwave.com.ng/readiness/${r.school.slug}`
       : "https://nextwave.com.ng/readiness";
