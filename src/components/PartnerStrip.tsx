@@ -13,16 +13,20 @@ export function PartnerStrip() {
           <img
             src={hutsoftLogo}
             alt="Hutsoft Technologies"
+            width={256}
+            height={272}
             loading="lazy"
             decoding="async"
-            className="h-12 sm:h-14 object-contain opacity-90 hover:opacity-100 hover:scale-110 transition-all duration-300"
+            className="h-12 sm:h-14 w-auto object-contain opacity-90 hover:opacity-100 hover:scale-110 transition-all duration-300"
           />
           <img
             src={specterverseLogo}
             alt="Specterverse Gaming"
+            width={339}
+            height={735}
             loading="lazy"
             decoding="async"
-            className="h-12 sm:h-14 object-contain opacity-90 hover:opacity-100 hover:scale-110 transition-all duration-300"
+            className="h-12 sm:h-14 w-auto object-contain opacity-90 hover:opacity-100 hover:scale-110 transition-all duration-300"
           />
           <span className="text-sm sm:text-base font-semibold tracking-wide text-white/80 hover:text-white transition-colors duration-300 cursor-default">
             Muda International School

@@ -247,7 +247,7 @@ function AdminEmails() {
           <div className="flex items-center gap-3">
             <Logo variant="square" className="h-8 w-8" />
             <div>
-              <div className="text-sm font-semibold">Email Delivery</div>
+              <h1 className="text-sm font-semibold">Email Delivery</h1>
               <div className="text-[10px] tracking-widest uppercase text-muted-foreground inline-flex items-center gap-1">
                 <ShieldCheck className="h-3 w-3 text-brand-glow" /> Admin Console
               </div>
@@ -418,7 +418,11 @@ function AdminEmails() {
       </main>
 
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm shadow-lg">
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm shadow-lg"
+        >
           <Check className="h-4 w-4" /> {toast}
         </div>
       )}

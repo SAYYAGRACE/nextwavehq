@@ -36,6 +36,7 @@ export function CookieNotice() {
           exit={{ opacity: 0, y: 24 }}
           transition={{ type: "spring", stiffness: 320, damping: 28 }}
           role="dialog"
+          aria-modal="true"
           aria-label="Cookie notice"
           className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-2xl rounded-2xl glass-strong border border-hairline p-4 sm:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
         >

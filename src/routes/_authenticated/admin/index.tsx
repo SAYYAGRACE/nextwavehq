@@ -75,6 +75,24 @@ function AdminDashboard() {
   const [deleting, setDeleting] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
 
+  // Support Escape-to-close and lock background scroll while a dialog is open.
+  const dialogOpen = Boolean(selected || toDelete);
+  useEffect(() => {
+    if (!dialogOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setSelected(null);
+      setToDelete(null);
+    };
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [dialogOpen]);
+
   // filters
   const [search, setSearch] = useState("");
   const [intent, setIntent] = useState<string>("all");
@@ -280,7 +298,7 @@ function AdminDashboard() {
           <div className="flex items-center gap-3">
             <Logo variant="square" className="h-8 w-8" />
             <div>
-              <div className="text-sm font-semibold">Nextwave Operations</div>
+              <h1 className="text-sm font-semibold">Nextwave Operations</h1>
               <div className="text-[10px] tracking-widest uppercase text-muted-foreground inline-flex items-center gap-1">
                 <ShieldCheck className="h-3 w-3 text-brand-glow" /> Admin Console
               </div>
@@ -470,6 +488,7 @@ function AdminDashboard() {
                           e.stopPropagation();
                           setToDelete({ kind: "contact", row: c });
                         }}
+                        aria-label={`Delete contact submission from ${c.name || "unknown"}`}
                         className="text-muted-foreground hover:text-destructive"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -515,6 +534,7 @@ function AdminDashboard() {
                     <td className="px-5 py-4 text-right">
                       <button
                         onClick={() => setToDelete({ kind: "waitlist", row: w })}
+                        aria-label={`Delete waitlist entry from ${w.name || w.email || "unknown"}`}
                         className="text-muted-foreground hover:text-destructive"
                       >
                         <Trash2 className="h-4 w-4" />
@@ -588,6 +608,9 @@ function AdminDashboard() {
           onClick={() => setSelected(null)}
         >
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Submission details"
             className="max-w-2xl w-full glass-strong rounded-2xl p-8"
             onClick={(e) => e.stopPropagation()}
           >
@@ -641,7 +664,11 @@ function AdminDashboard() {
 
       {/* Toast */}
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm shadow-lg">
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm shadow-lg"
+        >
           <CheckCircle2 className="h-4 w-4" /> {toast}
         </div>
       )}
@@ -778,7 +805,7 @@ function Overview({
               </p>
             </div>
           </div>
-          <div className="mt-6 flex items-end gap-1 h-40">
+          <div className="mt-6 flex items-end gap-1 h-40 overflow-x-auto [&>*]:min-w-[10px]">
             {days.map((d) => {
               const total = d.contacts + d.waitlist;
               const hContact = (d.contacts / maxDay) * 100;
@@ -894,6 +921,9 @@ function ConfirmDelete({
       onClick={onCancel}
     >
       <div
+        role="alertdialog"
+        aria-modal="true"
+        aria-label="Confirm deletion"
         className="max-w-md w-full glass-strong rounded-2xl p-7"
         onClick={(e) => e.stopPropagation()}
       >

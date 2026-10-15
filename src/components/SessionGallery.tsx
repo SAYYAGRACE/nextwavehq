@@ -80,7 +80,7 @@ export function SessionGallery() {
         {PHOTOS.map((p, i) => (
           <Reveal key={p.src} delay={i * 80} className={p.span || ""}>
             <TiltCard maxTilt={5} className="h-full">
-              <SpotlightCard className="group relative overflow-hidden rounded-2xl border border-hairline h-full hover-border-brand-purple/40">
+              <SpotlightCard className="group relative overflow-hidden rounded-2xl border border-hairline h-full hover:border-brand-purple/40">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 z-20 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500 pointer-events-none">
                   <span className="text-xs font-medium text-white/90 tracking-widest uppercase">
@@ -186,6 +186,8 @@ export function SessionGallery() {
             <img
               src={PHOTOS[active].src}
               alt={PHOTOS[active].alt}
+              width={PHOTOS[active].w}
+              height={PHOTOS[active].h}
               className="max-h-[82vh] max-w-full rounded-lg object-contain shadow-2xl"
             />
             <figcaption className="mt-4 text-center text-sm text-white/80">
