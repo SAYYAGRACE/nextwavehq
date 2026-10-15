@@ -214,7 +214,7 @@ function Bootcamp() {
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         className="mt-6 glass-strong rounded-2xl p-7 sm:p-10 min-h-[180px] relative overflow-hidden border border-brand-purple/20"
       >
-        <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-brand-purple/15 blur-[80px]" />
+        <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-brand-purple/8 blur-[80px]" />
         <div className="relative flex items-baseline gap-4">
           <span className="text-5xl font-bold gradient-text">{PHASES[active].n}</span>
           <div>
@@ -233,7 +233,7 @@ function Bootcamp() {
 
       {/* B2B CTA */}
       <div className="mt-10 relative overflow-hidden rounded-2xl glass-strong p-8 sm:p-10">
-        <div className="absolute -top-24 -right-12 h-64 w-64 rounded-full bg-brand-blue/20 blur-[100px]" />
+        <div className="absolute -top-24 -right-12 h-64 w-64 rounded-full bg-brand-blue/10 blur-[100px]" />
         <div className="relative grid gap-6 md:grid-cols-[1.7fr_auto] md:items-center">
           <div>
             <span className="text-[10px] tracking-[0.2em] uppercase text-brand-glow">

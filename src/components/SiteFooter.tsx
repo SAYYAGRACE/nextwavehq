@@ -2,12 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { SITE } from "@/lib/site";
 import { ExternalLink, MessageCircle, Mail, MapPin } from "lucide-react";
-import { Aurora } from "./Aurora";
 
 export function SiteFooter() {
   return (
     <footer className="relative mt-20 border-t border-hairline overflow-hidden">
-      <Aurora className="opacity-20" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10 py-16">
         <div className="grid gap-12 md:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
@@ -28,7 +26,7 @@ export function SiteFooter() {
                   href={`https://wa.me/${SITE.phone.whatsapp.replace(/\D/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.04] px-4 py-2 text-xs text-muted-foreground hover:text-white hover:border-brand-purple/50 hover:shadow-[0_0_20px_color-mix(in_oklab,var(--brand-purple)_30%,transparent)] transition-all"
+                  className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.04] px-4 py-2 text-xs text-muted-foreground hover:text-white hover:border-brand-purple/50 transition-all"
                 >
                   <MessageCircle className="h-3.5 w-3.5" />
                   WhatsApp

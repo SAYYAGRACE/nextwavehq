@@ -145,9 +145,7 @@ function Hero() {
 
   return (
     <section className="relative min-h-[78vh] pt-28 pb-16 lg:pt-36 lg:pb-20 overflow-hidden flex items-center">
-      <Aurora className="opacity-60" />
-      <div className="absolute inset-0 grid-bg opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-      <div className="absolute inset-0 radial-glow" />
+      <Aurora className="opacity-50" />
       <HeroCanvas />
 
       <div
@@ -156,8 +154,7 @@ function Hero() {
       >
         <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
           <div className="reveal">
-            <span className="relative inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs tracking-[0.14em] uppercase text-muted-foreground">
-              <span className="absolute -inset-px rounded-full border border-brand-purple/30 opacity-60" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.03] px-4 py-1.5 text-xs tracking-[0.14em] uppercase text-muted-foreground">
               <Sparkles className="h-3 w-3 text-brand-glow" />
               Originating from Northern Nigeria
             </span>
@@ -169,7 +166,7 @@ function Hero() {
           >
             <KineticText text="Empowering Africa's Youth" className="gradient-text block" />
             <span className="text-white block mt-1">to lead the next</span>
-            <span className="text-white block text-shimmer-anim">technological revolution.</span>
+            <span className="text-white block">technological revolution.</span>
           </h1>
 
           <p
@@ -188,8 +185,11 @@ function Hero() {
             <Magnetic strength={0.35}>
               <Link
                 to="/contact"
-                className="group inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-medium text-white transition-all hover:scale-[1.04] active:scale-[0.99] pulse-glow"
-                style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+                className="group inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-medium text-white transition-[transform,filter] duration-200 hover:-translate-y-px hover:brightness-110 active:translate-y-0"
+                style={{
+                  background: "var(--gradient-brand)",
+                  boxShadow: "0 10px 30px -12px oklch(0.52 0.22 285 / 0.6)",
+                }}
               >
                 Join the Movement
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -197,7 +197,7 @@ function Hero() {
             </Magnetic>
             <Link
               to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white glass-strong hover:bg-white/5 hover:scale-[1.03] transition-all"
+              className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white border border-hairline bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
             >
               Partner With Us
             </Link>
@@ -211,18 +211,15 @@ function Hero() {
               { k: 300, suffix: "+", v: "Learners reached" },
               { k: 15, suffix: "+", v: "Partner schools" },
               { k: 20, suffix: "+", v: "Mentors & instructors" },
-            ].map((s, i) => (
+            ].map((s) => (
               <div
                 key={s.v}
-                className={`relative rounded-2xl glass px-4 py-5 float-style hover-lift ${
-                  i === 1 ? "float-delay-1" : i === 2 ? "float-delay-2" : ""
-                }`}
+                className="rounded-2xl border border-hairline bg-white/[0.02] px-4 py-5"
               >
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none" />
-                <div className="relative text-2xl sm:text-4xl font-bold gradient-text tabular-nums">
+                <div className="text-2xl sm:text-4xl font-bold gradient-text tabular-nums">
                   <AnimatedNumber value={s.k} suffix={s.suffix} />
                 </div>
-                <div className="relative mt-1.5 text-[10px] sm:text-xs tracking-widest uppercase text-muted-foreground">
+                <div className="mt-1.5 text-[10px] sm:text-xs tracking-widest uppercase text-muted-foreground">
                   {s.v}
                 </div>
               </div>
@@ -278,10 +275,10 @@ function MarqueeBand() {
             {MARQUEE.map((m) => (
               <span
                 key={m}
-                className="mx-8 flex items-center gap-16 text-xs tracking-[0.2em] uppercase text-muted-foreground hover:text-brand-glow transition-colors"
+                className="mx-8 flex items-center gap-16 text-xs tracking-[0.2em] uppercase text-muted-foreground"
               >
                 {m}
-                <Sparkles className="h-3.5 w-3.5 text-brand-purple/60" />
+                <span className="h-1 w-1 rounded-full bg-hairline" aria-hidden />
               </span>
             ))}
           </div>
@@ -677,8 +674,8 @@ function NerdHaven() {
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
           <div className="relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-12 lg:p-16">
-            <div className="absolute -top-32 -right-20 h-80 w-80 rounded-full bg-brand-blue/25 blur-[120px]" />
-            <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-brand-purple/25 blur-[120px]" />
+            <div className="absolute -top-32 -right-20 h-80 w-80 rounded-full bg-brand-blue/10 blur-[120px]" />
+            <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-brand-purple/10 blur-[120px]" />
 
             <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
               <div className="flex-shrink-0 rounded-3xl border border-white/10 bg-white/5 p-4">

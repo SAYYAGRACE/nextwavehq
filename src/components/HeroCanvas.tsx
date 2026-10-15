@@ -101,7 +101,7 @@ export function HeroCanvas() {
           const dy = a.y - b.y;
           const d = dx * dx + dy * dy;
           if (d < maxLineDist * maxLineDist) {
-            const alpha = (1 - Math.sqrt(d) / maxLineDist) * 0.12;
+            const alpha = (1 - Math.sqrt(d) / maxLineDist) * 0.08;
             ctx.strokeStyle = `rgba(160, 140, 240, ${alpha.toFixed(3)})`;
             ctx.lineWidth = 0.6;
             ctx.beginPath();
@@ -137,7 +137,7 @@ export function HeroCanvas() {
     <canvas
       ref={canvasRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 h-full w-full opacity-80"
+      className="pointer-events-none absolute inset-0 h-full w-full opacity-50"
     />
   );
 }

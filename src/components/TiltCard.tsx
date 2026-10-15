@@ -14,9 +14,10 @@ type TiltCardProps = {
   maxTilt?: number;
 };
 
-export function TiltCard({ children, className = "", maxTilt = 10 }: TiltCardProps) {
+export function TiltCard({ children, className = "", maxTilt = 6 }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const tilt = Math.min(maxTilt, 5);
 
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
@@ -33,7 +34,7 @@ export function TiltCard({ children, className = "", maxTilt = 10 }: TiltCardPro
   const glow = useTransform(
     [springGx, springGy] as MotionValue<number>[],
     ([x, y]) =>
-      `radial-gradient(420px circle at ${x}% ${y}%, color-mix(in oklab, var(--brand-purple) 22%, transparent), transparent 65%)`,
+      `radial-gradient(420px circle at ${x}% ${y}%, color-mix(in oklab, var(--brand-purple) 12%, transparent), transparent 65%)`,
   );
 
   function handleMove(e: MouseEvent<HTMLDivElement>) {
@@ -41,8 +42,8 @@ export function TiltCard({ children, className = "", maxTilt = 10 }: TiltCardPro
     const rect = ref.current.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
-    rx.set((0.5 - py) * maxTilt * -1);
-    ry.set((px - 0.5) * maxTilt);
+    rx.set((0.5 - py) * tilt * -1);
+    ry.set((px - 0.5) * tilt);
     gx.set(px * 100);
     gy.set(py * 100);
   }

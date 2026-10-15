@@ -26,9 +26,9 @@ export function SpotlightCard({
       ref={ref}
       onMouseMove={onMouseMove}
       className={`spotlight ${className}`}
-      whileHover={reduced ? undefined : { y: -6 }}
-      whileTap={reduced ? undefined : { scale: 0.985 }}
-      transition={{ type: "spring", stiffness: 400, damping: 22 }}
+      whileHover={reduced ? undefined : { y: -3 }}
+      whileTap={reduced ? undefined : { scale: 0.99 }}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
     >
       {children}
     </motion.div>

@@ -1,7 +1,7 @@
 import { Link, useMatchRoute, useRouterState } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
-import { ArrowRight, Menu, Sparkles, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { ScrollProgress } from "./ScrollProgress";
@@ -54,19 +54,16 @@ export function SiteHeader() {
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "backdrop-blur-2xl bg-background/70 border-b border-hairline shadow-[0_8px_40px_-16px_oklch(0 0 0/0.5)]"
-          : "bg-transparent"
+        scrolled ? "backdrop-blur-xl bg-background/80 border-b border-hairline" : "bg-transparent"
       }`}
     >
-      <div className="block border-b border-hairline/70 bg-gradient-to-r from-brand-purple/15 via-transparent to-brand-purple/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2.5 px-6 py-2 lg:px-10">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-purple/30 bg-brand-purple/10 px-2.5 py-0.5 text-[10px] font-semibold tracking-widest uppercase text-brand-glow">
-            <Sparkles className="h-3 w-3" />
-            New
+      <div className="block border-b border-hairline/70 bg-surface/70">
+        <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-6 py-2 lg:px-10">
+          <span className="h-1.5 w-1.5 rounded-full bg-brand-purple" aria-hidden />
+          <span className="text-[12px] font-medium text-foreground/80">
+            Remote SIWES is coming soon
           </span>
-          <span className="text-[13px] font-medium text-white/90">Remote SIWES coming soon</span>
-          <span className="hidden text-[13px] font-medium text-muted-foreground sm:inline">
+          <span className="hidden text-[12px] text-muted-foreground/80 sm:inline">
             — stay tuned
           </span>
         </div>
@@ -74,12 +71,7 @@ export function SiteHeader() {
 
       <div className="mx-auto max-w-7xl px-6 lg:px-10 h-16 lg:h-[72px] flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5 group" onClick={() => setOpen(false)}>
-          <motion.span
-            whileHover={{ scale: 1.08, rotate: 6 }}
-            transition={{ type: "spring", stiffness: 300, damping: 15 }}
-          >
-            <Logo variant="square" className="h-7 w-7 lg:h-8 lg:w-8" />
-          </motion.span>
+          <Logo variant="square" className="h-7 w-7 lg:h-8 lg:w-8" />
           <span className="text-base lg:text-lg font-semibold tracking-tight text-white">
             Next<span className="text-brand-glow">Wave</span>
           </span>
@@ -119,8 +111,11 @@ export function SiteHeader() {
           <Magnetic strength={0.3}>
             <Link
               to="/contact"
-              className="group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-shadow"
-              style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+              className="group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white transition-[transform,filter] duration-200 hover:-translate-y-px hover:brightness-110"
+              style={{
+                background: "var(--gradient-brand)",
+                boxShadow: "0 6px 18px -8px oklch(0.52 0.22 285 / 0.55)",
+              }}
             >
               Join Movement
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />

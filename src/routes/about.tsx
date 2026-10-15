@@ -196,7 +196,7 @@ function AboutPage() {
 
             <Reveal delay={120}>
               <SpotlightCard className="relative overflow-hidden rounded-2xl glass-strong p-8 sm:p-10 min-h-[340px]">
-                <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-brand-purple/20 blur-[100px]" />
+                <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-brand-purple/10 blur-[100px]" />
                 <div className="relative flex flex-col h-full">
                   <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.04]">
                     <Compass className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />

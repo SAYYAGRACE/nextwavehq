@@ -37,7 +37,7 @@ export function NewsletterSignup({
 
   return (
     <div className={`relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-12 ${className}`}>
-      <div className="absolute -top-32 -right-16 h-72 w-72 rounded-full bg-brand-purple/20 blur-[120px]" />
+      <div className="absolute -top-32 -right-16 h-72 w-72 rounded-full bg-brand-purple/10 blur-[120px]" />
       <div className="relative grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
         <div>
           <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase text-brand-glow">

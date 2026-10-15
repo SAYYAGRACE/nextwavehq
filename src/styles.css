@@ -80,9 +80,8 @@
   --ring: oklch(0.52 0.22 285);
 
   --gradient-brand: linear-gradient(135deg, var(--brand-blue), var(--brand-purple));
-  --gradient-glow: radial-gradient(ellipse at top, oklch(0.52 0.22 285 / 0.18), transparent 60%);
-  --shadow-glow:
-    0 0 0 1px oklch(0.52 0.22 285 / 0.25), 0 10px 40px -10px oklch(0.52 0.22 285 / 0.35);
+  --gradient-glow: radial-gradient(ellipse 80% 55% at top, oklch(0.52 0.22 285 / 0.08), transparent 60%);
+  --shadow-glow: 0 8px 24px -14px oklch(0.52 0.22 285 / 0.5);
   --shadow-elevated: 0 20px 60px -20px oklch(0.18 0.02 265 / 0.18);
 }
 
@@ -118,8 +117,8 @@
   --input: oklch(1 0 0 / 0.1);
   --ring: oklch(0.7 0.22 280);
 
-  --gradient-glow: radial-gradient(ellipse at top, oklch(0.7 0.22 280 / 0.35), transparent 60%);
-  --shadow-glow: 0 0 0 1px oklch(0.7 0.22 280 / 0.45), 0 10px 40px -10px oklch(0.7 0.22 280 / 0.6);
+  --gradient-glow: radial-gradient(ellipse 80% 55% at top, oklch(0.7 0.22 280 / 0.14), transparent 60%);
+  --shadow-glow: 0 8px 24px -14px oklch(0 0 0 / 0.6);
   --shadow-elevated: 0 20px 60px -20px oklch(0 0 0 / 0.6);
 }
 
@@ -137,6 +136,7 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     text-wrap: pretty;
@@ -162,8 +162,14 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
     text-wrap: balance;
+  }
+  h3,
+  h4 {
+    letter-spacing: -0.015em;
+    line-height: 1.25;
   }
   p {
     text-wrap: pretty;
@@ -239,13 +245,15 @@
     font-weight: 500;
     color: #fff;
     background: var(--gradient-brand);
-    box-shadow: var(--shadow-glow);
+    box-shadow: 0 6px 18px -8px oklch(0.52 0.22 285 / 0.55);
     transition:
       transform 0.25s var(--ease-smooth),
-      box-shadow 0.25s ease;
+      box-shadow 0.25s ease,
+      filter 0.25s ease;
   }
   .btn-brand:hover {
     transform: translateY(-1px);
+    filter: brightness(1.06);
   }
   .btn-brand:active {
     transform: translateY(0) scale(0.98);
@@ -270,30 +278,28 @@
     background: color-mix(in oklab, var(--brand-purple) 8%, transparent);
   }
 
-  /* ============ GLASS MORPHISM v2 ============ */
+  /* ============ SURFACES (calm, hairline-led) ============ */
   .glass {
-    background: linear-gradient(180deg, var(--surface-elevated), var(--surface));
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    background: color-mix(in oklab, var(--surface-elevated) 78%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border: 1px solid var(--hairline);
-    box-shadow:
-      var(--shadow-sm),
-      inset 0 1px 0 0 oklch(1 0 0 / 0.05);
+    box-shadow: 0 1px 2px oklch(0 0 0 / 0.04);
   }
   .glass-strong {
-    background: var(--surface-elevated);
-    backdrop-filter: blur(32px) saturate(200%);
-    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    background: color-mix(in oklab, var(--surface-elevated) 94%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--hairline);
-    box-shadow:
-      var(--shadow-md),
-      inset 0 1px 0 0 oklch(1 0 0 / 0.08);
+    box-shadow: 0 10px 30px -14px oklch(0 0 0 / 0.28);
   }
   .dark .glass {
-    background: linear-gradient(180deg, oklch(1 0 0 / 0.06), oklch(1 0 0 / 0.02));
+    background: oklch(1 0 0 / 0.03);
+    box-shadow: none;
   }
   .dark .glass-strong {
-    background: linear-gradient(180deg, oklch(1 0 0 / 0.08), oklch(1 0 0 / 0.03));
+    background: oklch(1 0 0 / 0.05);
+    box-shadow: 0 10px 30px -14px oklch(0 0 0 / 0.5);
   }
 
   /* ============ GRADIENT TEXT v2 ============ */
@@ -301,23 +307,21 @@
     background: linear-gradient(
       135deg,
       var(--brand-blue) 0%,
-      var(--brand-purple) 50%,
+      var(--brand-purple) 52%,
       var(--brand-glow) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: 0 0 80px oklch(0.66 0.21 280 / 0.3);
   }
   .dark .gradient-text {
-    background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 40%, #c7d2fe 70%, #a78bfa 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #dbe3ff 45%, #a5b4fc 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: 0 0 80px oklch(0.7 0.22 280 / 0.4);
   }
 
-  /* ============ GLOW BORDER v2 ============ */
+  /* ============ BORDER SHEEN (hover) ============ */
   .gradient-border {
     position: relative;
   }
@@ -327,7 +331,11 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, var(--brand-blue), var(--brand-purple), var(--brand-glow));
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--brand-purple) 60%, transparent),
+      transparent 60%
+    );
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
@@ -335,7 +343,7 @@
     mask-composite: exclude;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.35s var(--ease-smooth);
   }
   .gradient-border:hover::before {
     opacity: 1;
@@ -379,12 +387,12 @@
     border-radius: inherit;
     pointer-events: none;
     background: radial-gradient(
-      400px circle at var(--spot-x, 50%) var(--spot-y, 50%),
-      color-mix(in oklab, var(--brand-glow) 15%, transparent) 0%,
+      340px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      color-mix(in oklab, var(--brand-glow) 9%, transparent) 0%,
       transparent 60%
     );
     opacity: 0;
-    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.35s var(--ease-smooth);
   }
   .spotlight:hover::after {
     opacity: 1;
@@ -504,12 +512,13 @@
   /* ============ HOVER LIFT ============ */
   .hover-lift {
     transition:
-      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.3s var(--ease-smooth),
+      border-color 0.3s ease,
       box-shadow 0.3s ease;
   }
   .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px oklch(0 0 0 / 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px -16px oklch(0 0 0 / 0.35);
   }
 
   /* ============ STAGGER DELAYS ============ */
@@ -726,36 +735,14 @@ html:not(.dark) [style*="gradient-brand"] .text-white {
   color: #fff;
 }
 
-/* ============ ENHANCED SECTION DIVIDERS ============ */
+/* ============ SECTION DIVIDERS ============ */
 .section-divider {
   position: relative;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--hairline), transparent);
 }
-.section-divider::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -2px;
-  width: 4px;
-  height: 4px;
-  background: var(--brand-purple);
-  border-radius: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 0 12px var(--brand-purple);
-}
 
-/* ============ NOISE TEXTURE OVERLAY ============ */
-.noise-overlay {
-  position: relative;
-}
+/* ============ NOISE TEXTURE OVERLAY (disabled — keeps surfaces calm) ============ */
 .noise-overlay::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
+  content: none;
 }
