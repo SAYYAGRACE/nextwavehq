@@ -6,6 +6,7 @@ import { askNextwave, type ChatMessage } from "@/lib/ai";
 const SUGGESTIONS = [
   "How do I join the Nextwave Bootcamp?",
   "What is NerdHaven?",
+  "How can my school get assessed?",
   "How can my school partner with Nextwave?",
 ];
 
@@ -21,7 +22,7 @@ export function AIChat() {
       id: 0,
       role: "assistant",
       content:
-        "Hi, I'm the Nextwave Assistant. Ask me anything about the Bootcamp, NerdHaven, partnerships, or how to get involved.",
+        "Hi, I'm the Nextwave Assistant. Ask me anything about the Bootcamp, NerdHaven, the School Tech Readiness Index, partnerships, or how to get involved.",
     },
   ]);
   const [busy, setBusy] = useState(false);
