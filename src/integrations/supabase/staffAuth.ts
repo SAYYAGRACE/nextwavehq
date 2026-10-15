@@ -1,24 +1,7 @@
 const STAFF_STORAGE_KEY = "nextwave_staff_auth";
 
-export type ErpRole =
-  | "ceo"
-  | "coo"
-  | "hr"
-  | "finance"
-  | "project-manager"
-  | "member"
-  | "head-of-operations"
-  | "head-of-programs"
-  | "head-of-marketing";
-export type Department =
-  | "executive"
-  | "operations"
-  | "human-resources"
-  | "finance"
-  | "projects"
-  | "engineering"
-  | "programs"
-  | "marketing";
+export type ErpRole = "ceo" | "coo" | "hr" | "finance" | "project-manager" | "member" | "head-of-operations" | "head-of-programs" | "head-of-marketing";
+export type Department = "executive" | "operations" | "human-resources" | "finance" | "projects" | "engineering" | "programs" | "marketing";
 
 type StaffCredentials = {
   id: string;
@@ -202,32 +185,13 @@ export function getRoleDescription(role: ErpRole): string {
 
 export function getErpModuleAccess(role: ErpRole): string[] {
   const access: Record<ErpRole, string[]> = {
-    ceo: [
-      "overview",
-      "analytics",
-      "hr",
-      "finance",
-      "projects",
-      "operations",
-      "messages",
-      "settings",
-      "audit",
-      "contact",
-      "waitlist",
-    ],
+    ceo: ["overview", "analytics", "hr", "finance", "projects", "operations", "messages", "settings", "audit", "contact", "waitlist"],
     coo: ["overview", "operations", "projects", "hr", "messages", "contact", "settings"],
     hr: ["overview", "hr", "messages", "settings"],
     finance: ["overview", "finance", "messages", "settings"],
     "project-manager": ["overview", "projects", "messages", "settings"],
     member: ["overview", "tasks", "messages", "settings"],
-    "head-of-operations": [
-      "overview",
-      "operations",
-      "projects",
-      "messages",
-      "waitlist",
-      "settings",
-    ],
+    "head-of-operations": ["overview", "operations", "projects", "messages", "waitlist", "settings"],
     "head-of-programs": ["overview", "projects", "analytics", "messages", "settings"],
     "head-of-marketing": ["overview", "marketing", "analytics", "contact", "messages", "settings"],
   };
@@ -236,7 +200,7 @@ export function getErpModuleAccess(role: ErpRole): string[] {
 
 export function isStaffCredentials(email: string, password: string) {
   return STAFF_ACCOUNTS.some(
-    (account) => email.trim().toLowerCase() === account.email && password === account.password,
+    (account) => email.trim().toLowerCase() === account.email && password === account.password
   );
 }
 
