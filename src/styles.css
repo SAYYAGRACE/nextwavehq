@@ -612,6 +612,13 @@
     display: inline-block;
     animation: kt-in 0.7s var(--ease-smooth) both;
   }
+  /* Gradient text must clip to real inline text. Per-letter inline-block spans
+     with a transform/filter animation create their own rendering context and
+     erase the background-clip:text fill, making the headline invisible. */
+  .gradient-text .kt-letter {
+    display: inline;
+    animation: none;
+  }
   @keyframes kt-in {
     from {
       opacity: 0;
