@@ -80,8 +80,8 @@ function NewsIndexPage() {
                 </p>
                 <Link
                   to="/contact"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03]"
-                  style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+                  className="mt-8 inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110"
+                  style={{ background: "var(--gradient-brand)" }}
                 >
                   Contact the team
                   <ArrowRight className="h-4 w-4" />
@@ -101,7 +101,7 @@ function NewsIndexPage() {
                             alt={a.title}
                             loading="lazy"
                             decoding="async"
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                            className="h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-90"
                           />
                         </div>
                       )}

@@ -38,7 +38,7 @@ export function CookieNotice() {
           role="dialog"
           aria-modal="true"
           aria-label="Cookie notice"
-          className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-2xl rounded-2xl glass-strong border border-hairline p-4 sm:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
+          className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-2xl rounded-2xl glass-strong border border-hairline p-4 sm:p-5 shadow-lg"
         >
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <Cookie className="h-5 w-5 shrink-0 text-brand-glow" />

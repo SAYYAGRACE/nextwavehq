@@ -208,7 +208,7 @@ function ContactPage() {
                       href={`https://wa.me/${SITE.phone.whatsapp.replace(/\D/g, "")}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-brand-purple/50 bg-brand-purple/10 px-4 py-2 text-xs text-brand-glow hover:bg-brand-purple/20 transition-colors"
+                      className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.03] px-4 py-2 text-xs text-muted-foreground hover:text-white transition-colors"
                     >
                       <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
                     </a>
@@ -228,9 +228,13 @@ function ContactPage() {
               </aside>
             </Reveal>
 
-            <form onSubmit={submit} noValidate className="glass-strong rounded-2xl p-6 sm:p-10">
+            <form
+              onSubmit={submit}
+              noValidate
+              className="rounded-2xl border border-hairline bg-white/[0.02] p-6 sm:p-10"
+            >
               {sent && (
-                <div className="mb-6 flex items-center gap-3 rounded-xl border border-brand-purple/40 bg-brand-purple/10 px-4 py-3">
+                <div className="mb-6 flex items-center gap-3 rounded-xl border border-hairline bg-white/[0.03] px-4 py-3">
                   <CheckCircle2 className="h-4 w-4 text-brand-glow" />
                   <p className="text-sm text-white">Message transmitted. We'll respond shortly.</p>
                 </div>
@@ -309,8 +313,8 @@ function ContactPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.04] hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
-                    style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+                    className="group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed"
+                    style={{ background: "var(--gradient-brand)" }}
                   >
                     {submitting ? "Transmitting..." : "Transmit Message"}
                     <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -342,7 +346,7 @@ function ContactPage() {
                 <TiltCard key={s.t} maxTilt={7} className="h-full">
                   <SpotlightCard className="group glass gradient-border rounded-2xl p-7 h-full overflow-hidden">
                     <div className="flex items-center gap-3">
-                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:scale-110 transition-transform duration-300">
+                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:border-brand-purple/40 transition-colors duration-300">
                         <s.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
                       </div>
                       <span className="text-xs tracking-widest uppercase text-muted-foreground">

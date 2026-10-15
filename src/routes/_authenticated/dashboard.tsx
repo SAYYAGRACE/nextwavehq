@@ -2,37 +2,89 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { getStaffSession, clearStaffSession } from "@/integrations/supabase/staffAuth";
-import { getErpModuleAccess, getRoleLabel, getRoleDescription } from "@/integrations/supabase/staffAuth";
+import {
+  getErpModuleAccess,
+  getRoleLabel,
+  getRoleDescription,
+} from "@/integrations/supabase/staffAuth";
 import type { ErpRole } from "@/integrations/supabase/staffAuth";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import StaffMessaging from "@/components/StaffMessaging";
 import {
-  LayoutDashboard, Users, Banknote, Briefcase, Settings, LogOut,
-  BarChart3, ScrollText, Inbox, Mail, CheckSquare, TrendingUp,
-  Activity, UserCircle, Target, Clock, DollarSign, Calendar,
-  FileText, AlertTriangle, RefreshCw, Download, Search, Filter, X,
-  CheckCircle2, Building2, Globe, Lightbulb, Layers, ShieldCheck,
+  LayoutDashboard,
+  Users,
+  Banknote,
+  Briefcase,
+  Settings,
+  LogOut,
+  BarChart3,
+  ScrollText,
+  Inbox,
+  Mail,
+  CheckSquare,
+  TrendingUp,
+  Activity,
+  UserCircle,
+  Target,
+  Clock,
+  DollarSign,
+  Calendar,
+  FileText,
+  AlertTriangle,
+  RefreshCw,
+  Download,
+  Search,
+  Filter,
+  X,
+  CheckCircle2,
+  Building2,
+  Globe,
+  Lightbulb,
+  Layers,
+  ShieldCheck,
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
-    meta: [
-      { title: "Dashboard — Nextwave" },
-      { name: "robots", content: "noindex,nofollow" },
-    ],
+    meta: [{ title: "Dashboard — Nextwave" }, { name: "robots", content: "noindex,nofollow" }],
   }),
   component: ErpDashboard,
 });
 
-type ErpModule = "overview" | "analytics" | "hr" | "finance" | "operations" | "projects" | "tasks" | "messages" | "settings" | "audit" | "contact" | "waitlist" | "marketing";
+type ErpModule =
+  | "overview"
+  | "analytics"
+  | "hr"
+  | "finance"
+  | "operations"
+  | "projects"
+  | "tasks"
+  | "messages"
+  | "settings"
+  | "audit"
+  | "contact"
+  | "waitlist"
+  | "marketing";
 
 type Contact = {
-  id: string; name: string; organization: string; email: string; intent: string; message: string; created_at: string;
+  id: string;
+  name: string;
+  organization: string;
+  email: string;
+  intent: string;
+  message: string;
+  created_at: string;
 };
 type Waitlist = { id: string; email: string; source: string; created_at: string };
 type AuditEntry = {
-  id: string; admin_email: string | null; action: string; target_table: string; target_id: string | null; metadata: Record<string, unknown>; created_at: string;
+  id: string;
+  admin_email: string | null;
+  action: string;
+  target_table: string;
+  target_id: string | null;
+  metadata: Record<string, unknown>;
+  created_at: string;
 };
 
 interface ModuleConfig {
@@ -43,19 +95,84 @@ interface ModuleConfig {
 }
 
 const MODULE_CONFIGS: Record<ErpModule, ModuleConfig> = {
-  overview: { id: "overview", label: "Overview", icon: <LayoutDashboard className="h-4 w-4" />, description: "Key metrics and summary" },
-  analytics: { id: "analytics", label: "Analytics", icon: <BarChart3 className="h-4 w-4" />, description: "Company-wide analytics" },
-  hr: { id: "hr", label: "HR", icon: <Users className="h-4 w-4" />, description: "Employee management" },
-  finance: { id: "finance", label: "Finance", icon: <Banknote className="h-4 w-4" />, description: "Financial overview" },
-  operations: { id: "operations", label: "Operations", icon: <Activity className="h-4 w-4" />, description: "Operational metrics" },
-  projects: { id: "projects", label: "Projects", icon: <Briefcase className="h-4 w-4" />, description: "Project tracking" },
-  tasks: { id: "tasks", label: "Tasks", icon: <CheckSquare className="h-4 w-4" />, description: "My tasks" },
-  messages: { id: "messages", label: "Messages", icon: <Mail className="h-4 w-4" />, description: "Staff messaging" },
-  settings: { id: "settings", label: "Settings", icon: <Settings className="h-4 w-4" />, description: "Account settings" },
-  audit: { id: "audit", label: "Audit", icon: <ScrollText className="h-4 w-4" />, description: "Activity log" },
-  contact: { id: "contact", label: "Contact", icon: <Inbox className="h-4 w-4" />, description: "Contact submissions" },
-  waitlist: { id: "waitlist", label: "Waitlist", icon: <Mail className="h-4 w-4" />, description: "Waitlist signups" },
-  marketing: { id: "marketing", label: "Marketing", icon: <Globe className="h-4 w-4" />, description: "Brand and outreach" },
+  overview: {
+    id: "overview",
+    label: "Overview",
+    icon: <LayoutDashboard className="h-4 w-4" />,
+    description: "Key metrics and summary",
+  },
+  analytics: {
+    id: "analytics",
+    label: "Analytics",
+    icon: <BarChart3 className="h-4 w-4" />,
+    description: "Company-wide analytics",
+  },
+  hr: {
+    id: "hr",
+    label: "HR",
+    icon: <Users className="h-4 w-4" />,
+    description: "Employee management",
+  },
+  finance: {
+    id: "finance",
+    label: "Finance",
+    icon: <Banknote className="h-4 w-4" />,
+    description: "Financial overview",
+  },
+  operations: {
+    id: "operations",
+    label: "Operations",
+    icon: <Activity className="h-4 w-4" />,
+    description: "Operational metrics",
+  },
+  projects: {
+    id: "projects",
+    label: "Projects",
+    icon: <Briefcase className="h-4 w-4" />,
+    description: "Project tracking",
+  },
+  tasks: {
+    id: "tasks",
+    label: "Tasks",
+    icon: <CheckSquare className="h-4 w-4" />,
+    description: "My tasks",
+  },
+  messages: {
+    id: "messages",
+    label: "Messages",
+    icon: <Mail className="h-4 w-4" />,
+    description: "Staff messaging",
+  },
+  settings: {
+    id: "settings",
+    label: "Settings",
+    icon: <Settings className="h-4 w-4" />,
+    description: "Account settings",
+  },
+  audit: {
+    id: "audit",
+    label: "Audit",
+    icon: <ScrollText className="h-4 w-4" />,
+    description: "Activity log",
+  },
+  contact: {
+    id: "contact",
+    label: "Contact",
+    icon: <Inbox className="h-4 w-4" />,
+    description: "Contact submissions",
+  },
+  waitlist: {
+    id: "waitlist",
+    label: "Waitlist",
+    icon: <Mail className="h-4 w-4" />,
+    description: "Waitlist signups",
+  },
+  marketing: {
+    id: "marketing",
+    label: "Marketing",
+    icon: <Globe className="h-4 w-4" />,
+    description: "Brand and outreach",
+  },
 };
 
 function ErpDashboard() {
@@ -115,7 +232,12 @@ function ErpDashboard() {
   }
 
   useEffect(() => {
-    if (allowedModules.includes("contact") || allowedModules.includes("waitlist") || allowedModules.includes("audit") || allowedModules.includes("marketing")) {
+    if (
+      allowedModules.includes("contact") ||
+      allowedModules.includes("waitlist") ||
+      allowedModules.includes("audit") ||
+      allowedModules.includes("marketing")
+    ) {
       loadData();
     }
   }, [allowedModules]);
@@ -134,12 +256,16 @@ function ErpDashboard() {
   return (
     <div className="min-h-screen bg-background text-foreground flex">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-hairline bg-background/95 backdrop-blur-lg flex flex-col transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-hairline bg-background/95 backdrop-blur-lg flex flex-col transition-transform duration-200 lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
+      >
         <div className="p-4 border-b border-hairline flex items-center gap-3">
           <Logo variant="square" className="h-8 w-8 shrink-0" />
           <div className="min-w-0">
             <div className="text-sm font-semibold truncate">Nextwave</div>
-            <div className="text-[10px] tracking-widest uppercase text-muted-foreground truncate">{roleLabel}</div>
+            <div className="text-[10px] tracking-widest uppercase text-muted-foreground truncate">
+              {roleLabel}
+            </div>
           </div>
         </div>
 
@@ -147,7 +273,10 @@ function ErpDashboard() {
           {visibleModules.map((mod) => (
             <button
               key={mod.id}
-              onClick={() => { setActiveModule(mod.id); setSidebarOpen(false); }}
+              onClick={() => {
+                setActiveModule(mod.id);
+                setSidebarOpen(false);
+              }}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
                 activeModule === mod.id
                   ? "bg-primary/10 text-primary font-medium"
@@ -178,7 +307,10 @@ function ErpDashboard() {
 
       {/* Overlay for mobile */}
       {sidebarOpen && (
-        <div className="fixed inset-0 z-30 bg-black/60 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div
+          className="fixed inset-0 z-30 bg-black/60 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
 
       {/* Main content */}
@@ -197,7 +329,9 @@ function ErpDashboard() {
               </button>
               <div>
                 <h2 className="text-sm font-semibold">{MODULE_CONFIGS[activeModule].label}</h2>
-                <p className="text-[10px] tracking-widest uppercase text-muted-foreground">{roleDescription}</p>
+                <p className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                  {roleDescription}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -209,7 +343,13 @@ function ErpDashboard() {
         <main className="p-4 lg:p-8">
           {/* Module views */}
           {activeModule === "overview" && (
-            <OverviewView erpRole={erpRole} userName={userName} contacts={contacts} waitlist={waitlist} audit={audit} />
+            <OverviewView
+              erpRole={erpRole}
+              userName={userName}
+              contacts={contacts}
+              waitlist={waitlist}
+              audit={audit}
+            />
           )}
           {activeModule === "analytics" && <AnalyticsView />}
           {activeModule === "hr" && <HRView erpRole={erpRole} />}
@@ -219,11 +359,26 @@ function ErpDashboard() {
           {activeModule === "tasks" && <TasksView userName={userName} />}
           {activeModule === "messages" && <MessagesView userEmail={userEmail} erpRole={erpRole} />}
           {activeModule === "settings" && (
-            <SettingsView userName={userName} userEmail={userEmail} erpRole={erpRole} department={department} title={title} onFlash={flash} />
+            <SettingsView
+              userName={userName}
+              userEmail={userEmail}
+              erpRole={erpRole}
+              department={department}
+              title={title}
+              onFlash={flash}
+            />
           )}
           {activeModule === "audit" && <AuditView audit={audit} />}
           {activeModule === "contact" && <ContactView contacts={contacts} onFlash={flash} />}
-          {activeModule === "waitlist" && <WaitlistView waitlist={waitlist} erpRole={erpRole} userEmail={userEmail} onFlash={flash} onRefresh={loadData} />}
+          {activeModule === "waitlist" && (
+            <WaitlistView
+              waitlist={waitlist}
+              erpRole={erpRole}
+              userEmail={userEmail}
+              onFlash={flash}
+              onRefresh={loadData}
+            />
+          )}
           {activeModule === "marketing" && <MarketingView />}
         </main>
       </div>
@@ -243,7 +398,19 @@ function ErpDashboard() {
 
 /* ─── OVERVIEW ─── */
 
-function OverviewView({ erpRole, userName, contacts, waitlist, audit }: { erpRole: ErpRole; userName: string; contacts: Contact[]; waitlist: Waitlist[]; audit: AuditEntry[] }) {
+function OverviewView({
+  erpRole,
+  userName,
+  contacts,
+  waitlist,
+  audit,
+}: {
+  erpRole: ErpRole;
+  userName: string;
+  contacts: Contact[];
+  waitlist: Waitlist[];
+  audit: AuditEntry[];
+}) {
   const now = Date.now();
   const since7 = now - 7 * 86400_000;
   const since30 = now - 30 * 86400_000;
@@ -274,14 +441,20 @@ function OverviewView({ erpRole, userName, contacts, waitlist, audit }: { erpRol
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Good to see you, {userName.split(" ")[0]}!</h1>
-        <p className="text-sm text-muted-foreground mt-1">{roleGreetings[erpRole] ?? "Your dashboard."}</p>
+        <h1 className="text-2xl font-bold tracking-tight">
+          Good to see you, {userName.split(" ")[0]}!
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">
+          {roleGreetings[erpRole] ?? "Your dashboard."}
+        </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {kpis.map((kpi) => (
           <div key={kpi.label} className="rounded-2xl glass-strong p-5">
-            <div className="text-[10px] tracking-widest uppercase text-muted-foreground">{kpi.label}</div>
+            <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+              {kpi.label}
+            </div>
             <div className="mt-2 text-3xl font-bold">{kpi.value}</div>
             <div className="mt-1 text-xs text-muted-foreground">{kpi.delta}</div>
           </div>
@@ -290,7 +463,9 @@ function OverviewView({ erpRole, userName, contacts, waitlist, audit }: { erpRol
 
       {/* 30-day chart */}
       <div className="rounded-2xl glass-strong p-6">
-        <h3 className="text-sm font-semibold inline-flex items-center gap-2"><TrendingUp className="h-4 w-4 text-brand-glow" /> 30-Day Activity</h3>
+        <h3 className="text-sm font-semibold inline-flex items-center gap-2">
+          <TrendingUp className="h-4 w-4 text-brand-glow" /> 30-Day Activity
+        </h3>
         <div className="mt-4 flex items-end gap-1 h-32 overflow-x-auto [&>*]:min-w-[10px]">
           {Array.from({ length: 30 }, (_, i) => {
             const d = new Date(now - (29 - i) * 86400_000);
@@ -298,16 +473,31 @@ function OverviewView({ erpRole, userName, contacts, waitlist, audit }: { erpRol
             const c = contacts.filter((x) => x.created_at.slice(0, 10) === key).length;
             const w = waitlist.filter((x) => x.created_at.slice(0, 10) === key).length;
             const total = c + w;
-            const max = Math.max(1, ...Array.from({ length: 30 }, (_, j) => {
-              const d2 = new Date(now - (29 - j) * 86400_000);
-              const k2 = d2.toISOString().slice(0, 10);
-              return contacts.filter((x) => x.created_at.slice(0, 10) === k2).length + waitlist.filter((x) => x.created_at.slice(0, 10) === k2).length;
-            }));
+            const max = Math.max(
+              1,
+              ...Array.from({ length: 30 }, (_, j) => {
+                const d2 = new Date(now - (29 - j) * 86400_000);
+                const k2 = d2.toISOString().slice(0, 10);
+                return (
+                  contacts.filter((x) => x.created_at.slice(0, 10) === k2).length +
+                  waitlist.filter((x) => x.created_at.slice(0, 10) === k2).length
+                );
+              }),
+            );
             return (
-              <div key={key} className="group relative flex-1 flex flex-col-reverse h-full" title={`${key}: ${total}`}>
-                <div className="bg-primary/60 rounded-t-sm transition-all hover:bg-primary/80" style={{ height: `${(total / max) * 100}%`, minHeight: total ? 2 : 0 }} />
+              <div
+                key={key}
+                className="group relative flex-1 flex flex-col-reverse h-full"
+                title={`${key}: ${total}`}
+              >
+                <div
+                  className="bg-primary/60 rounded-t-sm transition-all hover:bg-primary/80"
+                  style={{ height: `${(total / max) * 100}%`, minHeight: total ? 2 : 0 }}
+                />
                 {total > 0 && (
-                  <span className="pointer-events-none absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100">{total}</span>
+                  <span className="pointer-events-none absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] text-muted-foreground opacity-0 group-hover:opacity-100">
+                    {total}
+                  </span>
                 )}
               </div>
             );
@@ -317,15 +507,22 @@ function OverviewView({ erpRole, userName, contacts, waitlist, audit }: { erpRol
 
       {/* Recent activity */}
       <div className="rounded-2xl glass-strong p-6">
-        <h3 className="text-sm font-semibold inline-flex items-center gap-2"><Activity className="h-4 w-4 text-brand-glow" /> Recent activity</h3>
+        <h3 className="text-sm font-semibold inline-flex items-center gap-2">
+          <Activity className="h-4 w-4 text-brand-glow" /> Recent activity
+        </h3>
         <ul className="mt-4 divide-y divide-hairline">
           {audit.slice(0, 5).map((a) => (
             <li key={a.id} className="py-2.5 flex items-center justify-between text-xs">
-              <span><span className="text-foreground">{a.admin_email ?? "admin"}</span> {a.action} <span className="font-mono text-muted-foreground">{a.target_table}</span></span>
+              <span>
+                <span className="text-foreground">{a.admin_email ?? "admin"}</span> {a.action}{" "}
+                <span className="font-mono text-muted-foreground">{a.target_table}</span>
+              </span>
               <span className="text-muted-foreground">{fmtDate(a.created_at)}</span>
             </li>
           ))}
-          {audit.length === 0 && <li className="py-2.5 text-xs text-muted-foreground">No recent activity.</li>}
+          {audit.length === 0 && (
+            <li className="py-2.5 text-xs text-muted-foreground">No recent activity.</li>
+          )}
         </ul>
       </div>
     </div>
@@ -338,7 +535,9 @@ function AnalyticsView() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold tracking-tight">Analytics</h1>
-      <p className="text-sm text-muted-foreground">Company-wide analytics and performance metrics.</p>
+      <p className="text-sm text-muted-foreground">
+        Company-wide analytics and performance metrics.
+      </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {[
           { label: "Revenue MTD", value: "$--", icon: <DollarSign className="h-4 w-4" /> },
@@ -364,16 +563,76 @@ function AnalyticsView() {
 /* ─── HR ─── */
 
 const EMPLOYEES = [
-  { name: "Khalifa", email: "ceo@nextwave.com", role: "CEO", department: "Executive", status: "active" },
-  { name: "Ahmad Sani", email: "coo@nextwave.com", role: "COO", department: "Operations", status: "active" },
-  { name: "Musa Ibrahim", email: "operations@nextwave.com", role: "Head of Operations", department: "Operations", status: "active" },
-  { name: "Sarah Okafor", email: "programs@nextwave.com", role: "Head of Programs", department: "Programs", status: "active" },
-  { name: "Chidi Eze", email: "marketing@nextwave.com", role: "Head of Marketing", department: "Marketing", status: "active" },
-  { name: "Aisha Mohammed", email: "hr@nextwave.com", role: "HR Manager", department: "Human Resources", status: "active" },
-  { name: "Ibrahim Musa", email: "finance@nextwave.com", role: "Finance Manager", department: "Finance", status: "active" },
-  { name: "Fatima Usman", email: "pm@nextwave.com", role: "Project Manager", department: "Projects", status: "active" },
-  { name: "Ahmad Salisu", email: "ahmadsalisu@nextwave.com", role: "Software Engineer", department: "Engineering", status: "active" },
-  { name: "Zainab Abdullah", email: "member@nextwave.com", role: "Junior Developer", department: "Engineering", status: "active" },
+  {
+    name: "Khalifa",
+    email: "ceo@nextwave.com",
+    role: "CEO",
+    department: "Executive",
+    status: "active",
+  },
+  {
+    name: "Ahmad Sani",
+    email: "coo@nextwave.com",
+    role: "COO",
+    department: "Operations",
+    status: "active",
+  },
+  {
+    name: "Musa Ibrahim",
+    email: "operations@nextwave.com",
+    role: "Head of Operations",
+    department: "Operations",
+    status: "active",
+  },
+  {
+    name: "Sarah Okafor",
+    email: "programs@nextwave.com",
+    role: "Head of Programs",
+    department: "Programs",
+    status: "active",
+  },
+  {
+    name: "Chidi Eze",
+    email: "marketing@nextwave.com",
+    role: "Head of Marketing",
+    department: "Marketing",
+    status: "active",
+  },
+  {
+    name: "Aisha Mohammed",
+    email: "hr@nextwave.com",
+    role: "HR Manager",
+    department: "Human Resources",
+    status: "active",
+  },
+  {
+    name: "Ibrahim Musa",
+    email: "finance@nextwave.com",
+    role: "Finance Manager",
+    department: "Finance",
+    status: "active",
+  },
+  {
+    name: "Fatima Usman",
+    email: "pm@nextwave.com",
+    role: "Project Manager",
+    department: "Projects",
+    status: "active",
+  },
+  {
+    name: "Ahmad Salisu",
+    email: "ahmadsalisu@nextwave.com",
+    role: "Software Engineer",
+    department: "Engineering",
+    status: "active",
+  },
+  {
+    name: "Zainab Abdullah",
+    email: "member@nextwave.com",
+    role: "Junior Developer",
+    department: "Engineering",
+    status: "active",
+  },
 ];
 
 function HRView({ erpRole }: { erpRole: ErpRole }) {
@@ -388,13 +647,23 @@ function HRView({ erpRole }: { erpRole: ErpRole }) {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: "Total Employees", value: EMPLOYEES.length, icon: <Users className="h-4 w-4" /> },
+          {
+            label: "Total Employees",
+            value: EMPLOYEES.length,
+            icon: <Users className="h-4 w-4" />,
+          },
           { label: "Departments", value: 6, icon: <Building2 className="h-4 w-4" /> },
-          { label: "Active", value: EMPLOYEES.filter((e) => e.status === "active").length, icon: <CheckCircle2 className="h-4 w-4" /> },
+          {
+            label: "Active",
+            value: EMPLOYEES.filter((e) => e.status === "active").length,
+            icon: <CheckCircle2 className="h-4 w-4" />,
+          },
           { label: "New This Month", value: 0, icon: <UserCircle className="h-4 w-4" /> },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl glass-strong p-5">
-            <div className="flex items-center gap-2 text-[10px] tracking-widest uppercase text-muted-foreground">{s.icon} {s.label}</div>
+            <div className="flex items-center gap-2 text-[10px] tracking-widest uppercase text-muted-foreground">
+              {s.icon} {s.label}
+            </div>
             <div className="mt-2 text-3xl font-bold">{s.value}</div>
           </div>
         ))}
@@ -413,7 +682,10 @@ function HRView({ erpRole }: { erpRole: ErpRole }) {
           </thead>
           <tbody>
             {EMPLOYEES.map((emp) => (
-              <tr key={emp.email} className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] transition">
+              <tr
+                key={emp.email}
+                className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] transition"
+              >
                 <td className="px-5 py-4 font-medium">{emp.name}</td>
                 <td className="px-5 py-4 text-brand-glow">{emp.email}</td>
                 <td className="px-5 py-4 text-muted-foreground">{emp.role}</td>
@@ -447,7 +719,9 @@ function FinanceView() {
           { label: "Burn Rate", value: "--%", format: false },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl glass-strong p-5">
-            <div className="text-[10px] tracking-widest uppercase text-muted-foreground">{s.label}</div>
+            <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+              {s.label}
+            </div>
             <div className="mt-2 text-3xl font-bold">{s.value}</div>
           </div>
         ))}
@@ -474,7 +748,9 @@ function OperationsView() {
           { label: "Pending Tasks", value: 12, icon: <Clock className="h-4 w-4" /> },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl glass-strong p-5">
-            <div className="flex items-center gap-2 text-[10px] tracking-widest uppercase text-muted-foreground">{s.icon} {s.label}</div>
+            <div className="flex items-center gap-2 text-[10px] tracking-widest uppercase text-muted-foreground">
+              {s.icon} {s.label}
+            </div>
             <div className="mt-2 text-3xl font-bold">{s.value}</div>
           </div>
         ))}
@@ -487,16 +763,25 @@ function OperationsView() {
             { title: "NerdHaven Platform v2", date: "Sep 15, 2026", status: "at-risk" },
             { title: "Annual Report", date: "Dec 31, 2026", status: "planning" },
           ].map((m) => (
-            <div key={m.title} className="flex items-center justify-between border-b border-hairline pb-3 last:border-0 last:pb-0">
+            <div
+              key={m.title}
+              className="flex items-center justify-between border-b border-hairline pb-3 last:border-0 last:pb-0"
+            >
               <div>
                 <div className="text-sm font-medium">{m.title}</div>
                 <div className="text-xs text-muted-foreground">{m.date}</div>
               </div>
-              <span className={`text-[10px] tracking-widest uppercase rounded-full px-2.5 py-1 ${
-                m.status === "on-track" ? "bg-emerald-500/10 text-emerald-400" :
-                m.status === "at-risk" ? "bg-amber-500/10 text-amber-400" :
-                "bg-blue-500/10 text-blue-400"
-              }`}>{m.status}</span>
+              <span
+                className={`text-[10px] tracking-widest uppercase rounded-full px-2.5 py-1 ${
+                  m.status === "on-track"
+                    ? "bg-emerald-500/10 text-emerald-400"
+                    : m.status === "at-risk"
+                      ? "bg-amber-500/10 text-amber-400"
+                      : "bg-blue-500/10 text-blue-400"
+                }`}
+              >
+                {m.status}
+              </span>
             </div>
           ))}
         </div>
@@ -509,20 +794,40 @@ function OperationsView() {
 
 const PROJECTS_LIST = [
   {
-    id: "1", name: "AI Bootcamp Q3", lead: "Fatima Usman", status: "in-progress",
-    progress: 65, deadline: "Aug 15, 2026", priority: "high",
+    id: "1",
+    name: "AI Bootcamp Q3",
+    lead: "Fatima Usman",
+    status: "in-progress",
+    progress: 65,
+    deadline: "Aug 15, 2026",
+    priority: "high",
   },
   {
-    id: "2", name: "NerdHaven Platform", lead: "Ahmad Sani", status: "in-progress",
-    progress: 40, deadline: "Sep 30, 2026", priority: "high",
+    id: "2",
+    name: "NerdHaven Platform",
+    lead: "Ahmad Sani",
+    status: "in-progress",
+    progress: 40,
+    deadline: "Sep 30, 2026",
+    priority: "high",
   },
   {
-    id: "3", name: "Community Outreach", lead: "Aisha Mohammed", status: "planning",
-    progress: 15, deadline: "Oct 1, 2026", priority: "medium",
+    id: "3",
+    name: "Community Outreach",
+    lead: "Aisha Mohammed",
+    status: "planning",
+    progress: 15,
+    deadline: "Oct 1, 2026",
+    priority: "medium",
   },
   {
-    id: "4", name: "Digital Health Initiative", lead: "Khalifa", status: "planning",
-    progress: 10, deadline: "Dec 31, 2026", priority: "medium",
+    id: "4",
+    name: "Digital Health Initiative",
+    lead: "Khalifa",
+    status: "planning",
+    progress: 10,
+    deadline: "Dec 31, 2026",
+    priority: "medium",
   },
 ];
 
@@ -534,12 +839,20 @@ function ProjectsView({ erpRole }: { erpRole: ErpRole }) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
           { label: "Total Projects", value: PROJECTS_LIST.length },
-          { label: "In Progress", value: PROJECTS_LIST.filter((p) => p.status === "in-progress").length },
+          {
+            label: "In Progress",
+            value: PROJECTS_LIST.filter((p) => p.status === "in-progress").length,
+          },
           { label: "Planning", value: PROJECTS_LIST.filter((p) => p.status === "planning").length },
-          { label: "Completed", value: PROJECTS_LIST.filter((p) => p.status === "completed").length },
+          {
+            label: "Completed",
+            value: PROJECTS_LIST.filter((p) => p.status === "completed").length,
+          },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl glass-strong p-5">
-            <div className="text-[10px] tracking-widest uppercase text-muted-foreground">{s.label}</div>
+            <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+              {s.label}
+            </div>
             <div className="mt-2 text-3xl font-bold">{s.value}</div>
           </div>
         ))}
@@ -558,29 +871,47 @@ function ProjectsView({ erpRole }: { erpRole: ErpRole }) {
           </thead>
           <tbody>
             {PROJECTS_LIST.map((p) => (
-              <tr key={p.id} className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] transition">
+              <tr
+                key={p.id}
+                className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] transition"
+              >
                 <td className="px-5 py-4 font-medium">{p.name}</td>
                 <td className="px-5 py-4 text-muted-foreground">{p.lead}</td>
                 <td className="px-5 py-4">
-                  <span className={`rounded-full text-[10px] tracking-widest uppercase px-2.5 py-1 ${
-                    p.status === "in-progress" ? "bg-brand-purple/10 text-brand-glow" :
-                    p.status === "planning" ? "bg-blue-500/10 text-blue-400" :
-                    "bg-emerald-500/10 text-emerald-400"
-                  }`}>{p.status}</span>
+                  <span
+                    className={`rounded-full text-[10px] tracking-widest uppercase px-2.5 py-1 ${
+                      p.status === "in-progress"
+                        ? "bg-brand-purple/10 text-brand-glow"
+                        : p.status === "planning"
+                          ? "bg-blue-500/10 text-blue-400"
+                          : "bg-emerald-500/10 text-emerald-400"
+                    }`}
+                  >
+                    {p.status}
+                  </span>
                 </td>
                 <td className="px-5 py-4">
                   <div className="flex items-center gap-2">
                     <div className="flex-1 h-1.5 rounded-full bg-foreground/5 overflow-hidden w-24">
-                      <div className="h-full rounded-full bg-primary" style={{ width: `${p.progress}%` }} />
+                      <div
+                        className="h-full rounded-full bg-primary"
+                        style={{ width: `${p.progress}%` }}
+                      />
                     </div>
                     <span className="text-xs text-muted-foreground">{p.progress}%</span>
                   </div>
                 </td>
                 <td className="px-5 py-4 text-muted-foreground">{p.deadline}</td>
                 <td className="px-5 py-4">
-                  <span className={`rounded-full text-[10px] tracking-widest uppercase px-2.5 py-1 ${
-                    p.priority === "high" ? "bg-destructive/10 text-destructive" : "bg-amber-500/10 text-amber-400"
-                  }`}>{p.priority}</span>
+                  <span
+                    className={`rounded-full text-[10px] tracking-widest uppercase px-2.5 py-1 ${
+                      p.priority === "high"
+                        ? "bg-destructive/10 text-destructive"
+                        : "bg-amber-500/10 text-amber-400"
+                    }`}
+                  >
+                    {p.priority}
+                  </span>
                 </td>
               </tr>
             ))}
@@ -608,8 +939,20 @@ function TasksView({ userName }: { userName: string }) {
 
 /* ─── SETTINGS ─── */
 
-function SettingsView({ userName, userEmail, erpRole, department, title, onFlash }: {
-  userName: string; userEmail: string; erpRole: ErpRole; department: string; title: string; onFlash: (msg: string) => void;
+function SettingsView({
+  userName,
+  userEmail,
+  erpRole,
+  department,
+  title,
+  onFlash,
+}: {
+  userName: string;
+  userEmail: string;
+  erpRole: ErpRole;
+  department: string;
+  title: string;
+  onFlash: (msg: string) => void;
 }) {
   return (
     <div className="space-y-6">
@@ -618,23 +961,33 @@ function SettingsView({ userName, userEmail, erpRole, department, title, onFlash
       <div className="max-w-2xl rounded-2xl glass-strong p-6 space-y-5">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">Name</label>
+            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">
+              Name
+            </label>
             <p className="mt-1 text-sm font-medium">{userName}</p>
           </div>
           <div>
-            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">Email</label>
+            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">
+              Email
+            </label>
             <p className="mt-1 text-sm text-brand-glow">{userEmail}</p>
           </div>
           <div>
-            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">Role</label>
+            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">
+              Role
+            </label>
             <p className="mt-1 text-sm font-medium capitalize">{erpRole.replace("-", " ")}</p>
           </div>
           <div>
-            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">Department</label>
+            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">
+              Department
+            </label>
             <p className="mt-1 text-sm capitalize">{department.replace("-", " ")}</p>
           </div>
           <div className="col-span-2">
-            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">Title</label>
+            <label className="text-[10px] tracking-widest uppercase text-muted-foreground">
+              Title
+            </label>
             <p className="mt-1 text-sm">{title}</p>
           </div>
         </div>
@@ -663,8 +1016,17 @@ function AuditView({ audit }: { audit: AuditEntry[] }) {
           onClick={() => {
             const csv = [
               ["created_at", "admin_email", "action", "target_table", "target_id", "metadata"],
-              ...audit.map((a) => [a.created_at, a.admin_email ?? "", a.action, a.target_table, a.target_id ?? "", JSON.stringify(a.metadata)]),
-            ].map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
+              ...audit.map((a) => [
+                a.created_at,
+                a.admin_email ?? "",
+                a.action,
+                a.target_table,
+                a.target_id ?? "",
+                JSON.stringify(a.metadata),
+              ]),
+            ]
+              .map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(","))
+              .join("\n");
             const blob = new Blob([csv], { type: "text/csv" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
@@ -691,20 +1053,34 @@ function AuditView({ audit }: { audit: AuditEntry[] }) {
           </thead>
           <tbody>
             {audit.length === 0 && (
-              <tr><td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">No admin actions recorded yet.</td></tr>
+              <tr>
+                <td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">
+                  No admin actions recorded yet.
+                </td>
+              </tr>
             )}
             {audit.map((a) => (
               <tr key={a.id} className="border-b border-hairline last:border-0">
-                <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">{fmtDate(a.created_at)}</td>
+                <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">
+                  {fmtDate(a.created_at)}
+                </td>
                 <td className="px-5 py-4">{a.admin_email ?? "—"}</td>
                 <td className="px-5 py-4">
-                  <span className="rounded-full bg-destructive/10 text-destructive text-[10px] tracking-widest uppercase px-2.5 py-1">{a.action}</span>
+                  <span className="rounded-full bg-destructive/10 text-destructive text-[10px] tracking-widest uppercase px-2.5 py-1">
+                    {a.action}
+                  </span>
                 </td>
-                <td className="px-5 py-4 text-muted-foreground font-mono text-xs">{a.target_table}</td>
+                <td className="px-5 py-4 text-muted-foreground font-mono text-xs">
+                  {a.target_table}
+                </td>
                 <td className="px-5 py-4 text-muted-foreground text-xs">
-                  {Object.entries(a.metadata).slice(0, 3).map(([k, v]) => (
-                    <span key={k} className="mr-3"><span className="text-foreground/60">{k}:</span> {String(v)}</span>
-                  ))}
+                  {Object.entries(a.metadata)
+                    .slice(0, 3)
+                    .map(([k, v]) => (
+                      <span key={k} className="mr-3">
+                        <span className="text-foreground/60">{k}:</span> {String(v)}
+                      </span>
+                    ))}
                 </td>
               </tr>
             ))}
@@ -717,7 +1093,13 @@ function AuditView({ audit }: { audit: AuditEntry[] }) {
 
 /* ─── CONTACT ─── */
 
-function ContactView({ contacts, onFlash }: { contacts: Contact[]; onFlash: (msg: string) => void }) {
+function ContactView({
+  contacts,
+  onFlash,
+}: {
+  contacts: Contact[];
+  onFlash: (msg: string) => void;
+}) {
   const [search, setSearch] = useState("");
   const [intent, setIntent] = useState<string>("all");
   const [selected, setSelected] = useState<Contact | null>(null);
@@ -737,14 +1119,22 @@ function ContactView({ contacts, onFlash }: { contacts: Contact[]; onFlash: (msg
     };
   }, [selected]);
 
-  const intents = useMemo(() => Array.from(new Set(contacts.map((c) => c.intent))).sort(), [contacts]);
+  const intents = useMemo(
+    () => Array.from(new Set(contacts.map((c) => c.intent))).sort(),
+    [contacts],
+  );
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return contacts.filter((c) => {
       if (intent !== "all" && c.intent !== intent) return false;
       if (!q) return true;
-      return c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q) || c.organization.toLowerCase().includes(q) || c.message.toLowerCase().includes(q);
+      return (
+        c.name.toLowerCase().includes(q) ||
+        c.email.toLowerCase().includes(q) ||
+        c.organization.toLowerCase().includes(q) ||
+        c.message.toLowerCase().includes(q)
+      );
     });
   }, [contacts, search, intent]);
 
@@ -754,14 +1144,27 @@ function ContactView({ contacts, onFlash }: { contacts: Contact[]; onFlash: (msg
       <div className="flex flex-wrap items-center gap-2">
         <div className="relative flex-1 min-w-[220px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search name, email, org…" className="w-full rounded-full border border-hairline bg-surface pl-10 pr-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary" />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search name, email, org…"
+            className="w-full rounded-full border border-hairline bg-surface pl-10 pr-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+          />
         </div>
         {intents.length > 0 && (
           <div className="relative">
             <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground pointer-events-none" />
-            <select value={intent} onChange={(e) => setIntent(e.target.value)} className="appearance-none rounded-full border border-hairline bg-surface pl-9 pr-8 py-2 text-sm focus:outline-none focus:border-primary">
+            <select
+              value={intent}
+              onChange={(e) => setIntent(e.target.value)}
+              className="appearance-none rounded-full border border-hairline bg-surface pl-9 pr-8 py-2 text-sm focus:outline-none focus:border-primary"
+            >
               <option value="all">All intents</option>
-              {intents.map((i) => <option key={i} value={i}>{i}</option>)}
+              {intents.map((i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
             </select>
           </div>
         )}
@@ -778,10 +1181,22 @@ function ContactView({ contacts, onFlash }: { contacts: Contact[]; onFlash: (msg
             </tr>
           </thead>
           <tbody>
-            {filtered.length === 0 && <tr><td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">No submissions match.</td></tr>}
+            {filtered.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">
+                  No submissions match.
+                </td>
+              </tr>
+            )}
             {filtered.map((c) => (
-              <tr key={c.id} onClick={() => setSelected(c)} className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] cursor-pointer transition">
-                <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">{fmtDate(c.created_at)}</td>
+              <tr
+                key={c.id}
+                onClick={() => setSelected(c)}
+                className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] cursor-pointer transition"
+              >
+                <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">
+                  {fmtDate(c.created_at)}
+                </td>
                 <td className="px-5 py-4">{c.name}</td>
                 <td className="px-5 py-4 text-muted-foreground">{c.organization}</td>
                 <td className="px-5 py-4 text-brand-glow">{c.email}</td>
@@ -792,7 +1207,10 @@ function ContactView({ contacts, onFlash }: { contacts: Contact[]; onFlash: (msg
         </table>
       </div>
       {selected && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur grid place-items-center p-6" onClick={() => setSelected(null)}>
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur grid place-items-center p-6"
+          onClick={() => setSelected(null)}
+        >
           <div
             role="dialog"
             aria-modal="true"
@@ -802,15 +1220,33 @@ function ContactView({ contacts, onFlash }: { contacts: Contact[]; onFlash: (msg
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="text-[10px] tracking-widest uppercase text-muted-foreground">{fmtDate(selected.created_at)}</div>
-                <h2 id="contact-detail-title" className="mt-1 text-xl font-semibold">{selected.name}</h2>
-                <div className="mt-1 text-sm text-muted-foreground">{selected.organization} · <a className="text-brand-glow" href={`mailto:${selected.email}`}>{selected.email}</a></div>
+                <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
+                  {fmtDate(selected.created_at)}
+                </div>
+                <h2 id="contact-detail-title" className="mt-1 text-xl font-semibold">
+                  {selected.name}
+                </h2>
+                <div className="mt-1 text-sm text-muted-foreground">
+                  {selected.organization} ·{" "}
+                  <a className="text-brand-glow" href={`mailto:${selected.email}`}>
+                    {selected.email}
+                  </a>
+                </div>
               </div>
-              <span className="text-[10px] tracking-widest uppercase text-brand-glow border border-brand-purple/40 bg-brand-purple/10 rounded-full px-3 py-1">{selected.intent}</span>
+              <span className="text-[10px] tracking-widest uppercase text-brand-glow border border-brand-purple/40 bg-brand-purple/10 rounded-full px-3 py-1">
+                {selected.intent}
+              </span>
             </div>
-            <div className="mt-6 rounded-xl bg-surface-elevated border border-hairline p-5 text-sm whitespace-pre-wrap leading-relaxed">{selected.message}</div>
+            <div className="mt-6 rounded-xl bg-surface-elevated border border-hairline p-5 text-sm whitespace-pre-wrap leading-relaxed">
+              {selected.message}
+            </div>
             <div className="mt-6 flex justify-end gap-2">
-              <button onClick={() => setSelected(null)} className="rounded-full border border-hairline px-4 py-2 text-xs hover:bg-foreground/5">Close</button>
+              <button
+                onClick={() => setSelected(null)}
+                className="rounded-full border border-hairline px-4 py-2 text-xs hover:bg-foreground/5"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
@@ -821,8 +1257,18 @@ function ContactView({ contacts, onFlash }: { contacts: Contact[]; onFlash: (msg
 
 /* ─── WAITLIST ─── */
 
-function WaitlistView({ waitlist, erpRole, userEmail, onFlash, onRefresh }: {
-  waitlist: Waitlist[]; erpRole: ErpRole; userEmail: string; onFlash: (msg: string) => void; onRefresh: () => void;
+function WaitlistView({
+  waitlist,
+  erpRole,
+  userEmail,
+  onFlash,
+  onRefresh,
+}: {
+  waitlist: Waitlist[];
+  erpRole: ErpRole;
+  userEmail: string;
+  onFlash: (msg: string) => void;
+  onRefresh: () => void;
 }) {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"pending" | "approved" | "rejected" | "all">("pending");
@@ -831,7 +1277,8 @@ function WaitlistView({ waitlist, erpRole, userEmail, onFlash, onRefresh }: {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return waitlist.filter((w: any) => {
-      if (tab !== "all" && (w as any).status !== tab && !(tab === "pending" && !(w as any).status)) return false;
+      if (tab !== "all" && (w as any).status !== tab && !(tab === "pending" && !(w as any).status))
+        return false;
       if (!q) return true;
       return w.email.toLowerCase().includes(q) || w.source.toLowerCase().includes(q);
     });
@@ -862,7 +1309,9 @@ function WaitlistView({ waitlist, erpRole, userEmail, onFlash, onRefresh }: {
     onRefresh();
   }
 
-  const pending = waitlist.filter((w: any) => !(w as any).status || (w as any).status === "pending");
+  const pending = waitlist.filter(
+    (w: any) => !(w as any).status || (w as any).status === "pending",
+  );
 
   return (
     <div className="space-y-4">
@@ -878,13 +1327,22 @@ function WaitlistView({ waitlist, erpRole, userEmail, onFlash, onRefresh }: {
       <div className="flex flex-wrap items-center gap-2">
         <div className="relative flex-1 min-w-[220px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search email or source…" className="w-full rounded-full border border-hairline bg-surface pl-10 pr-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary" />
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search email or source…"
+            className="w-full rounded-full border border-hairline bg-surface pl-10 pr-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary"
+          />
         </div>
         <div className="flex rounded-full border border-hairline overflow-hidden">
           {(["pending", "approved", "rejected", "all"] as const).map((t) => (
-            <button key={t} onClick={() => setTab(t)}
+            <button
+              key={t}
+              onClick={() => setTab(t)}
               className={`px-3 py-2 text-xs uppercase tracking-wider transition ${tab === t ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
-            >{t}</button>
+            >
+              {t}
+            </button>
           ))}
         </div>
       </div>
@@ -902,28 +1360,54 @@ function WaitlistView({ waitlist, erpRole, userEmail, onFlash, onRefresh }: {
           </thead>
           <tbody>
             {filtered.length === 0 && (
-              <tr><td colSpan={isHoo ? 5 : 4} className="px-5 py-10 text-center text-muted-foreground">No signups match.</td></tr>
+              <tr>
+                <td
+                  colSpan={isHoo ? 5 : 4}
+                  className="px-5 py-10 text-center text-muted-foreground"
+                >
+                  No signups match.
+                </td>
+              </tr>
             )}
             {filtered.map((w: any) => (
-              <tr key={w.id} className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] transition">
-                <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">{fmtDate(w.created_at)}</td>
+              <tr
+                key={w.id}
+                className="border-b border-hairline last:border-0 hover:bg-foreground/[0.03] transition"
+              >
+                <td className="px-5 py-4 text-muted-foreground whitespace-nowrap">
+                  {fmtDate(w.created_at)}
+                </td>
                 <td className="px-5 py-4 text-brand-glow">{w.email}</td>
                 <td className="px-5 py-4 text-muted-foreground">{w.source}</td>
                 <td className="px-5 py-4">
-                  <span className={`inline-flex items-center gap-1 rounded-full text-[10px] tracking-widest uppercase px-2.5 py-1 ${
-                    w.status === "approved" ? "bg-emerald-500/10 text-emerald-400" :
-                    w.status === "rejected" ? "bg-destructive/10 text-destructive" :
-                    "bg-amber-500/10 text-amber-400"
-                  }`}>
+                  <span
+                    className={`inline-flex items-center gap-1 rounded-full text-[10px] tracking-widest uppercase px-2.5 py-1 ${
+                      w.status === "approved"
+                        ? "bg-emerald-500/10 text-emerald-400"
+                        : w.status === "rejected"
+                          ? "bg-destructive/10 text-destructive"
+                          : "bg-amber-500/10 text-amber-400"
+                    }`}
+                  >
                     {w.status ?? "pending"}
                   </span>
                 </td>
                 {isHoo && (
                   <td className="px-5 py-4">
-                    {(!w.status || w.status === "pending") ? (
+                    {!w.status || w.status === "pending" ? (
                       <div className="flex items-center gap-1.5">
-                        <button onClick={() => approve(w)} className="rounded-full bg-emerald-500/10 text-emerald-400 px-3 py-1 text-xs hover:bg-emerald-500/20">Approve</button>
-                        <button onClick={() => reject(w)} className="rounded-full bg-destructive/10 text-destructive px-3 py-1 text-xs hover:bg-destructive/20">Reject</button>
+                        <button
+                          onClick={() => approve(w)}
+                          className="rounded-full bg-emerald-500/10 text-emerald-400 px-3 py-1 text-xs hover:bg-emerald-500/20"
+                        >
+                          Approve
+                        </button>
+                        <button
+                          onClick={() => reject(w)}
+                          className="rounded-full bg-destructive/10 text-destructive px-3 py-1 text-xs hover:bg-destructive/20"
+                        >
+                          Reject
+                        </button>
                       </div>
                     ) : (
                       <span className="text-xs text-muted-foreground">—</span>
@@ -942,7 +1426,12 @@ function WaitlistView({ waitlist, erpRole, userEmail, onFlash, onRefresh }: {
 /* ─── MESSAGES ─── */
 
 function MessagesView({ userEmail, erpRole }: { userEmail: string; erpRole: ErpRole }) {
-  return <StaffMessaging staffRole={erpRole === "ceo" || erpRole === "coo" ? erpRole : "member"} userEmail={userEmail} />;
+  return (
+    <StaffMessaging
+      staffRole={erpRole === "ceo" || erpRole === "coo" ? erpRole : "member"}
+      userEmail={userEmail}
+    />
+  );
 }
 
 /* ─── MARKETING ─── */
@@ -951,7 +1440,9 @@ function MarketingView() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold tracking-tight">Marketing</h1>
-      <p className="text-sm text-muted-foreground">Brand strategy, outreach campaigns, and growth metrics.</p>
+      <p className="text-sm text-muted-foreground">
+        Brand strategy, outreach campaigns, and growth metrics.
+      </p>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
           { label: "Active Campaigns", value: 3, icon: <Globe className="h-4 w-4" /> },
@@ -960,7 +1451,9 @@ function MarketingView() {
           { label: "Social Reach", value: "--", icon: <TrendingUp className="h-4 w-4" /> },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl glass-strong p-5">
-            <div className="flex items-center gap-2 text-[10px] tracking-widest uppercase text-muted-foreground">{s.icon} {s.label}</div>
+            <div className="flex items-center gap-2 text-[10px] tracking-widest uppercase text-muted-foreground">
+              {s.icon} {s.label}
+            </div>
             <div className="mt-2 text-3xl font-bold">{s.value}</div>
           </div>
         ))}
@@ -977,7 +1470,10 @@ function MarketingView() {
 
 function fmtDate(d: string) {
   return new Date(d).toLocaleString(undefined, {
-    year: "numeric", month: "short", day: "numeric",
-    hour: "2-digit", minute: "2-digit",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }

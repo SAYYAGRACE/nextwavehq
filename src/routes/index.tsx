@@ -690,9 +690,9 @@ function NerdHaven() {
                 />
               </div>
               <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 rounded-full border border-brand-purple/40 bg-brand-purple/10 px-3 py-1">
+                <div className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.03] px-3 py-1">
                   <Sparkles className="h-3 w-3 text-brand-glow" />
-                  <span className="text-[11px] font-medium tracking-widest uppercase text-brand-glow">
+                  <span className="text-[11px] font-medium tracking-widest uppercase text-muted-foreground">
                     Coming Soon
                   </span>
                 </div>
@@ -719,7 +719,7 @@ function NerdHaven() {
                     <span className="text-[10px] tracking-widest uppercase text-muted-foreground">
                       Track {t.n}
                     </span>
-                    <span className="rounded-full border border-brand-glow/30 bg-brand-glow/10 px-3 py-0.5 text-[10px] tracking-widest uppercase text-brand-glow">
+                    <span className="rounded-full border border-hairline bg-white/[0.03] px-3 py-0.5 text-[10px] tracking-widest uppercase text-muted-foreground">
                       {t.target}
                     </span>
                   </div>
@@ -751,7 +751,7 @@ function NerdHaven() {
             <button
               type="submit"
               disabled={state === "loading"}
-              className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03] disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110 disabled:opacity-60"
               style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
             >
               {state === "loading" ? "Joining..." : "Join NerdHaven Waitlist"}
@@ -843,10 +843,8 @@ function CtaBand() {
     <section className="relative py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
-          <div className="relative overflow-hidden rounded-3xl glass-strong px-8 py-14 sm:px-14 text-center border border-brand-purple/20">
-            <Aurora className="opacity-30" />
-            <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-96 w-96 rounded-full bg-brand-purple/25 blur-[130px]" />
-            <div className="absolute inset-0 grid-bg opacity-20 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
+          <div className="relative overflow-hidden rounded-3xl border border-hairline bg-white/[0.02] px-8 py-14 sm:px-14 text-center">
+            <Aurora className="opacity-40" />
             <div className="relative">
               <div className="relative grid h-16 w-16 place-items-center rounded-2xl gradient-border glass mx-auto">
                 <Rocket className="h-7 w-7 text-brand-glow" strokeWidth={1.5} />
@@ -862,7 +860,7 @@ function CtaBand() {
                 <Magnetic strength={0.3}>
                   <Link
                     to="/contact"
-                    className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.04]"
+                    className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110"
                     style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
                   >
                     Join the Movement
@@ -871,7 +869,7 @@ function CtaBand() {
                 </Magnetic>
                 <Link
                   to="/projects"
-                  className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white glass-strong hover:bg-white/5 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white border border-hairline bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
                 >
                   <Users className="h-4 w-4" />
                   See Our Initiatives

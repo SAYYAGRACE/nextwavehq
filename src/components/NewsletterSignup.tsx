@@ -36,11 +36,12 @@ export function NewsletterSignup({
   }
 
   return (
-    <div className={`relative overflow-hidden rounded-3xl glass-strong p-8 sm:p-12 ${className}`}>
-      <div className="absolute -top-32 -right-16 h-72 w-72 rounded-full bg-brand-purple/10 blur-[120px]" />
+    <div
+      className={`relative overflow-hidden rounded-3xl border border-hairline bg-white/[0.02] p-8 sm:p-12 ${className}`}
+    >
       <div className="relative grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
         <div>
-          <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase text-brand-glow">
+          <span className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase text-muted-foreground">
             <Mail className="h-3 w-3" /> Stay Connected
           </span>
           <h3 className="mt-4 text-2xl sm:text-3xl font-bold text-white tracking-tight">{title}</h3>
@@ -65,7 +66,7 @@ export function NewsletterSignup({
             <button
               type="submit"
               disabled={state === "loading"}
-              className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03] disabled:opacity-60 whitespace-nowrap"
+              className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110 disabled:opacity-60 whitespace-nowrap"
               style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
             >
               {state === "loading" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Subscribe"}

@@ -46,8 +46,12 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
       className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-hairline text-foreground hover:bg-foreground/5 transition-colors ${className}`}
     >
-      <Sun className={`h-4 w-4 transition-all ${theme === "dark" ? "scale-0 -rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"}`} />
-      <Moon className={`absolute h-4 w-4 transition-all ${theme === "dark" ? "scale-100 rotate-0 opacity-100" : "scale-0 rotate-90 opacity-0"}`} />
+      <Sun
+        className={`h-4 w-4 transition-all ${theme === "dark" ? "scale-0 -rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"}`}
+      />
+      <Moon
+        className={`absolute h-4 w-4 transition-all ${theme === "dark" ? "scale-100 rotate-0 opacity-100" : "scale-0 rotate-90 opacity-0"}`}
+      />
     </button>
   );
 }

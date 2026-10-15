@@ -4,7 +4,6 @@ import specterverseLogo from "../assets/partners/specterverse.png";
 export function PartnerStrip() {
   return (
     <section className="relative py-16 lg:py-20 border-t border-hairline overflow-hidden">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10 text-center">
         <p className="text-[10px] tracking-[0.25em] uppercase text-muted-foreground mb-8">
           Approved and Partnered With
@@ -17,7 +16,7 @@ export function PartnerStrip() {
             height={272}
             loading="lazy"
             decoding="async"
-            className="h-12 sm:h-14 w-auto object-contain opacity-90 hover:opacity-100 hover:scale-110 transition-all duration-300"
+            className="h-12 sm:h-14 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
           />
           <img
             src={specterverseLogo}
@@ -26,7 +25,7 @@ export function PartnerStrip() {
             height={735}
             loading="lazy"
             decoding="async"
-            className="h-12 sm:h-14 w-auto object-contain opacity-90 hover:opacity-100 hover:scale-110 transition-all duration-300"
+            className="h-12 sm:h-14 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
           />
           <span className="text-sm sm:text-base font-semibold tracking-wide text-white/80 hover:text-white transition-colors duration-300 cursor-default">
             Muda International School

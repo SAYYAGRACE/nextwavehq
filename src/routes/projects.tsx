@@ -186,9 +186,9 @@ function Bootcamp() {
             onMouseEnter={() => setActive(i)}
             onFocus={() => setActive(i)}
             onClick={() => setActive(i)}
-            className={`group text-left rounded-2xl p-5 border transition-all ${
+            className={`group text-left rounded-2xl p-5 border transition-colors ${
               active === i
-                ? "border-brand-purple/60 bg-brand-purple/[0.07] shadow-[0_0_0_1px_var(--brand-purple)] -translate-y-1"
+                ? "border-brand-purple/50 bg-brand-purple/[0.06]"
                 : "border-hairline bg-white/[0.02] hover:border-white/20"
             }`}
           >
@@ -212,11 +212,10 @@ function Bootcamp() {
         initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-6 glass-strong rounded-2xl p-7 sm:p-10 min-h-[180px] relative overflow-hidden border border-brand-purple/20"
+        className="mt-6 rounded-2xl border border-hairline bg-white/[0.02] p-7 sm:p-10 min-h-[180px] relative overflow-hidden"
       >
-        <div className="absolute -top-16 -right-16 h-48 w-48 rounded-full bg-brand-purple/8 blur-[80px]" />
         <div className="relative flex items-baseline gap-4">
-          <span className="text-5xl font-bold gradient-text">{PHASES[active].n}</span>
+          <span className="text-5xl font-bold text-white/15">{PHASES[active].n}</span>
           <div>
             <h3 className="text-xl font-semibold text-white">{PHASES[active].title}</h3>
             <p className="text-sm text-brand-glow/90">{PHASES[active].sub}</p>
@@ -232,8 +231,7 @@ function Bootcamp() {
       </div>
 
       {/* B2B CTA */}
-      <div className="mt-10 relative overflow-hidden rounded-2xl glass-strong p-8 sm:p-10">
-        <div className="absolute -top-24 -right-12 h-64 w-64 rounded-full bg-brand-blue/10 blur-[100px]" />
+      <div className="mt-10 relative overflow-hidden rounded-2xl border border-hairline bg-white/[0.02] p-8 sm:p-10">
         <div className="relative grid gap-6 md:grid-cols-[1.7fr_auto] md:items-center">
           <div>
             <span className="text-[10px] tracking-[0.2em] uppercase text-brand-glow">
@@ -249,7 +247,7 @@ function Bootcamp() {
           <Magnetic strength={0.3}>
             <Link
               to="/contact"
-              className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03] whitespace-nowrap"
+              className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110 whitespace-nowrap"
               style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
             >
               Apply for Enterprise Partnership
@@ -312,7 +310,7 @@ function NerdHaven() {
         </span>
       </div>
       <div className="grid gap-8 lg:grid-cols-[auto_1fr_auto] lg:items-end">
-        <div className="rounded-2xl bg-white p-4 w-fit shadow-glow">
+        <div className="rounded-2xl border border-hairline bg-white p-4 w-fit">
           <img
             src={nerdhavenLogo}
             alt="Nerdhaven, est. 2026"
@@ -335,7 +333,7 @@ function NerdHaven() {
       </p>
 
       {/* Mock dashboard */}
-      <div className="mt-12 rounded-2xl glass-strong overflow-hidden">
+      <div className="mt-12 rounded-2xl border border-hairline bg-white/[0.02] overflow-hidden">
         <div className="flex items-center gap-2 px-5 py-3 border-b border-hairline bg-white/[0.02]">
           <div className="flex gap-1.5">
             <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
@@ -351,7 +349,7 @@ function NerdHaven() {
             {TRACKS.map((t) => (
               <div
                 key={t.code}
-                className="group rounded-xl border border-hairline bg-gradient-to-br from-white/[0.04] to-transparent p-6 transition-all hover:border-brand-purple/50"
+                className="group rounded-xl border border-hairline bg-white/[0.02] p-6 transition-colors hover:border-brand-purple/50"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
@@ -362,7 +360,7 @@ function NerdHaven() {
                   </span>
                 </div>
                 <h3 className="mt-5 text-xl font-semibold text-white">{t.title}</h3>
-                <div className="mt-3 h-px bg-gradient-to-r from-brand-purple/40 to-transparent" />
+                <div className="mt-3 h-px bg-hairline" />
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
               </div>
             ))}
@@ -371,12 +369,11 @@ function NerdHaven() {
       </div>
 
       {/* Waitlist */}
-      <div className="mt-10 relative overflow-hidden rounded-2xl glass-strong p-8 sm:p-12 text-center">
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 h-64 w-[600px] rounded-full bg-brand-purple/15 blur-[120px]" />
+      <div className="mt-10 relative overflow-hidden rounded-2xl border border-hairline bg-white/[0.02] p-8 sm:p-12 text-center">
         <div className="relative">
-          <div className="inline-flex items-center gap-2 rounded-full border border-brand-purple/40 bg-brand-purple/10 px-3 py-1">
+          <div className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.03] px-3 py-1">
             <Sparkles className="h-3 w-3 text-brand-glow" />
-            <span className="text-[11px] font-medium tracking-widest uppercase text-brand-glow">
+            <span className="text-[11px] font-medium tracking-widest uppercase text-muted-foreground">
               Early Access
             </span>
           </div>
@@ -402,7 +399,7 @@ function NerdHaven() {
             <button
               type="submit"
               disabled={state === "loading"}
-              className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03] whitespace-nowrap disabled:opacity-60"
+              className="inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110 whitespace-nowrap disabled:opacity-60"
               style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
             >
               {state === "loading" ? "Joining..." : "Join NerdHaven Waitlist"}
@@ -427,11 +424,7 @@ function NerdHaven() {
 
 function Badge({ children, tone }: { children: React.ReactNode; tone?: "active" | "dev" }) {
   const dot =
-    tone === "active"
-      ? "bg-emerald-400 shadow-[0_0_8px_oklch(0.75_0.18_150)]"
-      : tone === "dev"
-        ? "bg-amber-400 shadow-[0_0_8px_oklch(0.78_0.18_80)]"
-        : "bg-brand-glow";
+    tone === "active" ? "bg-emerald-400" : tone === "dev" ? "bg-amber-400" : "bg-brand-glow";
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.03] px-3 py-1.5 text-[11px] tracking-widest uppercase text-muted-foreground">
       <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />

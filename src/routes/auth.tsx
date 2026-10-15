@@ -119,7 +119,10 @@ function AuthPage() {
             </p>
           </div>
 
-          <form onSubmit={submit} className="mt-10 glass-strong rounded-2xl p-6 sm:p-8 space-y-5">
+          <form
+            onSubmit={submit}
+            className="mt-10 rounded-2xl border border-hairline bg-white/[0.02] p-6 sm:p-8 space-y-5"
+          >
             {err && (
               <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
                 {err}
@@ -162,8 +165,8 @@ function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.02] disabled:opacity-60"
-              style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110 disabled:opacity-60"
+              style={{ background: "var(--gradient-brand)" }}
             >
               {mode === "signin" ? <LogIn className="h-4 w-4" /> : <UserPlus className="h-4 w-4" />}
               {loading ? "Please wait..." : mode === "signin" ? "Sign in" : "Create account"}

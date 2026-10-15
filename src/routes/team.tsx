@@ -71,14 +71,12 @@ function TeamPage() {
               <Reveal key={p.name} delay={(i % 3) * 80}>
                 <TiltCard maxTilt={6} className="h-full">
                   <SpotlightCard className="group rounded-2xl glass gradient-border p-7 h-full overflow-hidden">
-                    <div className="relative aspect-[4/3] rounded-xl border border-hairline bg-gradient-to-br from-white/[0.04] to-white/[0.01] overflow-hidden">
+                    <div className="relative aspect-[4/3] rounded-xl border border-hairline bg-white/[0.03] overflow-hidden">
                       <div className="absolute inset-0 grid place-items-center">
                         <div className="text-5xl font-bold text-white/10 tracking-tight group-hover:text-brand-purple/40 transition-colors duration-300">
                           {initials(p.name)}
                         </div>
                       </div>
-                      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-brand-purple/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
                     <div className="mt-6">
                       <h3 className="text-lg font-semibold text-white">{p.name}</h3>
@@ -100,11 +98,10 @@ function TeamPage() {
           </div>
 
           <Reveal delay={120}>
-            <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-5 rounded-3xl glass-strong p-8 sm:p-10 overflow-hidden relative">
-              <div className="absolute -top-24 -right-20 h-64 w-64 rounded-full bg-brand-blue/20 blur-[110px]" />
+            <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-5 rounded-3xl border border-hairline bg-white/[0.02] p-8 sm:p-10 overflow-hidden relative">
               <div className="relative">
                 <h3 className="text-xl sm:text-2xl font-semibold text-white">
-                  Building the movement <span className="gradient-text">takes a team.</span>
+                  Building the movement takes a team.
                 </h3>
                 <p className="mt-2 text-sm text-muted-foreground leading-relaxed max-w-lg">
                   We're always looking for operators, engineers, and advocates who want to help
@@ -113,7 +110,7 @@ function TeamPage() {
               </div>
               <a
                 href="/contact"
-                className="relative group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-all hover:scale-[1.03]"
+                className="relative group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110"
                 style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
               >
                 Get involved

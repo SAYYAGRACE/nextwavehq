@@ -90,12 +90,9 @@ function AboutPage() {
           </Reveal>
 
           <Reveal delay={160}>
-            <blockquote className="relative mt-12 max-w-4xl rounded-3xl glass-strong border border-hairline px-8 py-10 sm:px-12 sm:py-12 overflow-hidden">
-              <div className="absolute -top-24 -left-16 h-64 w-64 rounded-full bg-brand-purple/20 blur-[110px]" />
-              <div className="absolute inset-0 grid-bg opacity-20 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
+            <blockquote className="relative mt-12 max-w-4xl rounded-3xl border border-hairline bg-white/[0.02] px-8 py-10 sm:px-12 sm:py-12 overflow-hidden">
               <p className="relative text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
-                <span className="gradient-text">"Africa must architect the deep-tech century</span>{" "}
-                — not merely consume it."
+                "Africa must architect the deep-tech century — not merely consume it."
               </p>
               <footer className="relative mt-6 text-xs tracking-widest uppercase text-muted-foreground">
                 The Nextwave Thesis
@@ -105,85 +102,14 @@ function AboutPage() {
 
           <div className="mt-14 grid gap-6 lg:grid-cols-2">
             <Reveal>
-              <SpotlightCard className="relative overflow-hidden rounded-2xl glass-strong p-8 sm:p-10 min-h-[340px]">
-                <div className="absolute inset-0 grid-bg opacity-50 [mask-image:radial-gradient(circle_at_30%_30%,black,transparent_70%)]" />
-                <svg className="absolute inset-0 h-full w-full opacity-40" aria-hidden="true">
-                  <defs>
-                    <radialGradient id="node" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="oklch(0.7 0.22 280)" stopOpacity="0.9" />
-                      <stop offset="100%" stopColor="oklch(0.7 0.22 280)" stopOpacity="0" />
-                    </radialGradient>
-                  </defs>
-                  {[
-                    [90, 80],
-                    [240, 60],
-                    [330, 140],
-                    [180, 180],
-                    [80, 220],
-                    [280, 260],
-                    [380, 200],
-                  ].map(([x, y], i) => (
-                    <g key={i}>
-                      <circle cx={x} cy={y} r="14" fill="url(#node)" />
-                      <circle cx={x} cy={y} r="2" fill="white" />
-                    </g>
-                  ))}
-                  <line
-                    x1="90"
-                    y1="80"
-                    x2="240"
-                    y2="60"
-                    stroke="oklch(0.7 0.22 280 / 0.4)"
-                    strokeWidth="1"
-                  />
-                  <line
-                    x1="240"
-                    y1="60"
-                    x2="330"
-                    y2="140"
-                    stroke="oklch(0.7 0.22 280 / 0.4)"
-                    strokeWidth="1"
-                  />
-                  <line
-                    x1="180"
-                    y1="180"
-                    x2="240"
-                    y2="60"
-                    stroke="oklch(0.7 0.22 280 / 0.3)"
-                    strokeWidth="1"
-                  />
-                  <line
-                    x1="180"
-                    y1="180"
-                    x2="80"
-                    y2="220"
-                    stroke="oklch(0.7 0.22 280 / 0.3)"
-                    strokeWidth="1"
-                  />
-                  <line
-                    x1="180"
-                    y1="180"
-                    x2="280"
-                    y2="260"
-                    stroke="oklch(0.7 0.22 280 / 0.3)"
-                    strokeWidth="1"
-                  />
-                  <line
-                    x1="330"
-                    y1="140"
-                    x2="380"
-                    y2="200"
-                    stroke="oklch(0.7 0.22 280 / 0.3)"
-                    strokeWidth="1"
-                  />
-                </svg>
+              <SpotlightCard className="relative overflow-hidden rounded-2xl border border-hairline bg-white/[0.02] p-8 sm:p-10 min-h-[340px]">
                 <div className="relative flex flex-col h-full">
                   <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.04]">
                     <MapPin className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
                   </div>
                   <div className="mt-auto pt-20">
                     <h3 className="text-2xl font-semibold text-white">
-                      Founded & Rooted in Northern Nigeria
+                      Founded &amp; Rooted in Northern Nigeria
                     </h3>
                     <p className="mt-3 text-muted-foreground leading-relaxed">
                       Driving systemic change from regional technology hubs — building outward from
@@ -195,8 +121,7 @@ function AboutPage() {
             </Reveal>
 
             <Reveal delay={120}>
-              <SpotlightCard className="relative overflow-hidden rounded-2xl glass-strong p-8 sm:p-10 min-h-[340px]">
-                <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-brand-purple/10 blur-[100px]" />
+              <SpotlightCard className="relative overflow-hidden rounded-2xl border border-hairline bg-white/[0.02] p-8 sm:p-10 min-h-[340px]">
                 <div className="relative flex flex-col h-full">
                   <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.04]">
                     <Compass className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
@@ -222,7 +147,7 @@ function AboutPage() {
                 <TiltCard maxTilt={7} className="h-full">
                   <div className="group h-full">
                     <SpotlightCard className="glass gradient-border rounded-2xl p-7 h-full overflow-hidden">
-                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:scale-110 group-hover:border-brand-purple/40 transition-all duration-300">
+                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:border-brand-purple/40 transition-colors duration-300">
                         <d.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
                       </div>
                       <h3 className="mt-6 text-lg font-semibold text-white">{d.title}</h3>

@@ -49,11 +49,11 @@ export function AIChat() {
         {open && (
           <motion.div
             key="panel"
-            initial={{ opacity: 0, y: 16, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.98 }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-28 left-5 sm:bottom-24 sm:left-6 z-[60] flex h-[520px] max-h-[calc(100dvh-8rem)] w-[calc(100vw-2.5rem)] max-w-[380px] flex-col overflow-hidden rounded-3xl glass-strong border border-hairline shadow-2xl"
+            className="fixed bottom-28 left-5 sm:bottom-24 sm:left-6 z-[60] flex h-[520px] max-h-[calc(100dvh-8rem)] w-[calc(100vw-2.5rem)] max-w-[380px] flex-col overflow-hidden rounded-2xl glass-strong border border-hairline"
           >
             <div className="flex items-center justify-between gap-3 border-b border-hairline px-5 py-4 bg-white/[0.02]">
               <div className="flex items-center gap-3">
@@ -134,8 +134,8 @@ export function AIChat() {
                 type="submit"
                 aria-label="Send message"
                 disabled={busy || !input.trim()}
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-white disabled:opacity-40 transition-all"
-                style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-white disabled:opacity-40 transition-[filter] hover:brightness-110"
+                style={{ background: "var(--gradient-brand)" }}
               >
                 <Send className="h-4 w-4" />
               </button>
@@ -150,7 +150,7 @@ export function AIChat() {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.6 }}
-        className="fixed bottom-5 left-5 sm:bottom-6 sm:left-6 z-[60] grid h-14 w-14 place-items-center rounded-full text-white shadow-[0_8px_30px_rgba(124,92,240,0.4)] transition-transform hover:scale-105"
+        className="fixed bottom-5 left-5 sm:bottom-6 sm:left-6 z-[60] grid h-14 w-14 place-items-center rounded-full text-white shadow-lg transition-colors hover:opacity-90"
         style={{ background: "var(--gradient-brand)" }}
       >
         {open ? <X className="h-5 w-5" /> : <MessageSquare className="h-5 w-5" />}
