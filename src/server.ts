@@ -11,14 +11,7 @@ type ServerEntry = {
 
 type FormKind = "contact" | "newsletter" | "waitlist";
 
-const RECIPIENT_EMAIL = "info@nextwave.com.ng";
-const SANITY_PROJECT_ID =
-  process.env.VITE_SANITY_PROJECT_ID ?? process.env.SANITY_PROJECT_ID ?? "nffdmmjo";
-const SANITY_DATASET =
-  process.env.VITE_SANITY_DATASET ?? process.env.SANITY_DATASET ?? "production";
-const SANITY_API_VERSION = "2024-01-01";
-
-async function writeSubmission(input: {
+type SubmissionInput = {
   kind: FormKind;
   email: string;
   name?: string;
@@ -26,7 +19,51 @@ async function writeSubmission(input: {
   intent?: string;
   message?: string;
   source?: string;
-}): Promise<boolean> {
+};
+
+const RECIPIENT_EMAIL = "info@nextwave.com.ng";
+const SANITY_PROJECT_ID =
+  process.env.VITE_SANITY_PROJECT_ID ?? process.env.SANITY_PROJECT_ID ?? "nffdmmjo";
+const SANITY_DATASET =
+  process.env.VITE_SANITY_DATASET ?? process.env.SANITY_DATASET ?? "production";
+const SANITY_API_VERSION = "2024-01-01";
+
+async function writeSubmissionToSupabase(input: SubmissionInput): Promise<boolean> {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return false;
+  try {
+    const res = await fetch(`${url}/rest/v1/website_submissions`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${key}`,
+        apikey: key,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        kind: input.kind,
+        email: input.email.trim().toLowerCase(),
+        name: input.name?.trim() || null,
+        organization: input.organization?.trim() || null,
+        intent: input.intent?.trim() || null,
+        message: input.message?.trim() || null,
+        source: input.source?.trim() || "web",
+      }),
+    });
+    if (!res.ok) {
+      const detail = await res.text().catch(() => "");
+      console.error(`[submit] Supabase archive failed (${res.status}): ${detail}`);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("[submit] Supabase archive request failed:", error);
+    return false;
+  }
+}
+
+async function writeSubmission(input: SubmissionInput): Promise<boolean> {
   const token = process.env.SANITY_API_TOKEN;
   if (!token) return false;
   const document: Record<string, unknown> = {
@@ -52,8 +89,14 @@ async function writeSubmission(input: {
         body: JSON.stringify({ mutations: [{ create: document }] }),
       },
     );
-    return res.ok;
-  } catch {
+    if (!res.ok) {
+      const detail = await res.text().catch(() => "");
+      console.error(`[submit] Sanity archive failed (${res.status}): ${detail}`);
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("[submit] Sanity archive request failed:", error);
     return false;
   }
 }
@@ -66,15 +109,7 @@ function escapeHtml(value: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function buildEmail(input: {
-  kind: FormKind;
-  email: string;
-  name?: string;
-  organization?: string;
-  intent?: string;
-  message?: string;
-  source?: string;
-}): { subject: string; text: string; html: string } {
+function buildEmail(input: SubmissionInput): { subject: string; text: string; html: string } {
   const head =
     input.kind === "contact"
       ? "New Contact Form Submission"
@@ -115,15 +150,7 @@ function buildEmail(input: {
   return { subject: `[Nextwave] ${head}`, text, html };
 }
 
-async function sendEmail(input: {
-  kind: FormKind;
-  email: string;
-  name?: string;
-  organization?: string;
-  intent?: string;
-  message?: string;
-  source?: string;
-}): Promise<boolean> {
+async function sendEmail(input: SubmissionInput): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   if (!key) {
     console.error("[submit] RESEND_API_KEY is not configured; notification email skipped");
@@ -195,7 +222,12 @@ async function handleSubmit(rawBody: string): Promise<Response> {
     source: typeof body.source === "string" ? body.source.trim().slice(0, 60) : undefined,
   };
 
-  const [written, emailed] = await Promise.all([writeSubmission(input), sendEmail(input)]);
+  const [supabaseStored, sanityStored, emailed] = await Promise.all([
+    writeSubmissionToSupabase(input),
+    writeSubmission(input),
+    sendEmail(input),
+  ]);
+  const written = supabaseStored || sanityStored;
   if (written || emailed) return Response.json({ ok: true, written, emailed });
   return Response.json({ ok: false, error: "delivery-failed" }, { status: 502 });
 }
