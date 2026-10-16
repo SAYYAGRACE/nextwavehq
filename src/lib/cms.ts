@@ -1,4 +1,5 @@
 import { createClient } from "@sanity/client";
+import { LOCAL_ARTICLE } from "./news-local";
 
 export type NewsArticle = {
   _id: string;
@@ -9,6 +10,7 @@ export type NewsArticle = {
   publishedAt?: string;
   image?: string | null;
   body?: unknown;
+  pdfUrl?: string;
 };
 
 type ArticleDoc = {
@@ -60,18 +62,28 @@ function toArticle(d: ArticleDoc): NewsArticle {
 
 export async function fetchArticles(): Promise<NewsArticle[]> {
   const client = getClient();
-  if (!client) return [];
-  try {
-    const docs = (await client.fetch<ArticleDoc[]>(GROQ_LIST)) ?? [];
-    return docs.filter((d) => d.title && d.slug).map(toArticle);
-  } catch {
-    return [];
+  let remote: NewsArticle[] = [];
+  if (client) {
+    try {
+      const docs = (await client.fetch<ArticleDoc[]>(GROQ_LIST)) ?? [];
+      remote = docs.filter((d) => d.title && d.slug).map(toArticle);
+    } catch {
+      remote = [];
+    }
   }
+  const merged = [LOCAL_ARTICLE, ...remote.filter((a) => a.slug !== LOCAL_ARTICLE.slug)];
+  merged.sort(
+    (a, b) =>
+      (new Date(b.publishedAt ?? 0).getTime() || 0) - (new Date(a.publishedAt ?? 0).getTime() || 0),
+  );
+  return merged;
 }
 
 export async function fetchArticleBySlug(slug: string): Promise<NewsArticle | null> {
+  if (!slug) return null;
+  if (slug === LOCAL_ARTICLE.slug) return LOCAL_ARTICLE;
   const client = getClient();
-  if (!client || !slug) return null;
+  if (!client) return null;
   try {
     const doc = await client.fetch<ArticleDoc | null>(GROQ_SLUG, { slug });
     if (!doc?.title) return null;

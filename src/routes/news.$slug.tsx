@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PortableText } from "@portabletext/react";
-import { CalendarDays, ArrowLeft, Newspaper } from "lucide-react";
+import { CalendarDays, ArrowLeft, Newspaper, Download } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Aurora } from "@/components/Aurora";
@@ -65,6 +65,16 @@ function NewsDetailPage() {
                 <p className="mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
                   {article.excerpt}
                 </p>
+              )}
+              {article.pdfUrl && (
+                <a
+                  href={article.pdfUrl}
+                  download
+                  className="mt-6 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white transition-[filter] hover:brightness-110"
+                  style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+                >
+                  <Download className="h-4 w-4" /> Download PDF
+                </a>
               )}
               {article.image && (
                 <div className="mt-8 overflow-hidden rounded-2xl border border-hairline">

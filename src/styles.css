@@ -1007,3 +1007,77 @@ html:not(.dark) [style*="gradient-brand"] .text-white {
     animation: none !important;
   }
 }
+
+/* ============ ARTICLE BODY (PortableText / prose-invert) ============ */
+.prose-invert {
+  color: var(--muted-foreground);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+.prose-invert > * + * {
+  margin-top: 1.15em;
+}
+.prose-invert h2 {
+  margin-top: 2.2rem;
+  color: var(--foreground);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+.prose-invert h3 {
+  margin-top: 1.8rem;
+  color: var(--foreground);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.prose-invert h4 {
+  margin-top: 1.5rem;
+  color: var(--foreground);
+  font-weight: 600;
+}
+.prose-invert strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.prose-invert em {
+  font-style: italic;
+}
+.prose-invert a {
+  color: var(--brand-glow);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+.prose-invert a:hover {
+  color: var(--foreground);
+}
+.prose-invert blockquote {
+  border-left: 2px solid var(--brand-purple);
+  padding: 0.2rem 0 0.2rem 1.1rem;
+  color: var(--foreground);
+  font-style: italic;
+}
+.prose-invert ul,
+.prose-invert ol {
+  display: grid;
+  gap: 0.5rem;
+  padding-left: 1.3rem;
+}
+.prose-invert ul {
+  list-style: disc;
+}
+.prose-invert ol {
+  list-style: decimal;
+}
+.prose-invert li::marker {
+  color: var(--brand-purple);
+}
+.prose-invert code {
+  font-size: 0.875em;
+  background: color-mix(in oklab, var(--surface-elevated) 70%, transparent);
+  border: 1px solid var(--hairline);
+  border-radius: 0.35rem;
+  padding: 0.1em 0.35em;
+}
