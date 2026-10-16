@@ -692,7 +692,7 @@ function NerdHaven() {
             <div className="absolute -top-32 -right-20 h-80 w-80 rounded-full bg-brand-blue/10 blur-[120px]" />
             <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-brand-purple/10 blur-[120px]" />
 
-            <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+            <div className="relative flex flex-col items-center gap-6 text-center">
               <img
                 src={nerdhavenLogo}
                 alt="NerdHaven logo"
@@ -700,7 +700,7 @@ function NerdHaven() {
                 height={96}
                 loading="lazy"
                 decoding="async"
-                className="h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 object-contain"
+                className="h-20 w-20 sm:h-24 sm:w-24 object-contain"
               />
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.03] px-3 py-1">
@@ -714,7 +714,7 @@ function NerdHaven() {
                   <br />
                   <span className="gradient-text">The Borderless Digital Academy.</span>
                 </h2>
-                <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
+                <p className="mt-4 mx-auto max-w-2xl text-muted-foreground leading-relaxed">
                   A comprehensive digital learning ecosystem engineered by Nextwave to democratize
                   high-tier technical literacy across multiple user demographics.
                 </p>
