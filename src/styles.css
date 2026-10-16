@@ -792,97 +792,189 @@ html:not(.dark) [style*="gradient-brand"] .text-white {
 }
 
 /* ============ NAVIGATION LOADING OVERLAY ============ */
-.nav-overlay-grid {
+.nlo-grid {
   background-image:
     linear-gradient(
       to right,
-      color-mix(in oklab, var(--brand-purple) 14%, transparent) 1px,
+      color-mix(in oklab, var(--brand-purple) 12%, transparent) 1px,
       transparent 1px
     ),
     linear-gradient(
       to bottom,
-      color-mix(in oklab, var(--brand-purple) 14%, transparent) 1px,
+      color-mix(in oklab, var(--brand-purple) 12%, transparent) 1px,
       transparent 1px
     );
-  background-size: 46px 46px;
-  -webkit-mask-image: radial-gradient(ellipse at center, black 10%, transparent 70%);
-  mask-image: radial-gradient(ellipse at center, black 10%, transparent 70%);
+  background-size: 52px 52px;
+  -webkit-mask-image: radial-gradient(ellipse 62% 58% at 50% 46%, black 0%, transparent 78%);
+  mask-image: radial-gradient(ellipse 62% 58% at 50% 46%, black 0%, transparent 78%);
 }
-.nav-overlay-aurora {
+.nlo-vignette {
+  background: radial-gradient(
+    ellipse 78% 72% at 50% 46%,
+    transparent 32%,
+    color-mix(in oklab, var(--background) 88%, transparent) 100%
+  );
+}
+.nlo-aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(72px);
+  will-change: transform, opacity;
+}
+.nlo-aurora--a {
   background: radial-gradient(
     circle,
-    color-mix(in oklab, var(--brand-purple) 26%, transparent) 0%,
-    transparent 62%
+    color-mix(in oklab, var(--brand-blue) 42%, transparent),
+    transparent 70%
   );
-  filter: blur(40px);
-  transform: translate(-50%, -50%) scale(1);
-  animation: nav-aurora 6s ease-in-out infinite;
+  animation: nlo-drift-a 11s ease-in-out infinite;
 }
-@keyframes nav-aurora {
+.nlo-aurora--b {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--brand-purple) 44%, transparent),
+    transparent 70%
+  );
+  animation: nlo-drift-b 13s ease-in-out infinite;
+}
+@keyframes nlo-drift-a {
   0%,
   100% {
+    transform: translate3d(0, 0, 0) scale(1);
     opacity: 0.5;
-    transform: translate(-50%, -50%) scale(1);
   }
   50% {
+    transform: translate3d(7%, -9%, 0) scale(1.2);
     opacity: 0.85;
-    transform: translate(-50%, -50%) scale(1.12);
   }
 }
-.nav-overlay-ring-track {
-  border: 1px solid color-mix(in oklab, var(--brand-purple) 22%, transparent);
+@keyframes nlo-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.12);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translate3d(-9%, 7%, 0) scale(1);
+    opacity: 0.9;
+  }
 }
-.nav-overlay-ring {
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    var(--brand-blue) 35%,
-    var(--brand-purple) 60%,
-    transparent 78%
-  );
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black calc(100% - 3px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black calc(100% - 3px));
-  animation: nav-spin 1.1s linear infinite;
+.nlo-spin {
+  animation: nlo-spin 6s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
 }
-@keyframes nav-spin {
+.nlo-spin--rev {
+  animation: nlo-spin 9s linear infinite reverse;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.nlo-spin--slow {
+  animation: nlo-spin 18s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes nlo-spin {
   to {
     transform: rotate(360deg);
   }
 }
-.nav-overlay-orbit {
-  animation: nav-spin 2.2s linear infinite;
+.nlo-orbit {
+  animation: nlo-spin 4.6s linear infinite;
+  will-change: transform;
 }
-.nav-overlay-logo {
-  animation: nav-logo-pulse 1.6s ease-in-out infinite;
+.nlo-orbit--rev {
+  animation: nlo-spin 7.5s linear infinite reverse;
+  will-change: transform;
 }
-@keyframes nav-logo-pulse {
+.nlo-comet {
+  filter: drop-shadow(0 0 6px var(--brand-glow)) drop-shadow(0 0 12px var(--brand-purple));
+}
+.nlo-mark {
+  filter: drop-shadow(0 6px 26px color-mix(in oklab, var(--brand-purple) 55%, transparent));
+  animation: nlo-breathe 3.6s ease-in-out infinite;
+}
+@keyframes nlo-breathe {
   0%,
   100% {
-    opacity: 0.85;
-    transform: scale(0.96);
+    transform: scale(1);
+    filter: drop-shadow(0 6px 22px color-mix(in oklab, var(--brand-purple) 45%, transparent));
   }
   50% {
-    opacity: 1;
-    transform: scale(1.02);
+    transform: scale(1.045);
+    filter: drop-shadow(0 6px 34px color-mix(in oklab, var(--brand-purple) 70%, transparent));
   }
 }
-.nav-overlay-bar {
-  background: var(--gradient-brand);
-  animation: nav-bar 1.1s ease-in-out infinite;
+.nlo-sheen {
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  width: 28%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    color-mix(in oklab, white 85%, transparent),
+    transparent
+  );
+  filter: blur(6px);
+  will-change: transform;
+  animation: nlo-sheen 4.8s ease-in-out infinite;
 }
-@keyframes nav-bar {
+@keyframes nlo-sheen {
   0% {
-    transform: translateX(-120%);
+    transform: translateX(-320%) rotate(10deg);
+  }
+  55%,
+  100% {
+    transform: translateX(560%) rotate(10deg);
+  }
+}
+.nlo-track {
+  background: color-mix(in oklab, var(--foreground) 10%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--brand-purple) 16%, transparent);
+}
+.nlo-fill {
+  background: var(--gradient-brand);
+  position: relative;
+  overflow: hidden;
+}
+.nlo-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, white 70%, transparent), transparent);
+  animation: nlo-shine 1.5s ease-in-out infinite;
+}
+@keyframes nlo-shine {
+  0% {
+    transform: translateX(-150%);
   }
   100% {
-    transform: translateX(420%);
+    transform: translateX(320%);
   }
 }
-.nav-overlay-dots::after {
-  content: "";
-  animation: nav-dots 1.4s steps(4, end) infinite;
+.nlo-bar {
+  animation: nlo-bar 1.15s ease-in-out infinite;
+  transform-origin: center;
+  background: var(--gradient-brand);
 }
-@keyframes nav-dots {
+@keyframes nlo-bar {
+  0%,
+  100% {
+    transform: scaleY(0.28);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+.nlo-dots::after {
+  content: "";
+  animation: nlo-dots 1.4s steps(4, end) infinite;
+}
+@keyframes nlo-dots {
   0% {
     content: "";
   }
@@ -900,12 +992,18 @@ html:not(.dark) [style*="gradient-brand"] .text-white {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .nav-overlay-ring,
-  .nav-overlay-orbit,
-  .nav-overlay-logo,
-  .nav-overlay-bar,
-  .nav-overlay-aurora,
-  .nav-overlay-dots::after {
+  .nlo-aurora--a,
+  .nlo-aurora--b,
+  .nlo-spin,
+  .nlo-spin--rev,
+  .nlo-spin--slow,
+  .nlo-orbit,
+  .nlo-orbit--rev,
+  .nlo-mark,
+  .nlo-sheen,
+  .nlo-fill::after,
+  .nlo-bar,
+  .nlo-dots::after {
     animation: none !important;
   }
 }
