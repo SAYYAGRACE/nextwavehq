@@ -36,26 +36,6 @@ function html(body: string, status = 200): Response {
   });
 }
 
-type AdminAuth = { ok: true; userId: string } | { ok: false; response: Response };
-
-async function authenticateAdmin(client: SupabaseClient, request: Request): Promise<AdminAuth> {
-  const auth = request.headers.get("authorization") ?? "";
-  const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-  if (!token) return { ok: false, response: json({ ok: false, error: "unauthorized" }, 401) };
-  const { data: userData, error: userError } = await client.auth.getUser(token);
-  if (userError || !userData.user) {
-    return { ok: false, response: json({ ok: false, error: "unauthorized" }, 401) };
-  }
-  const { data: role } = await client
-    .from("user_roles")
-    .select("role")
-    .eq("user_id", userData.user.id)
-    .eq("role", "admin")
-    .maybeSingle();
-  if (!role) return { ok: false, response: json({ ok: false, error: "forbidden" }, 403) };
-  return { ok: true, userId: userData.user.id };
-}
-
 async function sendViaResend(
   job: EmailJob,
   rendered: { subject: string; text: string; html: string },
@@ -224,15 +204,19 @@ async function handleResendWebhook(request: Request): Promise<Response> {
   return json({ ok: true });
 }
 
-async function handleDispatch(request: Request): Promise<Response> {
+function authorizedBySecret(request: Request): boolean {
   const secret = process.env.NTRI_CRON_SECRET;
   const vercelSecret = process.env.CRON_SECRET;
   const bearer = request.headers.get("authorization");
-  const authorized =
+  return Boolean(
     (secret && request.headers.get("x-ntri-cron-secret") === secret) ||
     (vercelSecret && bearer === `Bearer ${vercelSecret}`) ||
-    (secret && bearer === `Bearer ${secret}`);
-  if (!authorized) {
+    (secret && bearer === `Bearer ${secret}`),
+  );
+}
+
+async function handleDispatch(request: Request): Promise<Response> {
+  if (!authorizedBySecret(request)) {
     return json({ ok: false, error: "unauthorized" }, 401);
   }
   const client = serviceClient();
@@ -241,37 +225,14 @@ async function handleDispatch(request: Request): Promise<Response> {
   return json({ ok: true, ...report });
 }
 
-async function handleRequeue(request: Request): Promise<Response> {
-  const client = serviceClient();
-  if (!client) return json({ ok: false, error: "not-configured" }, 503);
-
-  const auth = await authenticateAdmin(client, request);
-  if (!auth.ok) return auth.response;
-
-  let payload: { emailLogId?: string };
-  try {
-    payload = await request.json();
-  } catch {
-    return json({ ok: false, error: "bad-json" }, 400);
-  }
-  if (!payload.emailLogId) return json({ ok: false, error: "missing-id" }, 400);
-
-  await client
-    .from("email_log")
-    .update({ status: "queued", attempts: 0, next_attempt_at: null, error: null })
-    .eq("id", payload.emailLogId);
-
-  return json({ ok: true });
-}
-
 const REVIEW_LINK_TYPES: EmailType[] = ["consent_request", "review_link_invitation"];
 
 async function handleSend(request: Request): Promise<Response> {
+  if (!authorizedBySecret(request)) {
+    return json({ ok: false, error: "unauthorized" }, 401);
+  }
   const client = serviceClient();
   if (!client) return json({ ok: false, error: "not-configured" }, 503);
-
-  const auth = await authenticateAdmin(client, request);
-  if (!auth.ok) return auth.response;
 
   let payload: {
     type?: EmailType;
@@ -421,14 +382,14 @@ export async function handleEmailRequest(request: Request): Promise<Response | n
   const url = new URL(request.url);
   const { pathname } = url;
 
-  if (request.method === "POST" && pathname === "/api/emails/dispatch") {
+  if (
+    (request.method === "POST" || request.method === "GET") &&
+    pathname === "/api/emails/dispatch"
+  ) {
     return handleDispatch(request);
   }
   if (request.method === "POST" && pathname === "/api/emails/send") {
     return handleSend(request);
-  }
-  if (request.method === "POST" && pathname === "/api/emails/requeue") {
-    return handleRequeue(request);
   }
   if (request.method === "POST" && pathname === "/api/webhooks/resend") {
     return handleResendWebhook(request);

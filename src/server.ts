@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { FROM_EMAIL, isDeliverableAddress } from "./lib/email/config";
 import { handleEmailRequest } from "./lib/email/server";
 
 type ServerEntry = {
@@ -57,6 +58,14 @@ async function writeSubmission(input: {
   }
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 function buildEmail(input: {
   kind: FormKind;
   email: string;
@@ -65,21 +74,45 @@ function buildEmail(input: {
   intent?: string;
   message?: string;
   source?: string;
-}): { subject: string; text: string } {
+}): { subject: string; text: string; html: string } {
   const head =
     input.kind === "contact"
       ? "New Contact Form Submission"
       : input.kind === "newsletter"
         ? "New Newsletter Signup"
         : "New NerdHaven Waitlist Signup";
-  const lines = [`Type: ${input.kind}`, `Email: ${input.email}`];
-  if (input.name) lines.push(`Name: ${input.name}`);
-  if (input.organization) lines.push(`Organization: ${input.organization}`);
-  if (input.intent) lines.push(`Intent: ${input.intent}`);
-  if (input.message) lines.push(`Message: ${input.message}`);
-  if (input.source) lines.push(`Source: ${input.source}`);
-  lines.push("", "Sent from the Nextwave website (nextwave.com.ng).");
-  return { subject: `[Nextwave] ${head}`, text: lines.join("\n") };
+  const rows: Array<[string, string]> = [
+    ["Type", input.kind],
+    ["Email", input.email],
+  ];
+  if (input.name) rows.push(["Name", input.name]);
+  if (input.organization) rows.push(["Organization", input.organization]);
+  if (input.intent) rows.push(["Intent", input.intent]);
+  if (input.message) rows.push(["Message", input.message]);
+  if (input.source) rows.push(["Source", input.source]);
+
+  const text = [
+    ...rows.map(([label, value]) => `${label}: ${value}`),
+    "",
+    "Sent from the Nextwave website (nextwave.com.ng).",
+  ].join("\n");
+
+  const htmlRows = rows
+    .map(
+      ([label, value]) =>
+        `<tr><td style="padding:6px 16px 6px 0;color:#666;white-space:nowrap;vertical-align:top">${escapeHtml(
+          label,
+        )}</td><td style="padding:6px 0;color:#111;white-space:pre-wrap">${escapeHtml(value)}</td></tr>`,
+    )
+    .join("");
+  const html = `<!doctype html><html><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#111;max-width:560px;margin:0 auto;padding:24px;line-height:1.6">
+<h1 style="font-size:18px;margin:0 0 16px">${head}</h1>
+<table style="border-collapse:collapse;font-size:14px">${htmlRows}</table>
+<hr style="border:none;border-top:1px solid #eee;margin:24px 0" />
+<p style="font-size:12px;color:#666">Sent from the Nextwave website · <a href="https://nextwave.com.ng" style="color:#7c3aed">nextwave.com.ng</a></p>
+</body></html>`;
+
+  return { subject: `[Nextwave] ${head}`, text, html };
 }
 
 async function sendEmail(input: {
@@ -92,9 +125,13 @@ async function sendEmail(input: {
   source?: string;
 }): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
-  if (!key) return false;
-  const from = process.env.RESEND_FROM_EMAIL ?? "Nextwave <no-reply@nextwave.com.ng>";
-  const { subject, text } = buildEmail(input);
+  if (!key) {
+    console.error("[submit] RESEND_API_KEY is not configured; notification email skipped");
+    return false;
+  }
+  const { subject, text, html } = buildEmail(input);
+  const from = process.env.RESEND_FROM_EMAIL?.trim() || `Nextwave Website <${FROM_EMAIL}>`;
+  const replyTo = isDeliverableAddress(input.email) ? input.email : undefined;
   try {
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -102,10 +139,25 @@ async function sendEmail(input: {
         Authorization: `Bearer ${key}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ from, to: [RECIPIENT_EMAIL], subject, text }),
+      body: JSON.stringify({
+        from,
+        to: [RECIPIENT_EMAIL],
+        ...(replyTo ? { reply_to: replyTo } : {}),
+        subject,
+        text,
+        html,
+      }),
     });
-    return res.ok;
-  } catch {
+    if (!res.ok) {
+      const detail = (await res.json().catch(() => null)) as { message?: string } | null;
+      console.error(
+        `[submit] Resend rejected notification (${res.status}): ${detail?.message ?? "unknown error"}`,
+      );
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("[submit] Resend request failed:", error);
     return false;
   }
 }
@@ -144,7 +196,7 @@ async function handleSubmit(rawBody: string): Promise<Response> {
   };
 
   const [written, emailed] = await Promise.all([writeSubmission(input), sendEmail(input)]);
-  if (written || emailed) return Response.json({ ok: true });
+  if (written || emailed) return Response.json({ ok: true, written, emailed });
   return Response.json({ ok: false, error: "delivery-failed" }, { status: 502 });
 }
 

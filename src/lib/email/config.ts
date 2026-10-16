@@ -13,7 +13,7 @@ export const REPLY_TO = readEnv("NTRI_REPLY_TO", "info@nextwave.com.ng");
 
 export const SITE_URL = readEnv("NTRI_SITE_URL", "https://nextwave.com.ng");
 
-export const ADMIN_URL = readEnv("NTRI_ADMIN_URL", `${SITE_URL}/admin/emails`);
+export const ADMIN_URL = readEnv("NTRI_ADMIN_URL", `${SITE_URL}/contact`);
 
 export const REVIEW_WINDOW_DAYS = 14;
 
