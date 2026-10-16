@@ -9,10 +9,10 @@ export const getRouter = () => {
     routeTree,
     context: { queryClient },
     scrollRestoration: true,
-    defaultPreloadStaleTime: 0,
-    defaultViewTransition: {
-      duration: 300,
-    },
+    defaultPreloadStaleTime: 10_000,
+    // Preload routes on hover/focus intent so navigation feels instant on click.
+    defaultPreload: "intent",
+    defaultPreloadDelay: 60,
   });
 
   return router;

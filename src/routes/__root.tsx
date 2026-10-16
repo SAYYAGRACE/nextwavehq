@@ -17,6 +17,7 @@ import { PwaRegister } from "@/components/PwaRegister";
 import { BackToTop } from "@/components/BackToTop";
 import { AIChat } from "@/components/AIChat";
 import { CookieNotice } from "@/components/CookieNotice";
+import { NavigationOverlay } from "@/components/NavigationOverlay";
 import { DEFAULT_LOCALE } from "@/i18n/config";
 
 function NotFoundComponent() {
@@ -198,6 +199,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      <NavigationOverlay />
       <BackToTop />
       <AIChat />
       <CookieNotice />

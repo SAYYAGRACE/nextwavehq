@@ -1,18 +1,18 @@
-const CACHE = "nextwave-v1";
-const SHELL = "/index.html";
+const CACHE = "nextwave-v2";
+const OFFLINE_URL = "/";
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then(() => self.skipWaiting()));
+// Bypass any previous stale SW as soon as the updated script is fetched.
+self.addEventListener("install", () => {
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))),
-      )
-      .then(() => self.clients.claim()),
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
+      await self.clients.claim();
+    })(),
   );
 });
 
@@ -22,41 +22,50 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+  // Never intercept app data / server functions — always go straight to the network.
+  if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/_serverFn")) return;
 
+  // Navigations: network-first, cache as offline fallback.
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((cache) => cache.put(SHELL, copy));
-          return res;
-        })
-        .catch(() =>
-          caches.match(SHELL).then(
-            (cached) =>
-              cached ||
-              new Response(
-                "<!doctype html><html><body style=\"font-family:sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#0a0a12;color:#e5e5e5\"><div style=\"text-align:center\"><h1>You're offline</h1><p>Connect to the internet to keep exploring Nextwave.</p></div></body></html>",
-                { headers: { "Content-Type": "text/html; charset=utf-8" } },
-              ),
-          ),
-        ),
-    );
-    return;
-  }
-
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      const network = fetch(request)
-        .then((res) => {
-          if (res && res.status === 200) {
+      (async () => {
+        try {
+          const res = await fetch(request);
+          if (res && res.ok) {
             const copy = res.clone();
             caches.open(CACHE).then((cache) => cache.put(request, copy));
           }
           return res;
-        })
-        .catch(() => cached);
-      return cached || network;
-    }),
+        } catch {
+          const cached = await caches.match(request);
+          if (cached) return cached;
+          const fallback = await caches.match(OFFLINE_URL);
+          if (fallback) return fallback;
+          return new Response(
+            "<!doctype html><html><body style=\"font-family:sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#0a0a12;color:#e5e5e5\"><div style=\"text-align:center\"><h1>You're offline</h1><p>Connect to the internet to keep exploring Nextwave.</p></div></body></html>",
+            { headers: { "Content-Type": "text/html; charset=utf-8" } },
+          );
+        }
+      })(),
+    );
+    return;
+  }
+
+  // Static assets: network-first with cache fallback so deploys are never stale.
+  event.respondWith(
+    (async () => {
+      try {
+        const res = await fetch(request);
+        if (res && res.status === 200 && res.type !== "opaque") {
+          const copy = res.clone();
+          caches.open(CACHE).then((cache) => cache.put(request, copy));
+        }
+        return res;
+      } catch {
+        const cached = await caches.match(request);
+        if (cached) return cached;
+        return Response.error();
+      }
+    })(),
   );
 });
