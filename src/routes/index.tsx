@@ -581,7 +581,6 @@ const PHASES = [
 function BootcampTimeline() {
   return (
     <section className="relative py-16 lg:py-20">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
           <div className="max-w-3xl">
@@ -599,14 +598,10 @@ function BootcampTimeline() {
         </Reveal>
 
         <Reveal delay={100}>
-          <div className="mt-12 relative">
-            <div className="hidden lg:block absolute top-[52px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
+          <div className="mt-12">
             <div className="grid gap-5 lg:grid-cols-4">
               {PHASES.map((p) => (
-                <div key={p.n} className="group relative">
-                  <div className="hidden lg:flex absolute -top-2 left-1/2 -translate-x-1/2 h-5 w-5 items-center justify-center">
-                    <span className="h-2.5 w-2.5 rounded-full bg-brand-glow shadow-[0_0_12px_var(--brand-glow)] group-hover:shadow-[0_0_24px_var(--brand-glow)] transition-shadow" />
-                  </div>
+                <div key={p.n} className="group">
                   <TiltCard maxTilt={8} className="h-full">
                     <SpotlightCard className="glass gradient-border rounded-2xl p-6 h-full overflow-hidden">
                       <div className="flex items-center justify-between gap-3">
@@ -620,7 +615,6 @@ function BootcampTimeline() {
                       </div>
                       <h3 className="mt-4 text-lg font-semibold text-white">{p.title}</h3>
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-                      <div className="mt-5 h-1 w-10 rounded-full bg-gradient-to-r from-brand-blue to-brand-purple opacity-30 group-hover:w-16 group-hover:opacity-100 transition-all duration-500" />
                     </SpotlightCard>
                   </TiltCard>
                 </div>
@@ -699,17 +693,15 @@ function NerdHaven() {
             <div className="absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-brand-purple/10 blur-[120px]" />
 
             <div className="relative flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-              <div className="flex-shrink-0 rounded-3xl border border-white/10 bg-white/5 p-4">
-                <img
-                  src={nerdhavenLogo}
-                  alt="NerdHaven logo"
-                  width={64}
-                  height={64}
-                  loading="lazy"
-                  decoding="async"
-                  className="h-16 w-16 object-contain"
-                />
-              </div>
+              <img
+                src={nerdhavenLogo}
+                alt="NerdHaven logo"
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
+                className="h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 object-contain"
+              />
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.03] px-3 py-1">
                   <Sparkles className="h-3 w-3 text-brand-glow" />
