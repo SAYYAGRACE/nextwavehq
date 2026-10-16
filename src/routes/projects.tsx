@@ -10,12 +10,15 @@ import { Magnetic } from "@/components/Magnetic";
 import { Aurora } from "@/components/Aurora";
 import {
   ArrowRight,
+  Blocks,
   CheckCircle2,
+  Cpu,
   GraduationCap,
   ClipboardCheck,
   Building2,
   Rocket,
   Sparkles,
+  TrendingUp,
   type LucideIcon,
 } from "lucide-react";
 import nerdhavenLogo from "../assets/nerdhaven.png";
@@ -183,17 +186,29 @@ function Bootcamp() {
         {PHASES.map((p, i) => (
           <button
             key={p.n}
+            type="button"
             onMouseEnter={() => setActive(i)}
             onFocus={() => setActive(i)}
             onClick={() => setActive(i)}
-            className={`group text-left rounded-2xl p-5 border transition-colors ${
+            aria-pressed={active === i}
+            className={`group relative text-left rounded-2xl p-5 border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
               active === i
-                ? "border-brand-purple/50 bg-brand-purple/[0.06]"
+                ? "border-brand-purple/60 bg-brand-purple/[0.08]"
                 : "border-hairline bg-white/[0.02] hover:border-white/20"
             }`}
           >
+            <span
+              aria-hidden
+              className={`absolute inset-x-5 top-0 h-0.5 rounded-full transition-colors ${
+                active === i ? "bg-gradient-to-r from-brand-blue to-brand-purple" : "bg-transparent"
+              }`}
+            />
             <div className="flex items-center justify-between">
-              <span className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground">
+              <span
+                className={`text-[10px] tracking-[0.2em] uppercase transition-colors ${
+                  active === i ? "text-brand-purple" : "text-muted-foreground"
+                }`}
+              >
                 Phase {p.n}
               </span>
               <p.icon
@@ -260,21 +275,24 @@ function Bootcamp() {
   );
 }
 
-const TRACKS = [
+const TRACKS: { code: string; title: string; target: string; body: string; icon: LucideIcon }[] = [
   {
     code: "Track A",
+    icon: Blocks,
     title: "Foundations",
     target: "Primary & Secondary Learners",
     body: "Gamified logical reasoning, early computational thinking, scratch algorithms, and basic programming frameworks.",
   },
   {
     code: "Track B",
+    icon: Cpu,
     title: "Specializations",
     target: "Undergraduate Learners",
     body: "Deep-dives into industry-grade technologies, machine learning data models, API integrations, cloud architecture, and bioinformatics.",
   },
   {
     code: "Track C",
+    icon: TrendingUp,
     title: "Growth Hub",
     target: "Business Owners & Founders",
     body: "Digital transformation strategies, workflow automation, cloud collaboration tools, and leveraging tech to scale regional enterprises.",
@@ -359,7 +377,10 @@ function NerdHaven() {
                     {t.target}
                   </span>
                 </div>
-                <h3 className="mt-5 text-xl font-semibold text-white">{t.title}</h3>
+                <h3 className="mt-5 flex items-center gap-2.5 text-xl font-semibold text-white">
+                  <t.icon className="h-5 w-5 shrink-0 text-brand-glow" strokeWidth={1.5} />
+                  {t.title}
+                </h3>
                 <div className="mt-3 h-px bg-hairline" />
                 <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
               </div>

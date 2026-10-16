@@ -88,16 +88,55 @@ function MethodologyPage() {
           </Reveal>
 
           <Reveal delay={60}>
-            <section className="mt-12">
+            <nav className="toc mt-12 max-w-md" aria-label="On this page">
+              <p className="toc-title">On this page</p>
+              <ol>
+                <li>
+                  <a href="#six-pillars">The six pillars</a>
+                </li>
+                <li>
+                  <a href="#scale">The 0-4 scale</a>
+                </li>
+                <li>
+                  <a href="#evidence">Evidence &amp; caps</a>
+                </li>
+                <li>
+                  <a href="#tiers">Tiers</a>
+                </li>
+                <li>
+                  <a href="#process">The process</a>
+                </li>
+                <li>
+                  <a href="#privacy">Data privacy</a>
+                </li>
+                <li>
+                  <a href="#rubric-history">Rubric version history</a>
+                </li>
+                <li>
+                  <a href="#questions">Questions</a>
+                </li>
+              </ol>
+            </nav>
+          </Reveal>
+
+          <div className="section-divider mt-12" />
+
+          <Reveal delay={60}>
+            <section id="six-pillars" className="mt-8">
               <h2 className="text-2xl font-bold text-white">The six pillars</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 Each pillar is worth a fixed number of points. The weights add up to 100.
               </p>
               <div className="mt-6 space-y-5">
-                {PILLARS.map((p) => (
+                {PILLARS.map((p, idx) => (
                   <div key={p.key} className="glass rounded-2xl border border-hairline p-5">
                     <div className="flex items-baseline justify-between gap-4">
-                      <h3 className="font-semibold text-white">{p.label}</h3>
+                      <div className="flex items-baseline gap-3">
+                        <span className="text-xs font-semibold tabular-nums text-brand-purple/70">
+                          {String(idx + 1).padStart(2, "0")}
+                        </span>
+                        <h3 className="font-semibold text-white">{p.label}</h3>
+                      </div>
                       <span className="text-sm tabular-nums text-brand-glow">{p.weight} pts</span>
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">{p.summary}</p>
@@ -123,9 +162,11 @@ function MethodologyPage() {
             </section>
           </Reveal>
 
+          <div className="section-divider mt-12" />
+
           <Reveal delay={60}>
-            <section className="mt-12 grid gap-6 lg:grid-cols-2">
-              <div className="glass rounded-2xl border border-hairline p-6">
+            <section className="mt-8 grid gap-6 lg:grid-cols-2">
+              <div id="scale" className="glass rounded-2xl border border-hairline p-6">
                 <h2 className="text-lg font-semibold text-white">The 0-4 scale</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Every indicator is scored against written descriptors, then converted: points =
@@ -144,8 +185,8 @@ function MethodologyPage() {
                   ))}
                 </ul>
               </div>
-              <div className="glass rounded-2xl border border-hairline p-6">
-                <h2 className="text-lg font-semibold text-white">Evidence & caps</h2>
+              <div id="evidence" className="glass rounded-2xl border border-hairline p-6">
+                <h2 className="text-lg font-semibold text-white">Evidence &amp; caps</h2>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Every indicator carries one evidence type. Weaker evidence is capped so scores
                   stay honest.
@@ -167,17 +208,27 @@ function MethodologyPage() {
             </section>
           </Reveal>
 
+          <div className="section-divider mt-12" />
+
           <Reveal delay={60}>
-            <section className="mt-12">
+            <section id="tiers" className="mt-8">
               <h2 className="text-2xl font-bold text-white">Tiers</h2>
               <p className="mt-2 text-sm text-muted-foreground">
                 A school's total out of 100 places it in one of five tiers.
               </p>
               <div className="mt-6 grid gap-3 sm:grid-cols-5">
                 {TIERS.map((t) => (
-                  <div key={t.key} className="rounded-xl border border-hairline p-4">
+                  <div
+                    key={t.key}
+                    className="flex h-full flex-col rounded-xl border border-hairline p-4"
+                  >
                     <span
-                      className="inline-block rounded-full px-2.5 py-1 text-[11px] font-semibold"
+                      aria-hidden
+                      className="mb-3 h-1 w-8 rounded-full"
+                      style={{ backgroundColor: t.color }}
+                    />
+                    <span
+                      className="inline-block self-start rounded-full px-2.5 py-1 text-[11px] font-semibold"
                       style={{ backgroundColor: t.color, color: t.onColor }}
                     >
                       {t.label}
@@ -192,8 +243,10 @@ function MethodologyPage() {
             </section>
           </Reveal>
 
+          <div className="section-divider mt-12" />
+
           <Reveal delay={60}>
-            <section className="mt-12 glass rounded-2xl border border-hairline p-6">
+            <section id="process" className="mt-8 glass rounded-2xl border border-hairline p-6">
               <h2 className="text-2xl font-bold text-white">The process</h2>
               <ol className="mt-5 space-y-4 text-sm text-muted-foreground">
                 <li>
@@ -222,8 +275,10 @@ function MethodologyPage() {
             </section>
           </Reveal>
 
+          <div className="section-divider mt-12" />
+
           <Reveal delay={60}>
-            <section className="mt-12 glass rounded-2xl border border-hairline p-6">
+            <section id="privacy" className="mt-8 glass rounded-2xl border border-hairline p-6">
               <h2 className="text-2xl font-bold text-white">Data privacy</h2>
               <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                 We publish only what is safe and fair. A school's name and results appear only with
@@ -239,8 +294,13 @@ function MethodologyPage() {
             </section>
           </Reveal>
 
+          <div className="section-divider mt-12" />
+
           <Reveal delay={60}>
-            <section className="mt-12 glass rounded-2xl border border-hairline p-6">
+            <section
+              id="rubric-history"
+              className="mt-8 glass rounded-2xl border border-hairline p-6"
+            >
               <h2 className="text-2xl font-bold text-white">Rubric version history</h2>
               <div className="mt-4 space-y-3 text-sm">
                 <div className="flex gap-4 border-l-2 border-brand-purple/50 pl-4">
@@ -261,8 +321,10 @@ function MethodologyPage() {
             </section>
           </Reveal>
 
+          <div className="section-divider mt-12" />
+
           <Reveal delay={60}>
-            <section className="mt-12">
+            <section id="questions" className="mt-8">
               <h2 className="text-2xl font-bold text-white">Questions</h2>
               <div className="mt-6 space-y-3">
                 {FAQS.map((f) => (

@@ -146,7 +146,11 @@ function ContactPage() {
           <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_2fr]">
             <Reveal delay={100}>
               <aside className="space-y-4">
-                <SpotlightCard className="glass rounded-2xl p-5">
+                <SpotlightCard className="glass relative rounded-2xl p-5">
+                  <span
+                    aria-hidden
+                    className="absolute left-0 inset-y-4 w-0.5 rounded-r-full bg-brand-purple/40"
+                  />
                   <div className="flex items-start gap-4">
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
                       <MapPin className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
@@ -159,7 +163,11 @@ function ContactPage() {
                     </div>
                   </div>
                 </SpotlightCard>
-                <SpotlightCard className="glass rounded-2xl p-5">
+                <SpotlightCard className="glass relative rounded-2xl p-5">
+                  <span
+                    aria-hidden
+                    className="absolute left-0 inset-y-4 w-0.5 rounded-r-full bg-brand-purple/40"
+                  />
                   <div className="flex items-start gap-4">
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
                       <Mail className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
@@ -168,12 +176,21 @@ function ContactPage() {
                       <div className="text-[10px] tracking-widest uppercase text-muted-foreground">
                         Email
                       </div>
-                      <div className="mt-1 text-sm text-white break-words">{NEXTWAVE_EMAIL}</div>
+                      <a
+                        href={`mailto:${NEXTWAVE_EMAIL}`}
+                        className="mt-1 block text-sm text-white break-words hover:text-brand-glow transition-colors"
+                      >
+                        {NEXTWAVE_EMAIL}
+                      </a>
                     </div>
                   </div>
                 </SpotlightCard>
                 {SITE.phone.display !== "TBD — add WhatsApp/phone" && (
-                  <SpotlightCard className="glass rounded-2xl p-5">
+                  <SpotlightCard className="glass relative rounded-2xl p-5">
+                    <span
+                      aria-hidden
+                      className="absolute left-0 inset-y-4 w-0.5 rounded-r-full bg-brand-purple/40"
+                    />
                     <div className="flex items-start gap-4">
                       <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
                         <Phone className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
@@ -189,7 +206,11 @@ function ContactPage() {
                     </div>
                   </SpotlightCard>
                 )}
-                <SpotlightCard className="glass rounded-2xl p-5">
+                <SpotlightCard className="glass relative rounded-2xl p-5">
+                  <span
+                    aria-hidden
+                    className="absolute left-0 inset-y-4 w-0.5 rounded-r-full bg-brand-purple/40"
+                  />
                   <div className="flex items-start gap-4">
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-hairline bg-white/[0.03]">
                       <Building2 className="h-4 w-4 text-brand-glow" strokeWidth={1.5} />
@@ -233,6 +254,15 @@ function ContactPage() {
               noValidate
               className="rounded-2xl border border-hairline bg-white/[0.02] p-6 sm:p-10"
             >
+              <div className="mb-8">
+                <SectionEyebrow>Message</SectionEyebrow>
+                <h2 className="mt-5 text-3xl sm:text-4xl font-bold tracking-tight text-white leading-[1.1]">
+                  Send a <span className="gradient-text">message.</span>
+                </h2>
+                <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
+                  Every submission is reviewed directly by the operations team.
+                </p>
+              </div>
               {sent && (
                 <div className="mb-6 flex items-center gap-3 rounded-xl border border-hairline bg-white/[0.03] px-4 py-3">
                   <CheckCircle2 className="h-4 w-4 text-brand-glow" />

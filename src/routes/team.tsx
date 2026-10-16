@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
@@ -6,7 +6,8 @@ import { Reveal } from "@/components/Reveal";
 import { SpotlightCard } from "@/components/SpotlightCard";
 import { TiltCard } from "@/components/TiltCard";
 import { Aurora } from "@/components/Aurora";
-import { Linkedin, Github, ArrowRight } from "lucide-react";
+import { Instagram, ArrowRight } from "lucide-react";
+import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/team")({
   head: () => ({
@@ -72,6 +73,9 @@ function TeamPage() {
                 <TiltCard maxTilt={6} className="h-full">
                   <SpotlightCard className="group rounded-2xl glass gradient-border p-7 h-full overflow-hidden">
                     <div className="relative aspect-[4/3] rounded-xl border border-hairline bg-white/[0.03] overflow-hidden">
+                      <span className="absolute left-3 top-3 text-[10px] font-semibold tabular-nums tracking-[0.2em] text-muted-foreground group-hover:text-brand-purple/70 transition-colors duration-300">
+                        0{i + 1}
+                      </span>
                       <div className="absolute inset-0 grid place-items-center">
                         <div className="text-5xl font-bold text-white/10 tracking-tight group-hover:text-brand-purple/40 transition-colors duration-300">
                           {initials(p.name)}
@@ -87,8 +91,15 @@ function TeamPage() {
                         Nextwave Infotech
                       </span>
                       <div className="flex items-center gap-2">
-                        <SocialIcon icon={Linkedin} label={`${p.name} on LinkedIn`} />
-                        <SocialIcon icon={Github} label={`${p.name} on GitHub`} />
+                        <SocialIcon href={SITE.socials.x.url} label={`${SITE.name} on X`}>
+                          <XLogo className="h-3.5 w-3.5" />
+                        </SocialIcon>
+                        <SocialIcon
+                          href={SITE.socials.instagram.url}
+                          label={`${SITE.name} on Instagram`}
+                        >
+                          <Instagram className="h-3.5 w-3.5" strokeWidth={1.7} />
+                        </SocialIcon>
                       </div>
                     </div>
                   </SpotlightCard>
@@ -108,14 +119,14 @@ function TeamPage() {
                   close Africa's deep-tech gap.
                 </p>
               </div>
-              <a
-                href="/contact"
+              <Link
+                to="/contact"
                 className="relative group inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110"
                 style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
               >
                 Get involved
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </a>
+              </Link>
             </div>
           </Reveal>
         </div>
@@ -125,13 +136,32 @@ function TeamPage() {
   );
 }
 
-function SocialIcon({ icon: Icon, label }: { icon: typeof Linkedin; label: string }) {
+function SocialIcon({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
-    <button
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       aria-label={label}
       className="grid h-8 w-8 place-items-center rounded-md border border-hairline bg-white/[0.02] text-muted-foreground hover:text-white hover:border-brand-purple/60 transition-colors"
     >
-      <Icon className="h-3.5 w-3.5" strokeWidth={1.7} />
-    </button>
+      {children}
+    </a>
+  );
+}
+
+function XLogo({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
   );
 }

@@ -192,7 +192,8 @@ function ProfileBody({
         </p>
       </Reveal>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
+      <div className="section-divider mt-12" />
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <Reveal>
           <div className="glass rounded-2xl border border-hairline p-6">
             <h2 className="text-lg font-semibold text-white">Pillar profile</h2>
@@ -276,13 +277,18 @@ function ProfileBody({
             cannot score as highly as something we verified.
           </p>
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {PILLARS.map((p) => {
+            {PILLARS.map((p, idx) => {
               const keys = new Set(
                 assessment.scores.filter((s) => s.pillar === p.key).map((s) => s.evidenceType),
               );
               return (
                 <div key={p.key} className="rounded-xl border border-hairline bg-white/[0.02] p-4">
-                  <div className="text-sm font-medium text-white">{p.label}</div>
+                  <div className="flex items-baseline gap-2.5">
+                    <span className="text-[11px] font-semibold tabular-nums text-brand-purple/70">
+                      {String(idx + 1).padStart(2, "0")}
+                    </span>
+                    <div className="text-sm font-medium text-white">{p.label}</div>
+                  </div>
                   <div className="mt-2 flex flex-wrap gap-1.5">
                     {[...keys].map((k) => {
                       const meta = EVIDENCE_TYPES.find((e) => e.key === k);
@@ -306,7 +312,8 @@ function ProfileBody({
         </div>
       </Reveal>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
+      <div className="section-divider mt-12" />
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <Reveal>
           <div className="glass rounded-2xl border border-hairline p-6">
             <h2 className="text-lg font-semibold text-white">Assessment history</h2>
@@ -372,8 +379,9 @@ function ProfileBody({
         </Reveal>
       </div>
 
+      <div className="section-divider mt-12" />
       <Reveal>
-        <div className="mt-12 glass rounded-2xl border border-hairline p-6">
+        <div className="mt-8 glass rounded-2xl border border-hairline p-6">
           <h2 className="text-lg font-semibold text-white">Something look wrong?</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             Schools and parents can report a correction. We verify each report against our records.

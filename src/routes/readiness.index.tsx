@@ -1,5 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen } from "lucide-react";
+import {
+  ArrowRight,
+  BarChart3,
+  BookOpen,
+  Gauge,
+  Layers,
+  Map,
+  MapPin,
+  School,
+  TrendingUp,
+  Wifi,
+  Zap,
+  type LucideIcon,
+} from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
@@ -101,19 +114,35 @@ function StatCard({
   label,
   value,
   suffix,
+  icon: Icon,
 }: {
   label: string;
   value: string | number;
   suffix?: string;
+  icon: LucideIcon;
 }) {
   return (
     <div className="glass rounded-2xl border border-hairline p-5">
-      <div className="text-3xl font-bold text-white">
+      <span className="grid h-9 w-9 place-items-center rounded-lg border border-hairline bg-white/[0.02] text-brand-glow">
+        <Icon className="h-4 w-4" strokeWidth={1.75} />
+      </span>
+      <div className="mt-4 text-3xl font-bold text-white">
         {value}
         {suffix && <span className="text-lg text-muted-foreground">{suffix}</span>}
       </div>
       <div className="mt-1 text-xs text-muted-foreground">{label}</div>
     </div>
+  );
+}
+
+function PanelHeading({ icon: Icon, children }: { icon: LucideIcon; children: React.ReactNode }) {
+  return (
+    <h2 className="flex items-center gap-2.5 text-lg font-semibold text-white">
+      <span className="grid h-8 w-8 place-items-center rounded-lg border border-hairline bg-white/[0.02] text-brand-glow">
+        <Icon className="h-4 w-4" strokeWidth={1.75} />
+      </span>
+      {children}
+    </h2>
   );
 }
 
@@ -154,18 +183,33 @@ function ReadinessDashboard() {
 
           <Reveal delay={80}>
             <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-5">
-              <StatCard label="Schools assessed" value={stats.schoolsAssessed} />
-              <StatCard label="LGAs covered" value={stats.lgasCovered} />
-              <StatCard label="Average NTRI score" value={stats.averageScore} suffix="/100" />
-              <StatCard label="with reliable power" value={stats.powerReliablePct} suffix="%" />
-              <StatCard label="with working internet" value={stats.internetPct} suffix="%" />
+              <StatCard icon={School} label="Schools assessed" value={stats.schoolsAssessed} />
+              <StatCard icon={MapPin} label="LGAs covered" value={stats.lgasCovered} />
+              <StatCard
+                icon={Gauge}
+                label="Average NTRI score"
+                value={stats.averageScore}
+                suffix="/100"
+              />
+              <StatCard
+                icon={Zap}
+                label="with reliable power"
+                value={stats.powerReliablePct}
+                suffix="%"
+              />
+              <StatCard
+                icon={Wifi}
+                label="with working internet"
+                value={stats.internetPct}
+                suffix="%"
+              />
             </div>
           </Reveal>
 
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <Reveal>
               <div className="glass rounded-2xl border border-hairline p-6 h-full">
-                <h2 className="text-lg font-semibold text-white">Distribution by tier</h2>
+                <PanelHeading icon={BarChart3}>Distribution by tier</PanelHeading>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Counts of assessed schools. Higher tiers mean stronger readiness.
                 </p>
@@ -176,7 +220,7 @@ function ReadinessDashboard() {
             </Reveal>
             <Reveal delay={60}>
               <div className="glass rounded-2xl border border-hairline p-6 h-full">
-                <h2 className="text-lg font-semibold text-white">Gaps by pillar</h2>
+                <PanelHeading icon={Layers}>Gaps by pillar</PanelHeading>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Average share of available points earned across all assessed schools.
                 </p>
@@ -189,7 +233,7 @@ function ReadinessDashboard() {
 
           <Reveal>
             <div className="mt-12 glass rounded-2xl border border-hairline p-6">
-              <h2 className="text-lg font-semibold text-white">Average score by LGA</h2>
+              <PanelHeading icon={Map}>Average score by LGA</PanelHeading>
               <p className="mt-1 text-sm text-muted-foreground">
                 Kaduna State local government areas, from highest to lowest.
               </p>
@@ -203,8 +247,11 @@ function ReadinessDashboard() {
             <div className="mt-12">
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-white">School directory</h2>
-                  <p className="mt-1 text-sm text-muted-foreground max-w-2xl">
+                  <SectionEyebrow>Directory</SectionEyebrow>
+                  <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight text-white leading-[1.1]">
+                    School <span className="gradient-text">directory.</span>
+                  </h2>
+                  <p className="mt-3 text-sm text-muted-foreground max-w-2xl">
                     Every assessed school that has agreed to be listed. There is no ranking and no
                     leaderboard — search, filter and open a school to see its full profile.
                   </p>
@@ -220,9 +267,7 @@ function ReadinessDashboard() {
           {trends.length > 0 && (
             <Reveal>
               <div className="mt-12 glass rounded-2xl border border-hairline p-6">
-                <h2 className="text-lg font-semibold text-white">
-                  Progress since first assessment
-                </h2>
+                <PanelHeading icon={TrendingUp}>Progress since first assessment</PanelHeading>
                 <p className="mt-1 text-sm text-muted-foreground">
                   Schools assessed more than once, showing the change in their total score.
                 </p>

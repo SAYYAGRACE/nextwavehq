@@ -51,6 +51,35 @@ function PrivacyPage() {
             <p className="mt-4 text-sm text-muted-foreground">Last updated: 10 October 2026</p>
           </Reveal>
 
+          <Reveal delay={40}>
+            <nav className="toc mt-10" aria-label="On this page">
+              <p className="toc-title">On this page</p>
+              <ol>
+                <li>
+                  <a href="#information-we-collect">Information we collect</a>
+                </li>
+                <li>
+                  <a href="#children-and-data-of-minors">Children and data of minors</a>
+                </li>
+                <li>
+                  <a href="#how-we-use-your-information">How we use your information</a>
+                </li>
+                <li>
+                  <a href="#storage-and-retention">Storage, service providers and retention</a>
+                </li>
+                <li>
+                  <a href="#cookies">Cookies</a>
+                </li>
+                <li>
+                  <a href="#your-rights">Your rights</a>
+                </li>
+                <li>
+                  <a href="#contact">Contact</a>
+                </li>
+              </ol>
+            </nav>
+          </Reveal>
+
           <Reveal delay={80}>
             <div className="mt-10 space-y-8 text-sm sm:text-base text-muted-foreground leading-relaxed">
               <p>
@@ -60,7 +89,9 @@ function PrivacyPage() {
                 Protection Act (NDPA) and, where applicable, other relevant laws.
               </p>
 
-              <div>
+              <div className="section-divider" />
+
+              <section id="information-we-collect">
                 <h2 className="text-lg font-semibold text-white">Information we collect</h2>
                 <p className="mt-3">
                   We collect information you provide directly to us, including when you contact us,
@@ -69,9 +100,11 @@ function PrivacyPage() {
                   content of your message. We collect the minimum data needed for the purpose at
                   hand.
                 </p>
-              </div>
+              </section>
 
-              <div>
+              <div className="section-divider" />
+
+              <section id="children-and-data-of-minors">
                 <h2 className="text-lg font-semibold text-white">Children and data of minors</h2>
                 <p className="mt-3">
                   Some of our programs, including NerdHaven, are designed for primary and secondary
@@ -79,18 +112,22 @@ function PrivacyPage() {
                   of a parent or guardian, and we limit collection to what is necessary. A parent or
                   guardian may contact us at any time to review, correct or delete a child's data.
                 </p>
-              </div>
+              </section>
 
-              <div>
+              <div className="section-divider" />
+
+              <section id="how-we-use-your-information">
                 <h2 className="text-lg font-semibold text-white">How we use your information</h2>
                 <p className="mt-3">
                   We use the information we collect to respond to enquiries, manage waitlists and
                   registrations, send updates you have asked for, operate and improve our programs,
                   and meet legal obligations. We do not sell your personal data.
                 </p>
-              </div>
+              </section>
 
-              <div>
+              <div className="section-divider" />
+
+              <section id="storage-and-retention">
                 <h2 className="text-lg font-semibold text-white">
                   Storage, service providers and retention
                 </h2>
@@ -100,18 +137,22 @@ function PrivacyPage() {
                   only for as long as necessary for the purpose it was collected, or as required by
                   law.
                 </p>
-              </div>
+              </section>
 
-              <div>
+              <div className="section-divider" />
+
+              <section id="cookies">
                 <h2 className="text-lg font-semibold text-white">Cookies</h2>
                 <p className="mt-3">
                   We use essential cookies and similar technologies needed to run the site, and
                   limited analytics to understand how it is used. You can control cookies through
                   your browser settings.
                 </p>
-              </div>
+              </section>
 
-              <div>
+              <div className="section-divider" />
+
+              <section id="your-rights">
                 <h2 className="text-lg font-semibold text-white">Your rights</h2>
                 <p className="mt-3">
                   Under the NDPA you have the right to access, correct, and request deletion of your
@@ -122,9 +163,11 @@ function PrivacyPage() {
                   </a>
                   .
                 </p>
-              </div>
+              </section>
 
-              <div>
+              <div className="section-divider" />
+
+              <section id="contact">
                 <h2 className="text-lg font-semibold text-white">Contact</h2>
                 <p className="mt-3">
                   Questions about this policy? Reach us at{" "}
@@ -133,7 +176,7 @@ function PrivacyPage() {
                   </a>{" "}
                   or by post at {SITE.location.full}.
                 </p>
-              </div>
+              </section>
             </div>
           </Reveal>
         </div>

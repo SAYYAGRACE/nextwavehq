@@ -75,11 +75,12 @@ function AboutPage() {
 
           <Reveal delay={100}>
             <div className="mt-12 max-w-3xl">
-              <h2 className="text-2xl sm:text-3xl font-semibold text-white leading-tight">
-                A passionate collective positioning Africa at the forefront of emerging
-                technologies.
+              <SectionEyebrow>Who We Are</SectionEyebrow>
+              <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+                A passionate collective positioning Africa at the forefront of{" "}
+                <span className="gradient-text">emerging technologies.</span>
               </h2>
-              <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted-foreground">
+              <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-muted-foreground">
                 Nextwave is structured to ensure the African continent is an active architect —
                 rather than a passive consumer — of the global deep-tech revolution. By building
                 grassroots infrastructure, training exceptional analytical minds, and influencing
@@ -90,11 +91,11 @@ function AboutPage() {
           </Reveal>
 
           <Reveal delay={160}>
-            <blockquote className="relative mt-12 max-w-4xl rounded-3xl border border-hairline bg-white/[0.02] px-8 py-10 sm:px-12 sm:py-12 overflow-hidden">
-              <p className="relative text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight">
+            <blockquote className="relative mt-10 max-w-3xl rounded-2xl border border-hairline bg-white/[0.02] px-6 py-7 sm:px-9 sm:py-9 overflow-hidden">
+              <p className="relative text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-white leading-snug">
                 "Africa must architect the deep-tech century — not merely consume it."
               </p>
-              <footer className="relative mt-6 text-xs tracking-widest uppercase text-muted-foreground">
+              <footer className="relative mt-5 text-xs tracking-widest uppercase text-muted-foreground">
                 The Nextwave Thesis
               </footer>
             </blockquote>
@@ -141,14 +142,32 @@ function AboutPage() {
             </Reveal>
           </div>
 
-          <div className="mt-12 grid gap-5 sm:grid-cols-3">
+          <Reveal>
+            <div className="mt-16 max-w-3xl">
+              <SectionEyebrow>What Drives Us</SectionEyebrow>
+              <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+                Three drives <span className="gradient-text">powering the mission.</span>
+              </h2>
+              <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
+                Identifying exceptional minds, engineering real infrastructure, and shaping policy
+                from the ground.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="mt-8 grid gap-5 sm:grid-cols-3">
             {DRIVES.map((d, i) => (
               <Reveal key={d.title} delay={i * 90}>
                 <TiltCard maxTilt={7} className="h-full">
                   <div className="group h-full">
                     <SpotlightCard className="glass gradient-border rounded-2xl p-7 h-full overflow-hidden">
-                      <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:border-brand-purple/40 transition-colors duration-300">
-                        <d.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:border-brand-purple/40 transition-colors duration-300">
+                          <d.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
+                        </div>
+                        <span className="text-[11px] font-semibold tabular-nums tracking-[0.2em] text-muted-foreground group-hover:text-white transition-colors duration-300">
+                          0{i + 1}
+                        </span>
                       </div>
                       <h3 className="mt-6 text-lg font-semibold text-white">{d.title}</h3>
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{d.body}</p>

@@ -5,16 +5,21 @@ import {
   Activity,
   ArrowRight,
   ArrowUpRight,
+  Blocks,
   BrainCircuit,
   Building2,
+  ClipboardCheck,
+  Cpu,
   Dna,
   Globe2,
+  GraduationCap,
   Layers,
   ShieldPlus,
   CheckCircle2,
   Rocket,
   Sparkles,
   Trophy,
+  TrendingUp,
   Users,
   ChevronDown,
 } from "lucide-react";
@@ -319,7 +324,7 @@ function ChallengeSection() {
                 Africa can't afford to sit out the{" "}
                 <span className="gradient-text">deep-tech century.</span>
               </h2>
-              <p className="mt-4 text-muted-foreground leading-relaxed">
+              <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
                 Every frontier technology creates two kinds of societies: the architects and the
                 consumers. Nextwave is our continent's answer — a deliberate, team-built pathway
                 from raw talent to world-class engineering.
@@ -347,7 +352,12 @@ function ChallengeSection() {
                       <c.icon className="relative h-5 w-5 text-brand-glow" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">{c.title}</h3>
+                      <div className="flex items-baseline gap-2.5">
+                        <span className="text-xs font-semibold tabular-nums text-brand-purple/70">
+                          0{i + 1}
+                        </span>
+                        <h3 className="text-lg font-semibold text-white">{c.title}</h3>
+                      </div>
                       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.body}</p>
                     </div>
                   </div>
@@ -389,10 +399,10 @@ function FocusAreas() {
         <Reveal>
           <div className="max-w-2xl">
             <SectionEyebrow>Core Focus Areas</SectionEyebrow>
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
               Three verticals. <span className="gradient-text">One continental thesis.</span>
             </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
+            <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
               We operate where research, advocacy, and engineering converge — building the
               structural scaffolding for Africa's deep-tech century.
             </p>
@@ -501,14 +511,12 @@ function TenetsSection() {
     <section className="relative py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
-          <SectionEyebrow>How We Think</SectionEyebrow>
-        </Reveal>
-        <Reveal delay={100}>
-          <div className="mt-5 max-w-2xl">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+          <div className="max-w-2xl">
+            <SectionEyebrow>How We Think</SectionEyebrow>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
               Four tenets <span className="gradient-text">guiding the mission.</span>
             </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
+            <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
               Every decision, partnership, and cohort is filtered through these core operating
               principles.
             </p>
@@ -525,7 +533,12 @@ function TenetsSection() {
                     <div className="grid h-11 w-11 place-items-center rounded-xl border border-hairline bg-white/[0.03] group-hover:scale-110 group-hover:border-brand-purple/40 transition-all duration-300">
                       <t.icon className="h-5 w-5 text-brand-glow" strokeWidth={1.5} />
                     </div>
-                    <h3 className="mt-6 text-lg font-semibold text-white">{t.title}</h3>
+                    <div className="mt-6 flex items-baseline gap-2.5">
+                      <span className="text-xs font-semibold tabular-nums text-brand-purple/70">
+                        0{i + 1}
+                      </span>
+                      <h3 className="text-lg font-semibold text-white">{t.title}</h3>
+                    </div>
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
                   </SpotlightCard>
                 </div>
@@ -541,21 +554,25 @@ function TenetsSection() {
 const PHASES = [
   {
     n: "01",
+    icon: GraduationCap,
     title: "Strategic Outreach",
     body: "Nextwave engineering staff deploy across Kaduna State, running high-intensity emerging technology masterclasses.",
   },
   {
     n: "02",
+    icon: ClipboardCheck,
     title: "Aptitude Challenge",
     body: "Rigorous tech evaluations and analytical examinations identify the most exceptional logical talent in every cohort.",
   },
   {
     n: "03",
+    icon: Building2,
     title: "Industry Immersion",
     body: "Top-tier candidates embed directly into premier IT companies, shadowing senior software and system engineers in live workflows.",
   },
   {
     n: "04",
+    icon: Rocket,
     title: "Launchpad Deployment",
     body: "Exceptional candidates receive official Nextwave certifications and are placed into high-impact holiday internships.",
   },
@@ -569,12 +586,12 @@ function BootcampTimeline() {
         <Reveal>
           <div className="max-w-3xl">
             <SectionEyebrow>Flagship Initiative</SectionEyebrow>
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
               The Nextwave Bootcamp:
               <br />
               <span className="gradient-text">Nurturing Nigeria's next tech leaders.</span>
             </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed">
+            <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
               A metrics-driven pipeline transforming local talent into high-performing industry
               engineering assets, originating in Kaduna State.
             </p>
@@ -585,20 +602,21 @@ function BootcampTimeline() {
           <div className="mt-12 relative">
             <div className="hidden lg:block absolute top-[52px] left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-purple/40 to-transparent" />
             <div className="grid gap-5 lg:grid-cols-4">
-              {PHASES.map((p, i) => (
+              {PHASES.map((p) => (
                 <div key={p.n} className="group relative">
                   <div className="hidden lg:flex absolute -top-2 left-1/2 -translate-x-1/2 h-5 w-5 items-center justify-center">
                     <span className="h-2.5 w-2.5 rounded-full bg-brand-glow shadow-[0_0_12px_var(--brand-glow)] group-hover:shadow-[0_0_24px_var(--brand-glow)] transition-shadow" />
                   </div>
                   <TiltCard maxTilt={8} className="h-full">
                     <SpotlightCard className="glass gradient-border rounded-2xl p-6 h-full overflow-hidden">
-                      <div className="flex items-baseline justify-between">
+                      <div className="flex items-center justify-between gap-3">
                         <span className="text-xs tracking-[0.2em] uppercase text-muted-foreground">
                           Phase {p.n}
                         </span>
-                        <span className="text-3xl font-bold text-white/10 group-hover:text-brand-purple/40 transition-colors">
-                          0{i + 1}
-                        </span>
+                        <p.icon
+                          className="h-5 w-5 text-brand-glow/80 group-hover:text-brand-glow transition-colors"
+                          strokeWidth={1.5}
+                        />
                       </div>
                       <h3 className="mt-4 text-lg font-semibold text-white">{p.title}</h3>
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
@@ -630,18 +648,21 @@ function BootcampTimeline() {
 const TRACKS = [
   {
     n: "01",
+    icon: Blocks,
     title: "Foundations",
     target: "Primary & Secondary",
     body: "Computational logic, core algorithmics, and early engineering foundations.",
   },
   {
     n: "02",
+    icon: Cpu,
     title: "Specializations",
     target: "Undergraduate Learners",
     body: "Advanced AI models, data sciences, and biotechnology frameworks.",
   },
   {
     n: "03",
+    icon: TrendingUp,
     title: "Growth Hub",
     target: "Business Owners",
     body: "Enterprise digital transformation, cloud scaling, and modern technical workflows.",
@@ -696,12 +717,12 @@ function NerdHaven() {
                     Coming Soon
                   </span>
                 </div>
-                <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+                <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
                   NerdHaven:
                   <br />
                   <span className="gradient-text">The Borderless Digital Academy.</span>
                 </h2>
-                <p className="mt-5 text-muted-foreground leading-relaxed max-w-xl">
+                <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
                   A comprehensive digital learning ecosystem engineered by Nextwave to democratize
                   high-tier technical literacy across multiple user demographics.
                 </p>
@@ -723,7 +744,10 @@ function NerdHaven() {
                       {t.target}
                     </span>
                   </div>
-                  <h3 className="mt-5 text-lg font-semibold text-white">{t.title}</h3>
+                  <h3 className="mt-5 flex items-center gap-2.5 text-lg font-semibold text-white">
+                    <t.icon className="h-4 w-4 shrink-0 text-brand-glow" strokeWidth={1.5} />
+                    {t.title}
+                  </h3>
                   <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{t.body}</p>
                 </div>
               </TiltCard>
@@ -807,10 +831,10 @@ function FaqSection() {
         <Reveal>
           <div className="text-center">
             <SectionEyebrow>Questions</SectionEyebrow>
-            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
               Quick <span className="gradient-text">answers.</span>
             </h2>
-            <p className="mt-4 text-muted-foreground leading-relaxed max-w-xl mx-auto">
+            <p className="mt-4 max-w-2xl mx-auto text-muted-foreground leading-relaxed">
               Everything you need to know about the movement, the bootcamp, and NerdHaven.
             </p>
           </div>
@@ -849,10 +873,10 @@ function CtaBand() {
               <div className="relative grid h-16 w-16 place-items-center rounded-2xl gradient-border glass mx-auto">
                 <Rocket className="h-7 w-7 text-brand-glow" strokeWidth={1.5} />
               </div>
-              <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white">
+              <h2 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
                 Ready to build <span className="gradient-text">Africa's next wave?</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-muted-foreground leading-relaxed">
+              <p className="mx-auto mt-4 max-w-2xl text-muted-foreground leading-relaxed">
                 Whether you're a learner, a partner host company, or an organization aligned with
                 our mission — there's a seat at the table.
               </p>

@@ -742,6 +742,50 @@ html:not(.dark) [style*="gradient-brand"] .text-white {
   background: linear-gradient(90deg, transparent, var(--hairline), transparent);
 }
 
+/* ============ ARTICLE TABLE OF CONTENTS (long-form pages) ============ */
+.toc {
+  border: 1px solid var(--hairline);
+  background: color-mix(in oklab, var(--surface-elevated) 60%, transparent);
+  border-radius: var(--radius-xl);
+  padding: 1rem 1.1rem;
+}
+.toc-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 0.75rem;
+}
+.toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+  counter-reset: toc;
+}
+.toc a {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--muted-foreground);
+  transition: color 0.2s ease;
+}
+.toc a::before {
+  counter-increment: toc;
+  content: counter(toc, decimal-leading-zero);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-purple);
+  opacity: 0.7;
+}
+.toc a:hover {
+  color: var(--foreground);
+}
+
 /* ============ NOISE TEXTURE OVERLAY (disabled — keeps surfaces calm) ============ */
 .noise-overlay::before {
   content: none;

@@ -4,6 +4,7 @@ import { CalendarDays, ArrowLeft, Newspaper } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Aurora } from "@/components/Aurora";
+import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { fetchArticleBySlug, type NewsArticle } from "@/lib/cms";
 
 export const Route = createFileRoute("/news/$slug")({
@@ -47,7 +48,8 @@ function NewsDetailPage() {
             </div>
           ) : (
             <article className="mt-8">
-              <div className="flex items-center gap-3 text-[10px] tracking-widest uppercase text-muted-foreground">
+              <SectionEyebrow>News</SectionEyebrow>
+              <div className="mt-5 flex items-center gap-3 text-[10px] tracking-widest uppercase text-muted-foreground">
                 {article.category && <span className="text-brand-glow">{article.category}</span>}
                 {article.publishedAt && (
                   <span className="inline-flex items-center gap-1">
@@ -76,11 +78,14 @@ function NewsDetailPage() {
                 </div>
               )}
               {article.body && (
-                <div className="mt-8 prose-invert max-w-none">
-                  <PortableText
-                    value={article.body as Parameters<typeof PortableText>[0]["value"]}
-                  />
-                </div>
+                <>
+                  <div className="section-divider mt-10" />
+                  <div className="mt-10 prose-invert max-w-none">
+                    <PortableText
+                      value={article.body as Parameters<typeof PortableText>[0]["value"]}
+                    />
+                  </div>
+                </>
               )}
             </article>
           )}

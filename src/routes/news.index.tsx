@@ -71,7 +71,7 @@ function NewsIndexPage() {
 
           {articles.length === 0 ? (
             <Reveal delay={100}>
-              <div className="mt-12 rounded-3xl glass-strong p-12 sm:p-16 text-center">
+              <div className="mt-12 rounded-3xl border border-hairline bg-white/[0.02] p-12 sm:p-16 text-center">
                 <Newspaper className="mx-auto h-10 w-10 text-brand-glow" strokeWidth={1.5} />
                 <h2 className="mt-6 text-2xl font-bold text-white">News is landing soon.</h2>
                 <p className="mx-auto mt-3 max-w-md text-muted-foreground leading-relaxed">
@@ -89,49 +89,65 @@ function NewsIndexPage() {
               </div>
             </Reveal>
           ) : (
-            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {articles.map((a, i) => (
-                <Reveal key={a._id} delay={(i % 3) * 80}>
-                  <Link to="/news/$slug" params={{ slug: a.slug }} className="group block h-full">
-                    <SpotlightCard className="h-full overflow-hidden rounded-2xl border border-hairline">
-                      {a.image && (
-                        <div className="aspect-[16/9] w-full overflow-hidden bg-white/[0.03]">
-                          <img
-                            src={a.image}
-                            alt={a.title}
-                            loading="lazy"
-                            decoding="async"
-                            className="h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-90"
-                          />
-                        </div>
-                      )}
-                      <div className="p-6">
-                        <div className="flex items-center gap-3 text-[10px] tracking-widest uppercase text-muted-foreground">
-                          {a.category && <span className="text-brand-glow">{a.category}</span>}
-                          {a.publishedAt && (
-                            <span className="inline-flex items-center gap-1">
-                              <CalendarDays className="h-3 w-3" />
-                              {formatDate(a.publishedAt)}
-                            </span>
-                          )}
-                        </div>
-                        <h2 className="mt-3 text-lg font-semibold text-white leading-snug group-hover:text-brand-glow transition-colors">
-                          {a.title}
-                        </h2>
-                        {a.excerpt && (
-                          <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">
-                            {a.excerpt}
-                          </p>
+            <div className="mt-12">
+              <Reveal>
+                <SectionEyebrow>Latest</SectionEyebrow>
+                <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+                  Stories from <span className="gradient-text">the field.</span>
+                </h2>
+                <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
+                  Milestones and announcements as they are published.
+                </p>
+              </Reveal>
+
+              <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {articles.map((a, i) => (
+                  <Reveal key={a._id} delay={(i % 3) * 80}>
+                    <Link
+                      to="/news/$slug"
+                      params={{ slug: a.slug }}
+                      className="group block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple/60"
+                    >
+                      <SpotlightCard className="h-full overflow-hidden rounded-2xl border border-hairline transition-colors group-hover:border-brand-purple/30 group-focus-visible:border-brand-purple/30">
+                        {a.image && (
+                          <div className="aspect-[16/9] w-full overflow-hidden bg-white/[0.03]">
+                            <img
+                              src={a.image}
+                              alt={a.title}
+                              loading="lazy"
+                              decoding="async"
+                              className="h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-90"
+                            />
+                          </div>
                         )}
-                        <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-medium text-brand-glow">
-                          Read more
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                        </span>
-                      </div>
-                    </SpotlightCard>
-                  </Link>
-                </Reveal>
-              ))}
+                        <div className="p-6">
+                          <div className="flex items-center gap-3 text-[10px] tracking-widest uppercase text-muted-foreground">
+                            {a.category && <span className="text-brand-glow">{a.category}</span>}
+                            {a.publishedAt && (
+                              <span className="inline-flex items-center gap-1">
+                                <CalendarDays className="h-3 w-3" />
+                                {formatDate(a.publishedAt)}
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="mt-3 text-lg font-semibold text-white leading-snug group-hover:text-brand-glow transition-colors">
+                            {a.title}
+                          </h3>
+                          {a.excerpt && (
+                            <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-3">
+                              {a.excerpt}
+                            </p>
+                          )}
+                          <span className="mt-5 inline-flex items-center gap-1.5 text-xs font-medium text-brand-glow">
+                            Read more
+                            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                          </span>
+                        </div>
+                      </SpotlightCard>
+                    </Link>
+                  </Reveal>
+                ))}
+              </div>
             </div>
           )}
         </div>
