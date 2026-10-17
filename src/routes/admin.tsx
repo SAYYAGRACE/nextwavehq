@@ -55,15 +55,15 @@ function AdminPage() {
 
   useEffect(() => {
     const saved = sessionStorage.getItem(KEY_STORAGE);
-    if (saved) {
-      setKey(saved);
+    if (saved?.trim()) {
+      setKey(saved.trim());
       setUnlocked(true);
     }
   }, []);
 
   const load = useCallback(
     async (overrideKey?: string) => {
-      const useKey = overrideKey ?? key;
+      const useKey = (overrideKey ?? key).trim();
       if (!useKey) return;
       setLoading(true);
       setError(null);
@@ -110,7 +110,7 @@ function AdminPage() {
     if (action === "refunded" && !confirm(`Mark ${row.reference} as refunded?`)) return;
     const res = await fetch("/api/camp/admin/mark", {
       method: "POST",
-      headers: { "Content-Type": "application/json", "x-camp-admin": key },
+      headers: { "Content-Type": "application/json", "x-camp-admin": key.trim() },
       body: JSON.stringify({ id: row.id, action, type }),
     });
     if (res.ok) void load();
@@ -118,7 +118,7 @@ function AdminPage() {
 
   async function exportCsv() {
     const res = await fetch(`/api/camp/admin/export?type=${type}`, {
-      headers: { "x-camp-admin": key },
+      headers: { "x-camp-admin": key.trim() },
     });
     if (!res.ok) return;
     const blob = await res.blob();
@@ -145,8 +145,10 @@ function AdminPage() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              sessionStorage.setItem(KEY_STORAGE, key);
-              void load(key);
+              const trimmed = key.trim();
+              setKey(trimmed);
+              sessionStorage.setItem(KEY_STORAGE, trimmed);
+              void load(trimmed);
             }}
             className="mt-8 max-w-md rounded-2xl border border-hairline bg-white/[0.02] p-6"
           >

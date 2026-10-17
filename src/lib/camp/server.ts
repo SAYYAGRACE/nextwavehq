@@ -622,7 +622,7 @@ function adminSecret(): string {
 function adminAuthorized(request: Request): boolean {
   const secret = adminSecret();
   if (!secret) return false;
-  return safeEqual(request.headers.get("x-camp-admin") ?? "", secret);
+  return safeEqual((request.headers.get("x-camp-admin") ?? "").trim(), secret);
 }
 async function adminGuard(request: Request, fn: () => Promise<Response>): Promise<Response> {
   if (!adminAuthorized(request)) return json({ ok: false, error: "unauthorized" }, 401);
