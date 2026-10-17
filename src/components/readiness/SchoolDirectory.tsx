@@ -1,38 +1,37 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Link } from "@tanstack/react-router";
 import { Search, MapPin, CalendarDays, Building2, GraduationCap } from "lucide-react";
 import { TierBadge } from "./charts";
 import { TIERS } from "@/lib/readiness/rubric";
-import type { SchoolWithAssessment } from "@/lib/readiness/types";
+import type { SchoolFilters, SchoolWithAssessment } from "@/lib/readiness/types";
 
 type Props = {
   records: SchoolWithAssessment[];
   options: { lgas: string[]; types: string[]; levels: string[]; years: number[] };
+  filters: SchoolFilters;
+  onFiltersChange: (next: SchoolFilters) => void;
 };
 
 const selectClass =
   "rounded-lg border border-hairline bg-white/[0.04] px-3 py-2 text-sm text-white outline-none focus:border-brand-purple/60";
 
-export function SchoolDirectory({ records, options }: Props) {
-  const [search, setSearch] = useState("");
-  const [lga, setLga] = useState("");
-  const [type, setType] = useState("");
-  const [level, setLevel] = useState("");
-  const [tier, setTier] = useState("");
-  const [year, setYear] = useState("");
-  const [sort, setSort] = useState("name");
+export function SchoolDirectory({ records, options, filters, onFiltersChange }: Props) {
+  const { lga, type, level, tier, year, search, sort } = filters;
+
+  function set<K extends keyof SchoolFilters>(key: K, value: SchoolFilters[K]) {
+    onFiltersChange({ ...filters, [key]: value });
+  }
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
+    const q = (search ?? "").trim().toLowerCase();
     const list = records.filter((r) => {
       if (lga && r.school.lga !== lga) return false;
       if (type && r.school.type !== type) return false;
       if (level && r.school.level !== level) return false;
       if (tier && r.assessment.tier !== tier) return false;
-      if (year && String(new Date(r.assessment.assessmentDate).getFullYear()) !== year)
-        return false;
+      if (year && new Date(r.assessment.assessmentDate).getFullYear() !== year) return false;
       if (q && !`${r.school.name} ${r.school.lga} ${r.school.ward ?? ""}`.toLowerCase().includes(q))
         return false;
       return true;
@@ -49,6 +48,14 @@ export function SchoolDirectory({ records, options }: Props) {
     return list;
   }, [records, search, lga, type, level, tier, year, sort]);
 
+  const hasFilters =
+    Boolean(search) ||
+    Boolean(lga) ||
+    Boolean(type) ||
+    Boolean(level) ||
+    Boolean(tier) ||
+    Boolean(year);
+
   return (
     <div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -56,8 +63,8 @@ export function SchoolDirectory({ records, options }: Props) {
           <span className="sr-only">Search schools</span>
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={search ?? ""}
+            onChange={(e) => set("search", e.target.value || undefined)}
             placeholder="Search by school, LGA or ward"
             className={`${selectClass} w-full pl-9`}
           />
@@ -65,8 +72,8 @@ export function SchoolDirectory({ records, options }: Props) {
         <label>
           <span className="sr-only">Filter by LGA</span>
           <select
-            value={lga}
-            onChange={(e) => setLga(e.target.value)}
+            value={lga ?? ""}
+            onChange={(e) => set("lga", (e.target.value || undefined) as SchoolFilters["lga"])}
             className={`${selectClass} w-full`}
           >
             <option value="">All LGAs</option>
@@ -80,8 +87,8 @@ export function SchoolDirectory({ records, options }: Props) {
         <label>
           <span className="sr-only">Filter by school type</span>
           <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
+            value={type ?? ""}
+            onChange={(e) => set("type", (e.target.value || undefined) as SchoolFilters["type"])}
             className={`${selectClass} w-full`}
           >
             <option value="">All types</option>
@@ -95,8 +102,8 @@ export function SchoolDirectory({ records, options }: Props) {
         <label>
           <span className="sr-only">Filter by level</span>
           <select
-            value={level}
-            onChange={(e) => setLevel(e.target.value)}
+            value={level ?? ""}
+            onChange={(e) => set("level", (e.target.value || undefined) as SchoolFilters["level"])}
             className={`${selectClass} w-full`}
           >
             <option value="">All levels</option>
@@ -110,8 +117,8 @@ export function SchoolDirectory({ records, options }: Props) {
         <label>
           <span className="sr-only">Filter by tier</span>
           <select
-            value={tier}
-            onChange={(e) => setTier(e.target.value)}
+            value={tier ?? ""}
+            onChange={(e) => set("tier", (e.target.value || undefined) as SchoolFilters["tier"])}
             className={`${selectClass} w-full`}
           >
             <option value="">All tiers</option>
@@ -125,8 +132,8 @@ export function SchoolDirectory({ records, options }: Props) {
         <label>
           <span className="sr-only">Filter by year</span>
           <select
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
+            value={year ? String(year) : ""}
+            onChange={(e) => set("year", e.target.value ? Number(e.target.value) : undefined)}
             className={`${selectClass} w-full`}
           >
             <option value="">All years</option>
@@ -140,8 +147,8 @@ export function SchoolDirectory({ records, options }: Props) {
         <label>
           <span className="sr-only">Sort schools</span>
           <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
+            value={sort ?? "name"}
+            onChange={(e) => set("sort", e.target.value as SchoolFilters["sort"])}
             className={`${selectClass} w-full`}
           >
             <option value="name">Sort: Name</option>
@@ -151,9 +158,20 @@ export function SchoolDirectory({ records, options }: Props) {
         </label>
       </div>
 
-      <p className="mt-4 text-xs text-muted-foreground">
-        {filtered.length} {filtered.length === 1 ? "school" : "schools"} shown
-      </p>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <p className="text-xs text-muted-foreground">
+          {filtered.length} {filtered.length === 1 ? "school" : "schools"} shown
+        </p>
+        {hasFilters && (
+          <button
+            type="button"
+            onClick={() => onFiltersChange({ sort: filters.sort })}
+            className="text-xs font-medium text-brand-glow hover:underline"
+          >
+            Clear filters
+          </button>
+        )}
+      </div>
 
       {filtered.length === 0 ? (
         <div className="mt-6 rounded-2xl border border-hairline bg-white/[0.02] p-10 text-center">

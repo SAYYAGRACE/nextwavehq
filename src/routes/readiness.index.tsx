@@ -3,9 +3,9 @@ import {
   ArrowRight,
   BarChart3,
   BookOpen,
+  CalendarClock,
   Gauge,
   Layers,
-  Map,
   MapPin,
   School,
   TrendingUp,
@@ -19,12 +19,17 @@ import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { Aurora } from "@/components/Aurora";
 import { TierBarChart, PillarBars } from "@/components/readiness/charts";
+import { ReadinessCta, SampleDataBanner, TrendList } from "@/components/readiness/panels";
 import {
-  LgaRanking,
-  ReadinessCta,
-  SampleDataBanner,
-  TrendList,
-} from "@/components/readiness/panels";
+  HowToRead,
+  KeyTakeaways,
+  LgaMap,
+  PillarFunding,
+  ReadinessFaq,
+  Roadmap,
+  SampleLimitations,
+  TrustProcess,
+} from "@/components/readiness/hub";
 import { SchoolDirectory } from "@/components/readiness/SchoolDirectory";
 import { DownloadAggregates } from "@/components/readiness/DownloadAggregates";
 import {
@@ -36,8 +41,57 @@ import {
   getTrends,
   loadPublishedRecords,
 } from "@/lib/readiness/store";
+import type { SchoolFilters, SchoolLevel, SchoolType } from "@/lib/readiness/types";
+import type { TierKey } from "@/lib/readiness/rubric";
+
+type ReadinessSearch = {
+  q?: string;
+  lga?: string;
+  type?: SchoolType;
+  level?: SchoolLevel;
+  tier?: TierKey;
+  year?: number;
+  sort?: "name" | "lga" | "recent";
+};
+
+function fromSearch(s: ReadinessSearch): SchoolFilters {
+  return {
+    search: s.q,
+    lga: s.lga,
+    type: s.type,
+    level: s.level,
+    tier: s.tier,
+    year: s.year,
+    sort: s.sort,
+  };
+}
+
+function toSearch(f: SchoolFilters): ReadinessSearch {
+  return {
+    q: f.search,
+    lga: f.lga,
+    type: f.type,
+    level: f.level,
+    tier: f.tier,
+    year: f.year,
+    sort: f.sort,
+  };
+}
 
 export const Route = createFileRoute("/readiness/")({
+  validateSearch: (raw: Record<string, unknown>): ReadinessSearch => {
+    const str = (v: unknown) => (typeof v === "string" && v.length > 0 ? (v as string) : undefined);
+    const year = raw.year !== undefined && raw.year !== "" ? Number(raw.year) : undefined;
+    return {
+      q: str(raw.q),
+      lga: str(raw.lga),
+      type: str(raw.type) as ReadinessSearch["type"],
+      level: str(raw.level) as ReadinessSearch["level"],
+      tier: str(raw.tier) as ReadinessSearch["tier"],
+      year: year !== undefined && !Number.isNaN(year) ? year : undefined,
+      sort: str(raw.sort) as ReadinessSearch["sort"],
+    };
+  },
   head: () => ({
     meta: [
       { title: "School Tech Readiness Index — Nextwave" },
@@ -149,6 +203,12 @@ function PanelHeading({ icon: Icon, children }: { icon: LucideIcon; children: Re
 function ReadinessDashboard() {
   const { records, usingSample, options, stats, tiers, pillars, lgas, trends } =
     Route.useLoaderData();
+  const search = Route.useSearch();
+  const navigate = Route.useNavigate();
+
+  const latestDate = records
+    .map((r) => r.assessment.assessmentDate)
+    .sort((a, b) => b.localeCompare(a))[0];
 
   return (
     <div className="min-h-screen bg-background">
@@ -171,6 +231,12 @@ function ReadinessDashboard() {
               </Link>
               .
             </p>
+            {latestDate && (
+              <p className="mt-4 inline-flex items-center gap-2 text-xs text-muted-foreground">
+                <CalendarClock className="h-3.5 w-3.5" />
+                Last updated {formatLongDate(latestDate)}
+              </p>
+            )}
           </Reveal>
 
           {usingSample && (
@@ -206,6 +272,18 @@ function ReadinessDashboard() {
             </div>
           </Reveal>
 
+          <Reveal>
+            <KeyTakeaways stats={stats} pillars={pillars} />
+          </Reveal>
+
+          <Reveal>
+            <HowToRead />
+          </Reveal>
+
+          <Reveal>
+            <SampleLimitations usingSample={usingSample} stats={stats} lgas={lgas} />
+          </Reveal>
+
           <div className="mt-12 grid gap-6 lg:grid-cols-2">
             <Reveal>
               <div className="glass rounded-2xl border border-hairline p-6 h-full">
@@ -232,15 +310,7 @@ function ReadinessDashboard() {
           </div>
 
           <Reveal>
-            <div className="mt-12 glass rounded-2xl border border-hairline p-6">
-              <PanelHeading icon={Map}>Average score by LGA</PanelHeading>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Kaduna State local government areas, from highest to lowest.
-              </p>
-              <div className="mt-6">
-                <LgaRanking data={lgas} />
-              </div>
-            </div>
+            <LgaMap data={lgas} />
           </Reveal>
 
           <Reveal>
@@ -259,7 +329,14 @@ function ReadinessDashboard() {
                 <DownloadAggregates stats={stats} tiers={tiers} pillars={pillars} lgas={lgas} />
               </div>
               <div className="mt-6">
-                <SchoolDirectory records={records} options={options} />
+                <SchoolDirectory
+                  records={records}
+                  options={options}
+                  filters={fromSearch(search)}
+                  onFiltersChange={(next) =>
+                    navigate({ search: toSearch(next), replace: true, resetScroll: false })
+                  }
+                />
               </div>
             </div>
           </Reveal>
@@ -267,9 +344,10 @@ function ReadinessDashboard() {
           {trends.length > 0 && (
             <Reveal>
               <div className="mt-12 glass rounded-2xl border border-hairline p-6">
-                <PanelHeading icon={TrendingUp}>Progress since first assessment</PanelHeading>
+                <PanelHeading icon={TrendingUp}>Progress stories</PanelHeading>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Schools assessed more than once, showing the change in their total score.
+                  Schools assessed more than once, showing the change in their total score since
+                  their first assessment.
                 </p>
                 <div className="mt-6">
                   <TrendList data={trends} />
@@ -277,6 +355,22 @@ function ReadinessDashboard() {
               </div>
             </Reveal>
           )}
+
+          <Reveal>
+            <TrustProcess />
+          </Reveal>
+
+          <Reveal>
+            <PillarFunding pillars={pillars} />
+          </Reveal>
+
+          <Reveal>
+            <Roadmap />
+          </Reveal>
+
+          <Reveal>
+            <ReadinessFaq />
+          </Reveal>
 
           <Reveal>
             <div className="mt-12">
@@ -300,4 +394,10 @@ function ReadinessDashboard() {
       <SiteFooter />
     </div>
   );
+}
+
+function formatLongDate(iso: string) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
