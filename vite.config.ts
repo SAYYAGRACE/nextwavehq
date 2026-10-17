@@ -28,6 +28,74 @@ async function generateReadinessOg(): Promise<void> {
   );
 }
 
+const SITE_ORIGIN = "https://nextwave.com.ng";
+
+const STATIC_SITEMAP_ROUTES: Array<{ path: string; priority: string }> = [
+  { path: "/", priority: "1.0" },
+  { path: "/about", priority: "0.9" },
+  { path: "/projects", priority: "0.9" },
+  { path: "/team", priority: "0.8" },
+  { path: "/news", priority: "0.7" },
+  { path: "/readiness", priority: "0.9" },
+  { path: "/readiness/methodology", priority: "0.6" },
+  { path: "/contact", priority: "0.8" },
+  { path: "/privacy", priority: "0.3" },
+  { path: "/terms", priority: "0.3" },
+];
+
+function sitemapUrl(loc: string, lastmod: string, priority: string): string {
+  return `  <url><loc>${loc}</loc><lastmod>${lastmod}</lastmod><priority>${priority}</priority></url>`;
+}
+
+async function generateSitemap(): Promise<void> {
+  const root = process.cwd();
+  const today = new Date().toISOString().slice(0, 10);
+
+  const { getPublishedRecords } = await import(resolve(root, "src/lib/readiness/store.ts"));
+  const records = getPublishedRecords() as Array<{
+    school: { slug: string };
+    assessment: { assessmentDate: string };
+  }>;
+
+  let newsUrls: Array<{ loc: string; lastmod: string }> = [];
+  try {
+    const { fetchArticles } = await import(resolve(root, "src/lib/cms.ts"));
+    const articles = await fetchArticles();
+    newsUrls = articles
+      .filter((a) => a.slug)
+      .map((a) => ({
+        loc: `${SITE_ORIGIN}/news/${a.slug}`,
+        lastmod: (a.publishedAt ?? "").slice(0, 10) || today,
+      }));
+  } catch {
+    const { LOCAL_ARTICLE } = await import(resolve(root, "src/lib/news-local.ts"));
+    newsUrls = [
+      {
+        loc: `${SITE_ORIGIN}/news/${LOCAL_ARTICLE.slug}`,
+        lastmod: (LOCAL_ARTICLE.publishedAt ?? "").slice(0, 10) || today,
+      },
+    ];
+  }
+
+  const lines = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...STATIC_SITEMAP_ROUTES.map((r) => sitemapUrl(`${SITE_ORIGIN}${r.path}`, today, r.priority)),
+    ...records.map((r) =>
+      sitemapUrl(
+        `${SITE_ORIGIN}/readiness/${r.school.slug}`,
+        (r.assessment.assessmentDate ?? "").slice(0, 10) || today,
+        "0.5",
+      ),
+    ),
+    ...newsUrls.map((n) => sitemapUrl(n.loc, n.lastmod, "0.6")),
+    "</urlset>",
+    "",
+  ];
+
+  await writeFile(resolve(root, "public/sitemap.xml"), lines.join("\n"));
+}
+
 function readinessOgPlugin() {
   return {
     name: "nextwave-readiness-og",
@@ -38,6 +106,15 @@ function readinessOgPlugin() {
       } catch (error) {
         this.warn(
           `Readiness OG generation skipped (committed images will be used): ${
+            error instanceof Error ? error.message : String(error)
+          }`,
+        );
+      }
+      try {
+        await generateSitemap();
+      } catch (error) {
+        this.warn(
+          `Sitemap generation skipped (committed sitemap will be used): ${
             error instanceof Error ? error.message : String(error)
           }`,
         );

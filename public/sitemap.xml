@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://nextwave.com.ng/</loc><lastmod>2026-10-10</lastmod><priority>1.0</priority></url>
-  <url><loc>https://nextwave.com.ng/about</loc><lastmod>2026-10-10</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nextwave.com.ng/projects</loc><lastmod>2026-10-10</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nextwave.com.ng/team</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
-  <url><loc>https://nextwave.com.ng/news</loc><lastmod>2026-10-10</lastmod><priority>0.7</priority></url>
-  <url><loc>https://nextwave.com.ng/readiness</loc><lastmod>2026-10-10</lastmod><priority>0.9</priority></url>
-  <url><loc>https://nextwave.com.ng/readiness/methodology</loc><lastmod>2026-10-10</lastmod><priority>0.6</priority></url>
-  <url><loc>https://nextwave.com.ng/contact</loc><lastmod>2026-10-10</lastmod><priority>0.8</priority></url>
-  <url><loc>https://nextwave.com.ng/privacy</loc><lastmod>2026-10-10</lastmod><priority>0.3</priority></url>
-  <url><loc>https://nextwave.com.ng/terms</loc><lastmod>2026-10-10</lastmod><priority>0.3</priority></url>
+  <url><loc>https://nextwave.com.ng/</loc><lastmod>2026-10-17</lastmod><priority>1.0</priority></url>
+  <url><loc>https://nextwave.com.ng/about</loc><lastmod>2026-10-17</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nextwave.com.ng/projects</loc><lastmod>2026-10-17</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nextwave.com.ng/team</loc><lastmod>2026-10-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://nextwave.com.ng/news</loc><lastmod>2026-10-17</lastmod><priority>0.7</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness</loc><lastmod>2026-10-17</lastmod><priority>0.9</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/methodology</loc><lastmod>2026-10-17</lastmod><priority>0.6</priority></url>
+  <url><loc>https://nextwave.com.ng/contact</loc><lastmod>2026-10-17</lastmod><priority>0.8</priority></url>
+  <url><loc>https://nextwave.com.ng/privacy</loc><lastmod>2026-10-17</lastmod><priority>0.3</priority></url>
+  <url><loc>https://nextwave.com.ng/terms</loc><lastmod>2026-10-17</lastmod><priority>0.3</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/sardauna-model-primary</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/unguwan-rimi-secondary</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/heritage-international-academy</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/al-hikmah-science-college</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/gra-model-nursery-primary</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/kabala-community-secondary</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/sabo-gra-primary</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/christ-the-king-college</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/narayi-unity-secondary</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/bright-future-academy</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/readiness/government-girls-college-zaria</loc><lastmod>2026-03-18</lastmod><priority>0.5</priority></url>
+  <url><loc>https://nextwave.com.ng/news/modernizing-theoretical-illiteracy</loc><lastmod>2026-10-16</lastmod><priority>0.6</priority></url>
 </urlset>

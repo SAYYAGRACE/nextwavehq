@@ -7,10 +7,40 @@ import { Aurora } from "@/components/Aurora";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { fetchArticleBySlug, type NewsArticle } from "@/lib/cms";
 
+const OG_FALLBACK = "https://nextwave.com.ng/og.jpg";
+
 export const Route = createFileRoute("/news/$slug")({
   loader: async ({ params }): Promise<{ article: NewsArticle | null }> => ({
     article: await fetchArticleBySlug(params.slug),
   }),
+  head: ({ loaderData, params }) => {
+    const article = loaderData?.article;
+    const slug = article?.slug ?? params.slug;
+    const url = `https://nextwave.com.ng/news/${slug}`;
+    const title = article ? `${article.title} | Nextwave` : "News | Nextwave";
+    const description = article?.excerpt ?? "News, updates and analysis from Nextwave Infotech.";
+    const image = article?.image ?? OG_FALLBACK;
+    const meta = [
+      { title },
+      { name: "description", content: description },
+      { property: "og:type", content: "article" },
+      { property: "og:title", content: article?.title ?? title },
+      { property: "og:description", content: description },
+      { property: "og:url", content: url },
+      { property: "og:image", content: image },
+      ...(article?.publishedAt
+        ? [{ property: "article:published_time", content: article.publishedAt }]
+        : []),
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: article?.title ?? title },
+      { name: "twitter:description", content: description },
+      { name: "twitter:image", content: image },
+    ];
+    return {
+      meta,
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   component: NewsDetailPage,
 });
 
