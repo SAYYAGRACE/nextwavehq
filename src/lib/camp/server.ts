@@ -49,14 +49,15 @@ async function rest(
   const url = env("SUPABASE_URL");
   const key = env("SUPABASE_SERVICE_ROLE_KEY");
   if (!url || !key) return { ok: false, status: 503, data: null, error: "not-configured" };
-  const qs = `?select=${encodeURIComponent(select)}${single ? "&limit=1" : "&limit=1000"}`;
+  const sep = path.includes("?") ? "&" : "?";
+  const qs = `${sep}select=${encodeURIComponent(select)}${single ? "&limit=1" : "&limit=1000"}`;
   const res = await fetch(`${url}/rest/v1/${table}${path}${qs}`, {
     method,
     headers: {
       Authorization: `Bearer ${key}`,
       apikey: key,
       "Content-Type": "application/json",
-      Prefer: single ? "return=representation" : "return=representation",
+      Prefer: "return=representation",
     },
     ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
   });
@@ -69,12 +70,6 @@ async function rest(
   }
   if (!res.ok) return { ok: false, status: res.status, data: parsed, error: text };
   return { ok: true, status: res.status, data: parsed };
-}
-
-async function findById(table: string, id: string): Promise<Row | null> {
-  const r = await rest(table, { path: `?id=eq.${encodeURIComponent(id)}`, single: true });
-  if (!r.ok) return null;
-  return (Array.isArray(r.data) ? r.data[0] : r.data) as Row | null;
 }
 
 async function findByReference(table: string, reference: string): Promise<Row | null> {
