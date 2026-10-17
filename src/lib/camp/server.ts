@@ -39,7 +39,7 @@ type Row = Record<string, unknown>;
 async function rest(
   table: string,
   {
-    method = "POST",
+    method = "GET",
     path = "",
     body,
     select = "*",
@@ -424,6 +424,7 @@ async function handleRegister(body: RegistrationPayload, request: Request): Prom
   const reference = makeReference("REG");
 
   const r = await rest(TABLE_REG, {
+    method: "POST",
     body: {
       parent_name: parentName,
       parent_whatsapp: parentWhatsapp,
@@ -478,6 +479,7 @@ async function handleSponsor(body: SponsorshipPayload, request: Request): Promis
   const reference = makeReference("SPN");
 
   const r = await rest(TABLE_SPN, {
+    method: "POST",
     body: {
       donor_name: donorName ?? null,
       donor_email: donorEmail,
