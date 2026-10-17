@@ -11,11 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as TeamRouteImport } from './routes/team'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as CampIndexRouteImport } from './routes/camp.index'
+import { Route as CampThankYouRouteImport } from './routes/camp.thank-you'
 import { Route as NewsIndexRouteImport } from './routes/news.index'
 import { Route as NewsSlugRouteImport } from './routes/news.$slug'
 import { Route as ReadinessIndexRouteImport } from './routes/readiness.index'
@@ -30,6 +33,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -55,6 +63,16 @@ const TeamRoute = TeamRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampIndexRoute = CampIndexRouteImport.update({
+  id: '/camp/',
+  path: '/camp/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampThankYouRoute = CampThankYouRouteImport.update({
+  id: '/camp/thank-you',
+  path: '/camp/thank-you',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsIndexRoute = NewsIndexRouteImport.update({
@@ -86,28 +104,34 @@ const ReadinessMethodologyRoute = ReadinessMethodologyRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
+  '/camp/thank-you': typeof CampThankYouRoute
   '/news/$slug': typeof NewsSlugRoute
   '/readiness/$slug': typeof ReadinessSlugRoute
   '/readiness/methodology': typeof ReadinessMethodologyRoute
+  '/camp/': typeof CampIndexRoute
   '/news/': typeof NewsIndexRoute
   '/readiness/': typeof ReadinessIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
+  '/camp/thank-you': typeof CampThankYouRoute
   '/news/$slug': typeof NewsSlugRoute
   '/readiness/$slug': typeof ReadinessSlugRoute
   '/readiness/methodology': typeof ReadinessMethodologyRoute
+  '/camp': typeof CampIndexRoute
   '/news': typeof NewsIndexRoute
   '/readiness': typeof ReadinessIndexRoute
 }
@@ -115,14 +139,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
   '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRoute
   '/team': typeof TeamRoute
   '/terms': typeof TermsRoute
+  '/camp/thank-you': typeof CampThankYouRoute
   '/news/$slug': typeof NewsSlugRoute
   '/readiness/$slug': typeof ReadinessSlugRoute
   '/readiness/methodology': typeof ReadinessMethodologyRoute
+  '/camp/': typeof CampIndexRoute
   '/news/': typeof NewsIndexRoute
   '/readiness/': typeof ReadinessIndexRoute
 }
@@ -131,42 +158,51 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/privacy'
     | '/projects'
     | '/team'
     | '/terms'
+    | '/camp/thank-you'
     | '/news/$slug'
     | '/readiness/$slug'
     | '/readiness/methodology'
+    | '/camp/'
     | '/news/'
     | '/readiness/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/privacy'
     | '/projects'
     | '/team'
     | '/terms'
+    | '/camp/thank-you'
     | '/news/$slug'
     | '/readiness/$slug'
     | '/readiness/methodology'
+    | '/camp'
     | '/news'
     | '/readiness'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/contact'
     | '/privacy'
     | '/projects'
     | '/team'
     | '/terms'
+    | '/camp/thank-you'
     | '/news/$slug'
     | '/readiness/$slug'
     | '/readiness/methodology'
+    | '/camp/'
     | '/news/'
     | '/readiness/'
   fileRoutesById: FileRoutesById
@@ -174,14 +210,17 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
   ContactRoute: typeof ContactRoute
   PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRoute
   TeamRoute: typeof TeamRoute
   TermsRoute: typeof TermsRoute
+  CampThankYouRoute: typeof CampThankYouRoute
   NewsSlugRoute: typeof NewsSlugRoute
   ReadinessSlugRoute: typeof ReadinessSlugRoute
   ReadinessMethodologyRoute: typeof ReadinessMethodologyRoute
+  CampIndexRoute: typeof CampIndexRoute
   NewsIndexRoute: typeof NewsIndexRoute
   ReadinessIndexRoute: typeof ReadinessIndexRoute
 }
@@ -200,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -235,6 +281,20 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/camp/': {
+      id: '/camp/'
+      path: '/camp'
+      fullPath: '/camp/'
+      preLoaderRoute: typeof CampIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/camp/thank-you': {
+      id: '/camp/thank-you'
+      path: '/camp/thank-you'
+      fullPath: '/camp/thank-you'
+      preLoaderRoute: typeof CampThankYouRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news/': {
@@ -278,14 +338,17 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
   ContactRoute: ContactRoute,
   PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRoute,
   TeamRoute: TeamRoute,
   TermsRoute: TermsRoute,
+  CampThankYouRoute: CampThankYouRoute,
   NewsSlugRoute: NewsSlugRoute,
   ReadinessSlugRoute: ReadinessSlugRoute,
   ReadinessMethodologyRoute: ReadinessMethodologyRoute,
+  CampIndexRoute: CampIndexRoute,
   NewsIndexRoute: NewsIndexRoute,
   ReadinessIndexRoute: ReadinessIndexRoute,
 }
