@@ -5,6 +5,7 @@ import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { Aurora } from "@/components/Aurora";
 import { SITE } from "@/lib/site";
+import { CAMP } from "@/lib/camp";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
@@ -48,7 +49,7 @@ function PrivacyPage() {
             <h1 className="mt-6 text-4xl sm:text-5xl font-bold tracking-tight text-white">
               Privacy <span className="gradient-text">Policy.</span>
             </h1>
-            <p className="mt-4 text-sm text-muted-foreground">Last updated: 10 October 2026</p>
+            <p className="mt-4 text-sm text-muted-foreground">Last updated: 17 October 2026</p>
           </Reveal>
 
           <Reveal delay={40}>
@@ -60,6 +61,9 @@ function PrivacyPage() {
                 </li>
                 <li>
                   <a href="#children-and-data-of-minors">Children and data of minors</a>
+                </li>
+                <li>
+                  <a href="#coding-camp">Coding Camp registrations</a>
                 </li>
                 <li>
                   <a href="#how-we-use-your-information">How we use your information</a>
@@ -116,6 +120,24 @@ function PrivacyPage() {
 
               <div className="section-divider" />
 
+              <section id="coding-camp">
+                <h2 className="text-lg font-semibold text-white">Coding Camp registrations</h2>
+                <p className="mt-3">
+                  When you register a child for the {CAMP.name}, we collect your name, WhatsApp
+                  number and email address as the parent or guardian, and your child's first name
+                  and age. We do not ask for — and we do not publish — children's photographs, full
+                  names or any other identifying details. Class schedules and updates are shared
+                  privately with parents.
+                </p>
+                <p className="mt-3">
+                  Card payments are processed by Paystack. We never see or store your card details;
+                  we record only the payment status and a transaction reference. You can ask us to
+                  correct or delete your registration data at any time.
+                </p>
+              </section>
+
+              <div className="section-divider" />
+
               <section id="how-we-use-your-information">
                 <h2 className="text-lg font-semibold text-white">How we use your information</h2>
                 <p className="mt-3">
@@ -133,9 +155,11 @@ function PrivacyPage() {
                 </h2>
                 <p className="mt-3">
                   Submissions are stored in a content management database and email is delivered
-                  through a third-party email provider acting on our behalf. We keep personal data
-                  only for as long as necessary for the purpose it was collected, or as required by
-                  law.
+                  through a third-party email provider acting on our behalf. Card payments are
+                  processed by Paystack, a third-party payment provider. We keep personal data only
+                  for as long as necessary for the purpose it was collected, or as required by law —
+                  for example, registration and payment records for the {CAMP.name} are retained for
+                  the duration of the camp and for legal and accounting purposes.
                 </p>
               </section>
 

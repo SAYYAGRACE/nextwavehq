@@ -25,6 +25,9 @@ import {
   TrendingUp,
   Users,
   ChevronDown,
+  CalendarDays,
+  MessageCircle,
+  Gift,
 } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -50,6 +53,7 @@ import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { SITE } from "@/lib/site";
 import { postSubmission } from "@/lib/submit";
 import { getStats } from "@/lib/readiness/store";
+import { CAMP, whatsappLink } from "@/lib/camp";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -130,6 +134,7 @@ function HomePage() {
         <FocusAreas />
         <StatsBand />
         <ReadinessSection />
+        <CampBanner />
         <TenetsSection />
         <BootcampTimeline />
         <div className="mx-auto max-w-7xl px-6 lg:px-10 mt-14 lg:mt-20">
@@ -536,6 +541,68 @@ function ReadinessSection() {
             Figures shown are illustrative sample data used while the first assessment round is
             published in full.
           </p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function CampBanner() {
+  const facts = [
+    { icon: CalendarDays, value: CAMP.dateRangeLabel },
+    { icon: Gift, value: `${CAMP.feeLabel} · ages 7–17` },
+  ];
+  return (
+    <section className="relative py-16 lg:py-20">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-3xl border border-hairline bg-white/[0.02] p-8 sm:p-12">
+            <div className="absolute -top-24 -right-16 h-64 w-64 rounded-full bg-brand-purple/10 blur-[100px]" />
+            <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-2xl">
+                <SectionEyebrow>Now open</SectionEyebrow>
+                <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+                  The Nextwave Online Coding Camp is enrolling.
+                </h2>
+                <p className="mt-4 max-w-xl text-muted-foreground leading-relaxed">
+                  Live online coding classes for kids and teens (ages 7–17). A Nigerian-built,
+                  beginner-friendly camp for {CAMP.dateRangeLabel}.
+                </p>
+                <dl className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+                  {facts.map((f) => (
+                    <div
+                      key={f.value}
+                      className="flex items-center gap-2 text-sm text-muted-foreground"
+                    >
+                      <f.icon className="h-4 w-4 text-brand-glow" strokeWidth={1.75} />
+                      {f.value}
+                    </div>
+                  ))}
+                </dl>
+              </div>
+              <div className="flex shrink-0 flex-col gap-3">
+                <Magnetic strength={0.3}>
+                  <Link
+                    to="/camp"
+                    className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110"
+                    style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+                  >
+                    Register your child
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Magnetic>
+                <a
+                  href={whatsappLink(CAMP.chatPrefillText)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white border border-hairline bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Ask on WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
         </Reveal>
       </div>
     </section>

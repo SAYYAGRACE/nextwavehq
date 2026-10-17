@@ -93,6 +93,8 @@ function intentFromParam(param?: string): string {
   switch (param) {
     case "assessment":
       return "School Readiness Assessment";
+    case "camp":
+      return "Coding Camp Enquiry";
     case "partner":
       return "Corporate Partnership Inquiry";
     case "volunteer":
@@ -372,6 +374,7 @@ function ContactPage() {
                     }}
                   >
                     <option value="">Select Purpose of Engagement</option>
+                    <option>Coding Camp Enquiry</option>
                     <option>{ASSESSMENT_INTENT}</option>
                     <option>Corporate Partnership Inquiry</option>
                     <option>Training Program Alignment</option>

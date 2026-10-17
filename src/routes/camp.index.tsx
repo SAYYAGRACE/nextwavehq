@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/accordion";
 import { CampRegistrationForm } from "@/components/camp/CampRegistrationForm";
 import { CampSponsorSection } from "@/components/camp/CampSponsorSection";
+import { WhatsAppFab } from "@/components/camp/WhatsAppFab";
 import { CAMP, CAMP_OG_IMAGE, CAMP_URL, whatsappLink } from "@/lib/camp";
 
 const TITLE = `${CAMP.name} — Live Online Coding Classes (27 Nov – 8 Jan)`;
@@ -575,6 +576,7 @@ function CampPage() {
           </div>
         </section>
       </main>
+      <WhatsAppFab />
       <SiteFooter />
     </div>
   );
