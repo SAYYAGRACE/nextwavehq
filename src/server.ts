@@ -19,6 +19,9 @@ type SubmissionInput = {
   intent?: string;
   message?: string;
   source?: string;
+  schoolName?: string;
+  lga?: string;
+  consent?: boolean;
 };
 
 const RECIPIENT_EMAIL = "info@nextwave.com.ng";
@@ -49,6 +52,9 @@ async function writeSubmissionToSupabase(input: SubmissionInput): Promise<boolea
         intent: input.intent?.trim() || null,
         message: input.message?.trim() || null,
         source: input.source?.trim() || "web",
+        school_name: input.schoolName?.trim() || null,
+        lga: input.lga?.trim() || null,
+        consent: input.consent === true,
       }),
     });
     if (!res.ok) {
@@ -123,6 +129,9 @@ function buildEmail(input: SubmissionInput): { subject: string; text: string; ht
   if (input.name) rows.push(["Name", input.name]);
   if (input.organization) rows.push(["Organization", input.organization]);
   if (input.intent) rows.push(["Intent", input.intent]);
+  if (input.schoolName) rows.push(["School", input.schoolName]);
+  if (input.lga) rows.push(["LGA", input.lga]);
+  if (input.consent) rows.push(["Consent", "Yes — agreed to be contacted"]);
   if (input.message) rows.push(["Message", input.message]);
   if (input.source) rows.push(["Source", input.source]);
 
@@ -189,7 +198,27 @@ async function sendEmail(input: SubmissionInput): Promise<boolean> {
   }
 }
 
-async function handleSubmit(rawBody: string): Promise<Response> {
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX = 5;
+const MIN_FILL_MS = 1500;
+const rateHits = new Map<string, number[]>();
+
+function clientKey(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  const ip = forwarded?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "unknown";
+  return ip;
+}
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const recent = (rateHits.get(key) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
+  recent.push(now);
+  rateHits.set(key, recent);
+  if (rateHits.size > 5000) rateHits.clear();
+  return recent.length > RATE_LIMIT_MAX;
+}
+
+async function handleSubmit(rawBody: string, request: Request): Promise<Response> {
   let body: {
     kind?: unknown;
     email?: unknown;
@@ -198,11 +227,33 @@ async function handleSubmit(rawBody: string): Promise<Response> {
     intent?: unknown;
     message?: unknown;
     source?: unknown;
+    schoolName?: unknown;
+    lga?: unknown;
+    consent?: unknown;
+    website?: unknown;
+    elapsedMs?: unknown;
   };
   try {
     body = JSON.parse(rawBody);
   } catch {
     return Response.json({ ok: false, error: "bad-json" }, { status: 400 });
+  }
+
+  // Honeypot: real users never fill this hidden field. Accept silently so bots
+  // get no signal, but never store or forward the submission.
+  if (typeof body.website === "string" && body.website.trim() !== "") {
+    return Response.json({ ok: true, written: false, emailed: false });
+  }
+
+  // Timing signal: forms submitted implausibly fast are treated as automated.
+  const elapsedMs = typeof body.elapsedMs === "number" ? body.elapsedMs : undefined;
+  if (elapsedMs !== undefined && elapsedMs < MIN_FILL_MS) {
+    return Response.json({ ok: true, written: false, emailed: false });
+  }
+
+  const key = clientKey(request);
+  if (isRateLimited(key)) {
+    return Response.json({ ok: false, error: "rate-limited" }, { status: 429 });
   }
 
   const kind = body.kind === "newsletter" || body.kind === "waitlist" ? body.kind : "contact";
@@ -220,6 +271,10 @@ async function handleSubmit(rawBody: string): Promise<Response> {
     intent: typeof body.intent === "string" ? body.intent.trim().slice(0, 120) : undefined,
     message: typeof body.message === "string" ? body.message.trim().slice(0, 5000) : undefined,
     source: typeof body.source === "string" ? body.source.trim().slice(0, 60) : undefined,
+    schoolName:
+      typeof body.schoolName === "string" ? body.schoolName.trim().slice(0, 160) : undefined,
+    lga: typeof body.lga === "string" ? body.lga.trim().slice(0, 80) : undefined,
+    consent: body.consent === true,
   };
 
   const [supabaseStored, sanityStored, emailed] = await Promise.all([
@@ -267,7 +322,7 @@ export default {
     try {
       const url = new URL(request.url);
       if (request.method === "POST" && url.pathname === "/api/submit") {
-        return await handleSubmit(await request.text());
+        return await handleSubmit(await request.text(), request);
       }
       const emailResponse = await handleEmailRequest(request);
       if (emailResponse) return emailResponse;

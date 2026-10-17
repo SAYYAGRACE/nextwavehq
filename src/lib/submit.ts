@@ -8,6 +8,13 @@ type SubmissionInput = {
   intent?: string;
   message?: string;
   source?: string;
+  schoolName?: string;
+  lga?: string;
+  consent?: boolean;
+  /** Honeypot — must stay empty. Bots that fill it are rejected server-side. */
+  website?: string;
+  /** Milliseconds between form render and submit; used as a lightweight bot signal. */
+  elapsedMs?: number;
 };
 
 export async function postSubmission(input: SubmissionInput): Promise<"ok" | "err"> {

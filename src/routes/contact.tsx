@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
@@ -57,7 +57,37 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
-type Errors = Partial<Record<"name" | "org" | "email" | "intent" | "message", string>>;
+type Errors = Partial<
+  Record<"name" | "org" | "email" | "intent" | "message" | "schoolName" | "consent", string>
+>;
+
+const ASSESSMENT_INTENT = "School Readiness Assessment";
+
+const KADUNA_LGAS = [
+  "Birnin Gwari",
+  "Chikun",
+  "Giwa",
+  "Igabi",
+  "Ikara",
+  "Jaba",
+  "Jema'a",
+  "Kachia",
+  "Kaduna North",
+  "Kaduna South",
+  "Kagarko",
+  "Kajuru",
+  "Kaura",
+  "Kauru",
+  "Kubau",
+  "Kudan",
+  "Lere",
+  "Makarfi",
+  "Sabon Gari",
+  "Sanga",
+  "Soba",
+  "Zangon Kataf",
+  "Zaria",
+];
 
 function intentFromParam(param?: string): string {
   switch (param) {
@@ -76,21 +106,28 @@ function intentFromParam(param?: string): string {
 
 function ContactPage() {
   const search = Route.useSearch();
+  const startedAt = useRef(Date.now());
   const [form, setForm] = useState({
     name: "",
     org: "",
     email: "",
     intent: intentFromParam(search.intent),
+    schoolName: "",
+    lga: "",
     message: "",
+    consent: false,
+    website: "",
   });
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  function update<K extends keyof typeof form>(k: K, v: string) {
+  const isAssessment = form.intent === ASSESSMENT_INTENT;
+
+  function update<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
     setForm((f) => ({ ...f, [k]: v }));
-    if (errors[k]) setErrors((e) => ({ ...e, [k]: undefined }));
+    if (errors[k as keyof Errors]) setErrors((e) => ({ ...e, [k]: undefined }));
   }
 
   async function submit(e: React.FormEvent) {
@@ -100,7 +137,9 @@ function ContactPage() {
     if (!form.org.trim()) next.org = "Required";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) next.email = "Valid email required";
     if (!form.intent) next.intent = "Select an option";
+    if (isAssessment && !form.schoolName.trim()) next.schoolName = "School name required";
     if (form.message.trim().length < 10) next.message = "Provide at least 10 characters";
+    if (!form.consent) next.consent = "Please agree before sending";
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
@@ -113,6 +152,11 @@ function ContactPage() {
       organization: form.org.trim(),
       intent: form.intent,
       message: form.message.trim(),
+      schoolName: isAssessment ? form.schoolName.trim() : undefined,
+      lga: isAssessment ? form.lga.trim() || undefined : undefined,
+      consent: form.consent,
+      website: form.website,
+      elapsedMs: Date.now() - startedAt.current,
     });
     setSubmitting(false);
     if (result === "err") {
@@ -120,7 +164,18 @@ function ContactPage() {
       return;
     }
     setSent(true);
-    setForm({ name: "", org: "", email: "", intent: "", message: "" });
+    startedAt.current = Date.now();
+    setForm({
+      name: "",
+      org: "",
+      email: "",
+      intent: "",
+      schoolName: "",
+      lga: "",
+      message: "",
+      consent: false,
+      website: "",
+    });
   }
 
   return (
@@ -252,7 +307,7 @@ function ContactPage() {
             <form
               onSubmit={submit}
               noValidate
-              className="rounded-2xl border border-hairline bg-white/[0.02] p-6 sm:p-10"
+              className="relative rounded-2xl border border-hairline bg-white/[0.02] p-6 sm:p-10"
             >
               <div className="mb-8">
                 <SectionEyebrow>Message</SectionEyebrow>
@@ -317,7 +372,7 @@ function ContactPage() {
                     }}
                   >
                     <option value="">Select Purpose of Engagement</option>
-                    <option>School Readiness Assessment</option>
+                    <option>{ASSESSMENT_INTENT}</option>
                     <option>Corporate Partnership Inquiry</option>
                     <option>Training Program Alignment</option>
                     <option>Volunteer Application</option>
@@ -325,6 +380,35 @@ function ContactPage() {
                   </select>
                 </Field>
               </div>
+
+              {isAssessment && (
+                <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                  <Field label="School Name" error={errors.schoolName}>
+                    <input
+                      type="text"
+                      value={form.schoolName}
+                      onChange={(e) => update("schoolName", e.target.value)}
+                      placeholder="e.g., Sardauna Model Primary School"
+                      className={inputCls(errors.schoolName)}
+                    />
+                  </Field>
+                  <Field label="LGA (Local Government Area)">
+                    <input
+                      type="text"
+                      list="kaduna-lgas"
+                      value={form.lga}
+                      onChange={(e) => update("lga", e.target.value)}
+                      placeholder="e.g., Kaduna North"
+                      className={inputCls()}
+                    />
+                    <datalist id="kaduna-lgas">
+                      {KADUNA_LGAS.map((l) => (
+                        <option key={l} value={l} />
+                      ))}
+                    </datalist>
+                  </Field>
+                </div>
+              )}
 
               <div className="mt-5">
                 <Field label="Message" error={errors.message}>
@@ -337,6 +421,44 @@ function ContactPage() {
                   />
                 </Field>
               </div>
+
+              <div
+                aria-hidden
+                className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+              >
+                <label>
+                  Company website
+                  <input
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={form.website}
+                    onChange={(e) => update("website", e.target.value)}
+                  />
+                </label>
+              </div>
+
+              <label className="mt-5 flex items-start gap-3 text-sm text-muted-foreground">
+                <input
+                  type="checkbox"
+                  checked={form.consent}
+                  onChange={(e) => update("consent", e.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-hairline bg-surface-elevated accent-brand-purple"
+                />
+                <span>
+                  I consent to Nextwave contacting me about this enquiry and understand my details
+                  will be handled under the{" "}
+                  <a href="/privacy" className="text-brand-glow hover:underline">
+                    Privacy Policy
+                  </a>
+                  .
+                  {errors.consent && (
+                    <span className="mt-1 block text-[11px] text-destructive">
+                      {errors.consent}
+                    </span>
+                  )}
+                </span>
+              </label>
 
               <div className="mt-8 flex justify-end">
                 <Magnetic strength={0.3}>
