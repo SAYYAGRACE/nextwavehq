@@ -4,6 +4,7 @@ import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { FROM_EMAIL, isDeliverableAddress } from "./lib/email/config";
 import { handleEmailRequest } from "./lib/email/server";
+import { handleCampRequest } from "./lib/camp/server";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -324,6 +325,8 @@ export default {
       if (request.method === "POST" && url.pathname === "/api/submit") {
         return await handleSubmit(await request.text(), request);
       }
+      const campResponse = await handleCampRequest(request);
+      if (campResponse) return campResponse;
       const emailResponse = await handleEmailRequest(request);
       if (emailResponse) return emailResponse;
       const handler = await getServerEntry();
