@@ -7,6 +7,9 @@ import {
   GraduationCap,
   CheckCircle2,
   AlertTriangle,
+  Info,
+  Printer,
+  ShieldCheck,
 } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -16,8 +19,20 @@ import { Aurora } from "@/components/Aurora";
 import { RadarChart, TierBadge } from "@/components/readiness/charts";
 import { SampleDataBanner } from "@/components/readiness/panels";
 import { CorrectionForm } from "@/components/readiness/CorrectionForm";
-import { scoreAssessment, strengthsAndGaps } from "@/lib/readiness/scoring";
-import { EVIDENCE_TYPES, PILLARS, type PillarKey } from "@/lib/readiness/rubric";
+import {
+  effectiveScore,
+  indicatorPoints,
+  round1,
+  scoreAssessment,
+  strengthsAndGaps,
+} from "@/lib/readiness/scoring";
+import {
+  EVIDENCE_TYPES,
+  LEVEL_DESCRIPTORS,
+  PILLARS,
+  TIERS_BY_KEY,
+  type PillarKey,
+} from "@/lib/readiness/rubric";
 import type { SchoolWithAssessment } from "@/lib/readiness/types";
 import { loadPublishedRecords } from "@/lib/readiness/store";
 
@@ -111,12 +126,23 @@ function SchoolProfile() {
         <Aurora className="opacity-30" />
         <div className="absolute inset-0 radial-glow" />
         <div className="relative mx-auto max-w-5xl px-6 lg:px-10">
-          <Link
-            to="/readiness"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" /> All readiness data
-          </Link>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <Link
+              to="/readiness"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" /> All readiness data
+            </Link>
+            {record && (
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.03] px-4 py-2 text-sm text-muted-foreground hover:text-white hover:border-brand-purple/50 transition-colors"
+              >
+                <Printer className="h-4 w-4" /> Print / save as PDF
+              </button>
+            )}
+          </div>
 
           {!record ? (
             <div className="mt-10 rounded-3xl glass-strong p-12 text-center">
@@ -147,6 +173,7 @@ function ProfileBody({
   const result = scoreAssessment(assessment.scores);
   const { strengths, gaps } = strengthsAndGaps(result.pillars);
   const lowest = [...result.pillars].sort((a, b) => a.percent - b.percent).slice(0, 2);
+  const tierInfo = assessment.tier ? TIERS_BY_KEY[assessment.tier] : null;
 
   return (
     <div className="mt-6">
@@ -192,6 +219,39 @@ function ProfileBody({
         </p>
       </Reveal>
 
+      <Reveal delay={40}>
+        <div className="mt-8 glass rounded-2xl border border-hairline p-6">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
+            <Info className="h-5 w-5 text-brand-glow" /> How to read this score
+          </h2>
+          <div className="mt-4 grid gap-5 sm:grid-cols-2">
+            <div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {tierInfo
+                  ? `A total of ${assessment.totalScore}/100 places this school in the ${tierInfo.label} tier (${tierInfo.min}–${tierInfo.max}). ${tierInfo.blurb}`
+                  : "This assessment is not yet scored."}
+              </p>
+              <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+                Higher is stronger. The score reflects what is in place today, not potential.
+              </p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Each of the six pillars is scored 0–4 on written descriptors, then weighted to a
+                100-point total. Evidence is graded, and self-reported evidence is capped at 2 of 4
+                so it cannot score as highly as something an assessor verified.
+              </p>
+              <Link
+                to="/readiness/methodology"
+                className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand-glow hover:underline"
+              >
+                Read the full methodology →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+
       <div className="section-divider mt-12" />
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <Reveal>
@@ -235,6 +295,88 @@ function ProfileBody({
           </div>
         </Reveal>
       </div>
+
+      <Reveal>
+        <div className="mt-12 glass rounded-2xl border border-hairline p-6">
+          <h2 className="text-lg font-semibold text-white">Indicator detail</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Every indicator behind this school's score, with the level reached, the evidence used
+            and the points earned.
+          </p>
+          <div className="mt-6 space-y-7">
+            {PILLARS.map((pillar) => {
+              const pillarResult = result.pillars.find((p) => p.pillar === pillar.key);
+              return (
+                <div key={pillar.key}>
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h3 className="text-sm font-semibold text-white">{pillar.label}</h3>
+                    <span className="text-xs tabular-nums text-muted-foreground">
+                      {pillarResult?.earned ?? 0}/{pillarResult?.available ?? pillar.weight} pts ·{" "}
+                      {pillarResult?.percent ?? 0}%
+                    </span>
+                  </div>
+                  <div className="mt-2 overflow-x-auto">
+                    <table className="w-full min-w-[560px] text-sm">
+                      <thead>
+                        <tr className="text-left text-[11px] uppercase tracking-wide text-muted-foreground">
+                          <th className="pb-2 pr-3 font-medium">Indicator</th>
+                          <th className="pb-2 px-3 font-medium">Level</th>
+                          <th className="pb-2 px-3 font-medium">Evidence</th>
+                          <th className="pb-2 pl-3 text-right font-medium">Points</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {pillar.indicators.map((ind) => {
+                          const s = assessment.scores.find((x) => x.indicatorKey === ind.key);
+                          const raw = s?.score ?? null;
+                          const ev = s?.evidenceType ?? "observed";
+                          const eff = typeof raw === "number" ? effectiveScore(raw, ev) : null;
+                          const level =
+                            eff !== null
+                              ? LEVEL_DESCRIPTORS.find((d) => d.score === eff)
+                              : undefined;
+                          const evidence = EVIDENCE_TYPES.find((e) => e.key === s?.evidenceType);
+                          const pts =
+                            typeof raw === "number" ? indicatorPoints(raw, ind.weight, ev) : null;
+                          return (
+                            <tr key={ind.key} className="border-t border-hairline/60 align-top">
+                              <td className="py-2.5 pr-3 text-muted-foreground">{ind.label}</td>
+                              <td className="py-2.5 px-3 text-white">
+                                {level ? (
+                                  <>
+                                    {level.label}
+                                    <span className="ml-1 text-xs text-muted-foreground">
+                                      ({eff}/4)
+                                    </span>
+                                  </>
+                                ) : (
+                                  <span className="text-muted-foreground">Not scored</span>
+                                )}
+                              </td>
+                              <td className="py-2.5 px-3 text-muted-foreground">
+                                {evidence?.label ?? "—"}
+                                {s?.evidenceType === "self_reported" && (
+                                  <span className="text-amber-300"> · capped</span>
+                                )}
+                              </td>
+                              <td className="py-2.5 pl-3 text-right tabular-nums text-white">
+                                {pts !== null ? `${round1(pts)}/${ind.weight}` : "—"}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-5 text-xs text-muted-foreground">
+            Level 0–4: {LEVEL_DESCRIPTORS.map((d) => `${d.score} ${d.label}`).join(" · ")}.
+          </p>
+        </div>
+      </Reveal>
 
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
         <Reveal>
@@ -378,6 +520,46 @@ function ProfileBody({
           </div>
         </Reveal>
       </div>
+
+      <Reveal>
+        <div className="mt-12 glass rounded-2xl border border-hairline p-6">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-white">
+            <ShieldCheck className="h-5 w-5 text-brand-glow" /> Method & limitations
+          </h2>
+          <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+            <li className="flex gap-2.5">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-glow/70" />
+              Each school is scored independently by two Nextwave assessors; where they differ by
+              more than one point, the score is reconciled with a written note before submission.
+            </li>
+            <li className="flex gap-2.5">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-glow/70" />
+              Every indicator carries one evidence type. Self-reported evidence is capped at 2 of 4
+              points so it cannot score as highly as an assessor-verified result.
+            </li>
+            <li className="flex gap-2.5">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-glow/70" />
+              Student capability is measured through sampled tests and reported only as an aggregate
+              for the school — never individual results, names or identifiable photos.
+            </li>
+            <li className="flex gap-2.5">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-glow/70" />
+              This profile was scored under rubric v{assessment.rubricVersion} and is re-assessed
+              annually.
+            </li>
+          </ul>
+          <p className="mt-4 text-xs text-muted-foreground">
+            {usingSample
+              ? "These figures are illustrative sample data, not a real assessment. "
+              : ""}
+            Results are published only with the school's consent.{" "}
+            <Link to="/readiness/methodology" className="text-brand-glow hover:underline">
+              Read the full methodology
+            </Link>
+            .
+          </p>
+        </div>
+      </Reveal>
 
       <div className="section-divider mt-12" />
       <Reveal>
