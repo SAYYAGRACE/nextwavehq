@@ -169,14 +169,16 @@ function StatCard({
   value,
   suffix,
   icon: Icon,
+  hint,
 }: {
   label: string;
   value: string | number;
   suffix?: string;
   icon: LucideIcon;
+  hint?: string;
 }) {
   return (
-    <div className="glass rounded-2xl border border-hairline p-5">
+    <div className="glass rounded-2xl border border-hairline p-5" title={hint}>
       <span className="grid h-9 w-9 place-items-center rounded-lg border border-hairline bg-white/[0.02] text-brand-glow">
         <Icon className="h-4 w-4" strokeWidth={1.75} />
       </span>
@@ -185,6 +187,7 @@ function StatCard({
         {suffix && <span className="text-lg text-muted-foreground">{suffix}</span>}
       </div>
       <div className="mt-1 text-xs text-muted-foreground">{label}</div>
+      {hint && <div className="mt-1 text-[11px] text-muted-foreground/70">{hint}</div>}
     </div>
   );
 }
@@ -262,12 +265,14 @@ function ReadinessDashboard() {
                 label="with reliable power"
                 value={stats.powerReliablePct}
                 suffix="%"
+                hint="Schools scoring 3 or higher on grid reliability (out of 5)"
               />
               <StatCard
                 icon={Wifi}
                 label="with working internet"
                 value={stats.internetPct}
                 suffix="%"
+                hint="Schools scoring 3 or higher on internet availability (out of 5)"
               />
             </div>
           </Reveal>

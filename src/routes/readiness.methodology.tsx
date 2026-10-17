@@ -110,7 +110,13 @@ function MethodologyPage() {
                   <a href="#privacy">Data privacy</a>
                 </li>
                 <li>
+                  <a href="#disclosure">Independence &amp; disclosure</a>
+                </li>
+                <li>
                   <a href="#rubric-history">Rubric version history</a>
+                </li>
+                <li>
+                  <a href="#changelog">Changelog</a>
                 </li>
                 <li>
                   <a href="#questions">Questions</a>
@@ -297,6 +303,21 @@ function MethodologyPage() {
           <div className="section-divider mt-12" />
 
           <Reveal delay={60}>
+            <section id="disclosure" className="mt-8 glass rounded-2xl border border-hairline p-6">
+              <h2 className="text-2xl font-bold text-white">Independence and disclosure</h2>
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                Nextwave Infotech also offers paid services, including training programmes such as
+                the Nextwave Online Coding Camp. Assessments are carried out by assessors who are
+                independent of sales and business development, and a school's NTRI score is never
+                influenced by whether it buys any service. Every school is scored against the same
+                published rubric, regardless of any commercial relationship with Nextwave.
+              </p>
+            </section>
+          </Reveal>
+
+          <div className="section-divider mt-12" />
+
+          <Reveal delay={60}>
             <section
               id="rubric-history"
               className="mt-8 glass rounded-2xl border border-hairline p-6"
@@ -318,6 +339,32 @@ function MethodologyPage() {
                 Rubrics are versioned. When the framework changes, previous assessments keep the
                 version they were scored under — old scores are never rewritten.
               </p>
+            </section>
+          </Reveal>
+
+          <div className="section-divider mt-12" />
+
+          <Reveal delay={60}>
+            <section id="changelog" className="mt-8 glass rounded-2xl border border-hairline p-6">
+              <h2 className="text-2xl font-bold text-white">Changelog</h2>
+              <div className="mt-4 space-y-3 text-sm">
+                <div className="flex gap-4 border-l-2 border-brand-purple/50 pl-4">
+                  <div>
+                    <div className="font-medium text-white">17 October 2026</div>
+                    <p className="text-muted-foreground">
+                      Clarified the headline metrics: "reliable power" and "working internet" now
+                      explicitly mean a score of 3 or higher on the corresponding indicator. Added
+                      an independence and disclosure statement.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-4 border-l-2 border-brand-purple/50 pl-4">
+                  <div>
+                    <div className="font-medium text-white">{RUBRIC_EFFECTIVE_DATE}</div>
+                    <p className="text-muted-foreground">v{RUBRIC_VERSION} rubric published.</p>
+                  </div>
+                </div>
+              </div>
             </section>
           </Reveal>
 
