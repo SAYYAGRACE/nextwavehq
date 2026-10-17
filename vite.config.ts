@@ -68,13 +68,11 @@ async function generateSitemap(): Promise<void> {
         lastmod: (a.publishedAt ?? "").slice(0, 10) || today,
       }));
   } catch {
-    const { LOCAL_ARTICLE } = await import(resolve(root, "src/lib/news-local.ts"));
-    newsUrls = [
-      {
-        loc: `${SITE_ORIGIN}/news/${LOCAL_ARTICLE.slug}`,
-        lastmod: (LOCAL_ARTICLE.publishedAt ?? "").slice(0, 10) || today,
-      },
-    ];
+    const { LOCAL_ARTICLES } = await import(resolve(root, "src/lib/news-local.ts"));
+    newsUrls = LOCAL_ARTICLES.map((a) => ({
+      loc: `${SITE_ORIGIN}/news/${a.slug}`,
+      lastmod: (a.publishedAt ?? "").slice(0, 10) || today,
+    }));
   }
 
   const lines = [

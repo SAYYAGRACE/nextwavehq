@@ -1,5 +1,5 @@
 import { createClient } from "@sanity/client";
-import { LOCAL_ARTICLE } from "./news-local";
+import { LOCAL_ARTICLES } from "./news-local";
 
 export type NewsArticle = {
   _id: string;
@@ -71,7 +71,8 @@ export async function fetchArticles(): Promise<NewsArticle[]> {
       remote = [];
     }
   }
-  const merged = [LOCAL_ARTICLE, ...remote.filter((a) => a.slug !== LOCAL_ARTICLE.slug)];
+  const localSlugs = new Set(LOCAL_ARTICLES.map((a) => a.slug));
+  const merged = [...LOCAL_ARTICLES, ...remote.filter((a) => !localSlugs.has(a.slug))];
   merged.sort(
     (a, b) =>
       (new Date(b.publishedAt ?? 0).getTime() || 0) - (new Date(a.publishedAt ?? 0).getTime() || 0),
@@ -81,7 +82,8 @@ export async function fetchArticles(): Promise<NewsArticle[]> {
 
 export async function fetchArticleBySlug(slug: string): Promise<NewsArticle | null> {
   if (!slug) return null;
-  if (slug === LOCAL_ARTICLE.slug) return LOCAL_ARTICLE;
+  const local = LOCAL_ARTICLES.find((a) => a.slug === slug);
+  if (local) return local;
   const client = getClient();
   if (!client) return null;
   try {

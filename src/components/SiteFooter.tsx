@@ -67,8 +67,8 @@ export function SiteFooter() {
             title="Engage"
             links={[
               { to: "/contact", label: "Contact" },
-              { to: "/contact", label: "Partner With Us" },
-              { to: "/contact", label: "Volunteer" },
+              { to: "/contact", label: "Partner With Us", search: { intent: "partner" } },
+              { to: "/contact", label: "Volunteer", search: { intent: "volunteer" } },
             ]}
           />
           <div>
@@ -138,7 +138,7 @@ function FooterCol({
   suffix,
 }: {
   title: string;
-  links: { to: string; label: string }[];
+  links: { to: string; label: string; search?: Record<string, string> }[];
   suffix?: React.ReactNode;
 }) {
   return (
@@ -149,6 +149,7 @@ function FooterCol({
           <li key={i}>
             <Link
               to={l.to}
+              search={l.search}
               className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-white transition-colors"
             >
               <span className="h-px w-0 bg-brand-glow group-hover:w-3 transition-all duration-300" />

@@ -224,3 +224,87 @@ export const LOCAL_ARTICLE: NewsArticle = {
   pdfUrl: "/downloads/modernizing-theoretical-illiteracy.pdf",
   body: toPortableText(CONTENT),
 };
+
+export const NTRI_ARTICLE_SLUG = "introducing-the-nextwave-readiness-index";
+
+const NTRI_CONTENT: Item[] = [
+  {
+    k: "p",
+    t: "Today we are publishing the Nextwave School Tech Readiness Index (NTRI) — a public, evidence-based measure of how ready schools in Kaduna State are to teach and use technology. It is built so that schools, funders, government and parents can finally see the reality on the ground, school by school, and act on it.",
+  },
+  { k: "h2", t: "Why we built the index" },
+  {
+    k: "p",
+    t: "Northern Nigeria's tech education crisis is well documented — but documentation is not the same as measurement. Without a shared, comparable baseline, support becomes guesswork: computers are donated to schools that cannot power them, while schools with working labs are overlooked. The NTRI replaces guesswork with a consistent, inspectable score.",
+  },
+  {
+    k: "quote",
+    t: "You cannot fix what you cannot measure. We built the index so every school, and everyone who wants to help it, is working from the same facts.",
+  },
+  { k: "h2", t: "Six pillars, one score" },
+  {
+    k: "p",
+    t: "Every school is scored across six weighted pillars, each graded on written level descriptors from 0 to 4 and combined into a total out of 100:",
+  },
+  {
+    k: "ul",
+    items: [
+      "**Power & Infrastructure** — grid reliability, backup power and a secure equipment room.",
+      "**Devices & Labs** — devices per student, functionality and lab access.",
+      "**Connectivity** — on-site internet, measured speed and who can get online.",
+      "**Curriculum & Teachers** — ICT on the timetable, teacher digital skills and trained ICT staff.",
+      "**Student Capability** — sampled baseline digital-literacy and aptitude tests.",
+      "**Leadership & Sustainability** — a written ICT plan, maintenance budget and safeguarding policy.",
+    ],
+  },
+  { k: "h2", t: "How the scoring works" },
+  {
+    k: "ol",
+    items: [
+      "**Two independent assessors** visit and score each school separately.",
+      "Where scores differ by more than one point, assessors **reconcile with a written note** before submission.",
+      "**Evidence is graded** — observed, measured, documentary or self-reported — and self-reported evidence is capped at 2 of 4 points so it can never score as highly as a verified result.",
+      "The school gets a secure link to **review the result** and request corrections within 14 days.",
+      "Results are published **only with the school's consent**, and a school can ask to be removed at any time.",
+    ],
+  },
+  { k: "h2", t: "What it is not" },
+  {
+    k: "ul",
+    items: [
+      "It is **not a ranking or a league table**. Schools are never compared against one another on the public site.",
+      "It is **not a judgement of individual teachers or students**. Student capability is sampled and reported only as an aggregate.",
+      "It is **not for sale**, and it cannot be paid to be influenced. Published results are the school's, not ours.",
+    ],
+  },
+  { k: "h2", t: "Privacy comes first" },
+  {
+    k: "p",
+    t: "Student data is the most sensitive part of this work, so we treat it that way. Capability is measured through sampled tests and reported only as an aggregate for the whole school — no names, no individual results and no identifiable photos of minors are ever stored or published. Consent is recorded, LGAs with fewer than five assessed schools are not scored, and declined schools never appear.",
+  },
+  {
+    k: "p",
+    t: "You can explore the published profiles, the tier distribution and the gaps by pillar and LGA on the [Nextwave Readiness Index](/readiness) page, and read exactly how each score is produced in the [methodology](/readiness/methodology).",
+  },
+  { k: "h2", t: "What's next" },
+  {
+    k: "p",
+    t: "This is the first cohort. Over the coming cycles we will extend coverage to every LGA in Kaduna State, re-assess schools annually so progress is tracked on a consistent rubric, and connect schools to the partners who can close their biggest gaps first. Any school can request a free assessment, and any funder can sponsor the pillar where it is needed most.",
+  },
+];
+
+export const NTRI_ARTICLE: NewsArticle = {
+  _id: `local-${NTRI_ARTICLE_SLUG}`,
+  title: "Introducing the Nextwave School Tech Readiness Index (NTRI)",
+  slug: NTRI_ARTICLE_SLUG,
+  excerpt:
+    "A public, evidence-based index of how ready schools in Kaduna State are to teach and use technology — scored on six pillars by independent assessors and published only with each school's consent.",
+  category: "Readiness",
+  publishedAt: "2026-10-17T00:00:00Z",
+  image: null,
+  pdfUrl: null,
+  body: toPortableText(NTRI_CONTENT),
+};
+
+/** Local (in-repo) articles merged into the CMS article list. */
+export const LOCAL_ARTICLES: NewsArticle[] = [NTRI_ARTICLE, LOCAL_ARTICLE];
