@@ -18,7 +18,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { Aurora } from "@/components/Aurora";
-import { TierBadge, TierBarChart, PillarBars } from "@/components/readiness/charts";
+import { TierBarChart, PillarBars } from "@/components/readiness/charts";
 import {
   LgaRanking,
   ReadinessCta,
@@ -285,13 +285,12 @@ function ReadinessDashboard() {
           </Reveal>
 
           <Reveal>
-            <div className="mt-10 flex items-center gap-3">
-              <TierBadge tier="leading" />
+            <div className="mt-10 flex flex-wrap items-center gap-3">
               <Link
                 to="/readiness/methodology"
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/[0.02] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/[0.05]"
               >
-                <BookOpen className="h-4 w-4" /> How we score schools
+                <BookOpen className="h-4 w-4 text-brand-glow" /> How we score schools
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>

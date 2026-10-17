@@ -11,9 +11,12 @@ import {
   ClipboardCheck,
   Cpu,
   Dna,
+  Gauge,
   Globe2,
   GraduationCap,
   Layers,
+  MapPin,
+  School,
   ShieldPlus,
   CheckCircle2,
   Rocket,
@@ -46,6 +49,7 @@ import { PartnerStrip } from "@/components/PartnerStrip";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
 import { SITE } from "@/lib/site";
 import { postSubmission } from "@/lib/submit";
+import { getStats } from "@/lib/readiness/store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -125,6 +129,7 @@ function HomePage() {
         <ChallengeSection />
         <FocusAreas />
         <StatsBand />
+        <ReadinessSection />
         <TenetsSection />
         <BootcampTimeline />
         <div className="mx-auto max-w-7xl px-6 lg:px-10 mt-14 lg:mt-20">
@@ -206,29 +211,6 @@ function Hero() {
             >
               Partner With Us
             </Link>
-          </div>
-
-          <div
-            className="reveal mt-12 grid grid-cols-3 gap-3 sm:gap-6 w-full max-w-3xl"
-            style={{ animationDelay: "320ms" }}
-          >
-            {[
-              { k: 300, suffix: "+", v: "Learners reached" },
-              { k: 15, suffix: "+", v: "Partner schools" },
-              { k: 20, suffix: "+", v: "Mentors & instructors" },
-            ].map((s) => (
-              <div
-                key={s.v}
-                className="rounded-2xl border border-hairline bg-white/[0.02] px-4 py-5"
-              >
-                <div className="text-2xl sm:text-4xl font-bold gradient-text tabular-nums">
-                  <AnimatedNumber value={s.k} suffix={s.suffix} />
-                </div>
-                <div className="mt-1.5 text-[10px] sm:text-xs tracking-widest uppercase text-muted-foreground">
-                  {s.v}
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
@@ -477,6 +459,83 @@ function StatsBand() {
               ))}
             </div>
           </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function ReadinessSection() {
+  const stats = getStats();
+  const items = [
+    { icon: School, value: stats.schoolsAssessed, suffix: "", label: "Schools assessed" },
+    { icon: MapPin, value: stats.lgasCovered, suffix: "", label: "LGAs covered" },
+    { icon: Gauge, value: stats.averageScore, suffix: "/100", label: "Average NTRI score" },
+  ];
+
+  return (
+    <section className="relative py-16 lg:py-20">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <Reveal>
+          <div className="max-w-2xl">
+            <SectionEyebrow>School Tech Readiness</SectionEyebrow>
+            <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+              How ready are Northern Nigeria's schools{" "}
+              <span className="gradient-text">for technology?</span>
+            </h2>
+            <p className="mt-4 max-w-2xl text-muted-foreground leading-relaxed">
+              The Nextwave School Tech Readiness Index (NTRI) scores each school out of 100 across
+              six pillars — power, devices, connectivity, curriculum, student capability and
+              leadership. Explore published results by school, pillar and LGA.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={100}>
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            {items.map((s) => (
+              <div
+                key={s.label}
+                className="glass rounded-2xl border border-hairline border-l-2 border-l-brand-purple/40 p-6"
+              >
+                <span className="grid h-9 w-9 place-items-center rounded-lg border border-hairline bg-white/[0.02] text-brand-glow">
+                  <s.icon className="h-4 w-4" strokeWidth={1.75} />
+                </span>
+                <div className="mt-4 text-3xl sm:text-4xl font-bold text-white tabular-nums">
+                  {s.value}
+                  <span className="text-xl text-muted-foreground">{s.suffix}</span>
+                </div>
+                <div className="mt-1 text-xs tracking-widest uppercase text-muted-foreground">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal delay={160}>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Magnetic strength={0.3}>
+              <Link
+                to="/readiness"
+                className="group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white transition-[filter] hover:brightness-110"
+                style={{ background: "var(--gradient-brand)", boxShadow: "var(--shadow-glow)" }}
+              >
+                Explore the readiness index
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Magnetic>
+            <Link
+              to="/readiness/methodology"
+              className="inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium text-white border border-hairline bg-white/[0.03] hover:bg-white/[0.06] transition-colors"
+            >
+              How we score schools
+            </Link>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Figures shown are illustrative sample data used while the first assessment round is
+            published in full.
+          </p>
         </Reveal>
       </div>
     </section>

@@ -1,5 +1,5 @@
 export const RUBRIC_VERSION = "1.0";
-export const RUBRIC_EFFECTIVE_DATE = "2026-10-01";
+export const RUBRIC_EFFECTIVE_DATE = "2025-01-01";
 
 export type EvidenceType = "observed" | "measured" | "document" | "self_reported";
 
