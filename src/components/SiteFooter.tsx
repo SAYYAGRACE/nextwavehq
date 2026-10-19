@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { SITE } from "@/lib/site";
-import { CAMP, whatsappLink } from "@/lib/camp";
 import { ExternalLink, MessageCircle, Mail, MapPin } from "lucide-react";
 
 export function SiteFooter() {
@@ -60,7 +59,6 @@ export function SiteFooter() {
               { to: "/about", label: "About" },
               { to: "/projects", label: "Projects" },
               { to: "/readiness", label: "Readiness" },
-              { to: "/camp", label: "Coding Camp" },
               { to: "/team", label: "Team" },
               { to: "/news", label: "Updates" },
             ]}
@@ -68,7 +66,6 @@ export function SiteFooter() {
           <FooterCol
             title="Engage"
             links={[
-              { to: "/camp", label: "Register your child" },
               { to: "/contact", label: "Contact" },
               { to: "/contact", label: "Partner With Us", search: { intent: "partner" } },
               { to: "/contact", label: "Volunteer", search: { intent: "volunteer" } },
@@ -87,17 +84,6 @@ export function SiteFooter() {
                   <MapPin className="h-3.5 w-3.5 text-brand-glow/70 group-hover:text-brand-glow" />
                   {SITE.location.area}, {SITE.location.city}
                 </Link>
-              </li>
-              <li>
-                <a
-                  href={whatsappLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-white transition-colors"
-                >
-                  <MessageCircle className="h-3.5 w-3.5 text-brand-glow/70 group-hover:text-brand-glow" />
-                  Coding Camp: {CAMP.whatsapp.display}
-                </a>
               </li>
               <li>
                 <a

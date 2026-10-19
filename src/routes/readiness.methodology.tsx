@@ -306,11 +306,11 @@ function MethodologyPage() {
             <section id="disclosure" className="mt-8 glass rounded-2xl border border-hairline p-6">
               <h2 className="text-2xl font-bold text-white">Independence and disclosure</h2>
               <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                Nextwave Infotech also offers paid services, including training programmes such as
-                the Nextwave Online Coding Camp. Assessments are carried out by assessors who are
-                independent of sales and business development, and a school's NTRI score is never
-                influenced by whether it buys any service. Every school is scored against the same
-                published rubric, regardless of any commercial relationship with Nextwave.
+                Nextwave Infotech also offers paid services, including training programmes for
+                schools and students. Assessments are carried out by assessors who are independent
+                of sales and business development, and a school's NTRI score is never influenced by
+                whether it buys any service. Every school is scored against the same published
+                rubric, regardless of any commercial relationship with Nextwave.
               </p>
             </section>
           </Reveal>

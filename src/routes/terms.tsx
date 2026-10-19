@@ -5,7 +5,6 @@ import { SectionEyebrow } from "@/components/SectionEyebrow";
 import { Reveal } from "@/components/Reveal";
 import { Aurora } from "@/components/Aurora";
 import { SITE } from "@/lib/site";
-import { CAMP } from "@/lib/camp";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
@@ -49,7 +48,7 @@ function TermsPage() {
             <h1 className="mt-6 text-4xl sm:text-5xl font-bold tracking-tight text-white">
               Terms of <span className="gradient-text">Service.</span>
             </h1>
-            <p className="mt-4 text-sm text-muted-foreground">Last updated: 17 October 2026</p>
+            <p className="mt-4 text-sm text-muted-foreground">Last updated: 10 October 2026</p>
           </Reveal>
 
           <Reveal delay={40}>
@@ -61,9 +60,6 @@ function TermsPage() {
                 </li>
                 <li>
                   <a href="#programs-and-applications">Programs and applications</a>
-                </li>
-                <li>
-                  <a href="#payments-and-refunds">Payments and refunds</a>
                 </li>
                 <li>
                   <a href="#intellectual-property">Intellectual property</a>
@@ -111,33 +107,6 @@ function TermsPage() {
                   Information about programs, waitlists and opportunities is indicative and may be
                   updated. Registering interest or joining a waitlist does not guarantee admission.
                   Where a learner is under 18, a parent or guardian must consent to participation.
-                </p>
-              </section>
-
-              <div className="section-divider" />
-
-              <section id="payments-and-refunds">
-                <h2 className="text-lg font-semibold text-white">Payments and refunds</h2>
-                <p className="mt-3">
-                  When you register for the {CAMP.name} you may pay the registration fee of{" "}
-                  {CAMP.feeLabel} ({CAMP.feeNote.toLowerCase()}) by card or bank transfer. Card
-                  payments are processed securely by Paystack; Nextwave never stores or has access
-                  to your card details. A place is only confirmed once we have verified the payment
-                  — either a successful card payment or a matched bank transfer.
-                </p>
-                <p className="mt-3">{CAMP.refundPolicy.summary}</p>
-                <ul className="mt-3 list-disc space-y-2 pl-5">
-                  {CAMP.refundPolicy.body.map((line) => (
-                    <li key={line}>{line}</li>
-                  ))}
-                </ul>
-                <p className="mt-3">
-                  Questions about a payment or refund? Message the Coding Camp WhatsApp line at{" "}
-                  {CAMP.whatsapp.display} or email{" "}
-                  <a href={`mailto:${SITE.email}`} className="text-brand-glow hover:underline">
-                    {SITE.email}
-                  </a>
-                  .
                 </p>
               </section>
 

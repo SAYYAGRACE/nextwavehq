@@ -11,7 +11,6 @@ const NAV = [
   { to: "/about", label: "About" },
   { to: "/projects", label: "Projects" },
   { to: "/readiness", label: "Readiness" },
-  { to: "/camp", label: "Coding Camp" },
   { to: "/team", label: "Team" },
   { to: "/news", label: "Updates" },
   { to: "/contact", label: "Contact" },
@@ -58,20 +57,17 @@ export function SiteHeader() {
         scrolled ? "backdrop-blur-xl bg-background/80 border-b border-hairline" : "bg-transparent"
       }`}
     >
-      <Link
-        to="/camp"
-        className="block border-b border-hairline/70 bg-surface/70 transition-colors hover:bg-surface"
-      >
+      <div className="block border-b border-hairline/70 bg-surface/70">
         <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-6 py-2 lg:px-10">
           <span className="h-1.5 w-1.5 rounded-full bg-brand-purple" aria-hidden />
           <span className="text-[12px] font-medium text-foreground/80">
-            Coding Camp for ages 7–17 — registration is open
+            Remote SIWES is coming soon
           </span>
           <span className="hidden text-[12px] text-muted-foreground/80 sm:inline">
-            27 Nov – 8 Jan · Register →
+            — stay tuned
           </span>
         </div>
-      </Link>
+      </div>
 
       <div className="mx-auto max-w-7xl px-6 lg:px-10 h-16 lg:h-[72px] flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5 group" onClick={() => setOpen(false)}>

@@ -28,26 +28,10 @@ async function generateReadinessOg(): Promise<void> {
   );
 }
 
-async function generateCampOg(): Promise<void> {
-  const root = process.cwd();
-  const { renderOgPng } = await import(resolve(root, "src/lib/readiness/og-image.ts"));
-  const { CAMP } = await import(resolve(root, "src/lib/camp.ts"));
-  const outDir = resolve(root, "public/og");
-  await mkdir(outDir, { recursive: true });
-  const png = await renderOgPng({
-    eyebrow: "Online Coding Camp",
-    title: "Nextwave Coding Camp",
-    subtitle: `${CAMP.dateRangeLabel} · Ages 7–17 · ${CAMP.feeLabel}`,
-    footer: "nextwave.com.ng/camp",
-  });
-  await writeFile(resolve(outDir, "camp.png"), png);
-}
-
 const SITE_ORIGIN = "https://nextwave.com.ng";
 
 const STATIC_SITEMAP_ROUTES: Array<{ path: string; priority: string }> = [
   { path: "/", priority: "1.0" },
-  { path: "/camp", priority: "0.95" },
   { path: "/about", priority: "0.9" },
   { path: "/projects", priority: "0.9" },
   { path: "/team", priority: "0.8" },
@@ -120,15 +104,6 @@ function readinessOgPlugin() {
       } catch (error) {
         this.warn(
           `Readiness OG generation skipped (committed images will be used): ${
-            error instanceof Error ? error.message : String(error)
-          }`,
-        );
-      }
-      try {
-        await generateCampOg();
-      } catch (error) {
-        this.warn(
-          `Camp OG generation skipped (committed image will be used): ${
             error instanceof Error ? error.message : String(error)
           }`,
         );
