@@ -1,7 +1,7 @@
 import type { NewsArticle } from "./cms";
 
 type Item =
-  | { k: "h2" | "h3" | "p" | "quote"; t: string }
+  | { k: "h2" | "h3" | "p" | "quote" | "code"; t: string }
   | { k: "ul" | "ol"; items: string[] }
   | { k: "stat"; rows: [string, string][] };
 
@@ -79,11 +79,15 @@ function ptBlock(
   };
 }
 
-function toPortableText(items: Item[]): PTBlock[] {
-  const out: PTBlock[] = [];
+type CodeBlock = { _type: "codeBlock"; _key: string; code: string };
+
+function toPortableText(items: Item[]): (PTBlock | CodeBlock)[] {
+  const out: (PTBlock | CodeBlock)[] = [];
   items.forEach((item, bi) => {
     const bk = `b${bi}`;
-    if (item.k === "h2" || item.k === "h3" || item.k === "p" || item.k === "quote") {
+    if (item.k === "code") {
+      out.push({ _type: "codeBlock", _key: bk, code: item.t });
+    } else if (item.k === "h2" || item.k === "h3" || item.k === "p" || item.k === "quote") {
       const style = item.k === "quote" ? "blockquote" : item.k;
       out.push(ptBlock(bk, style, item.t));
     } else if (item.k === "ul" || item.k === "ol") {
@@ -306,5 +310,159 @@ export const NTRI_ARTICLE: NewsArticle = {
   body: toPortableText(NTRI_CONTENT),
 };
 
+const VALUE_GAP_DIAGRAM = `+-----------------------------------------------------------------------------------+
+|                           THE COMMUNITY ADOPTION MODEL                            |
++-----------------------------------------------------------------------------------+
+|  [ Traditional Obstacle ]  ==>  Perception of tech as abstract, luxury, or risky  |
+|                                                                                   |
+|  [ Strategic Touchpoint ]  ==>  Target parent gatherings (PTA, Awards, Ceremonies)|
+|                                                                                   |
+|  [ Behavioral Catalyst ]   ==>  Live demonstrations by diverse, local youth       |
+|                                                                                   |
+|  [ Psychological Driver ]  ==>  Social proof + Aspirational Fear Of Missing Out   |
+|                                                                                   |
+|  [ Clear Call to Action ]  ==>  Accessible entry points for every student         |
+|                                                                                   |
+|  [ Desired Outcome ]       ==>  Shift to perceiving tech as an imperative skill   |
++-----------------------------------------------------------------------------------+`;
+
+export const VALUE_GAP_SLUG = "bridging-the-value-gap";
+
+const VALUE_GAP_CONTENT: Item[] = [
+  {
+    k: "ul",
+    items: [
+      "**Publication:** Nextwave Media Desk",
+      "**Series:** Perspectives in Educational Innovation & Community Growth",
+      "**Date:** October 2026",
+    ],
+  },
+  { k: "h2", t: "Executive Summary" },
+  {
+    k: "p",
+    t: "Across developing markets and socioeconomically conservative communities, technology training often encounters a subtle yet powerful barrier: **perception**. While mainstream commentary celebrates digital literacy as an essential life skill, many parents in low-resource environments continue to view technical education as an auxiliary luxury, an unnecessary financial expense, or even a distraction from traditional, immediate income-generating activities.",
+  },
+  {
+    k: "p",
+    t: "In a recent executive Q&A, the Head of Marketing at **Nextwave Infotech** articulated a pragmatic, community-anchored strategy to address this mindset gap: triggering positive behavioral shifts by showcasing practical, youth-led achievements directly within established socio-educational touchpoints.",
+  },
+  {
+    k: "p",
+    t: "This analysis examines the root causes of skepticism toward edtech in developing regions, evaluates the psychological drivers of parental decision-making, and outlines a structured framework for converting community skepticism into active engagement.",
+  },
+  { k: "h2", t: 'The Anatomy of Skepticism: Why Tech is Seen as a "Luxury"' },
+  {
+    k: "p",
+    t: "In many under-resourced regions, parental reluctance to invest in tech education is rarely rooted in apathy. Rather, it stems from systemic socioeconomic realities and a lack of visible Return on Investment (ROI):",
+  },
+  {
+    k: "ol",
+    items: [
+      "**Immediate Survival vs. Deferred Utility:** When family budgets are tightly constrained, educational investments are judged by their immediate or guaranteed economic return. Traditional vocational pathways or core academic subjects offer familiar, proven trajectories. By contrast, abstract concepts like software development or digital design can appear distant and uncertain.",
+      "**Infrastructure and Access Deficits:** As edtech adoption studies across developing regions highlight, barriers such as intermittent power supply, high data costs, and device scarcity reinforce the belief that technology belongs exclusively to affluent urban centers.",
+      "**The Digital Knowledge Gap Among Parents:** Parental mediation research shows that when caregivers lack digital exposure themselves, they feel anxious or disconnected from digital learning environments. Without direct visibility into how digital skills translate to upward economic mobility, technology remains classified as recreation or entertainment rather than an essential skill.",
+    ],
+  },
+  { k: "h2", t: "Key Insight: The Nextwave Infotech Perspective" },
+  { k: "p", t: "When asked during an interview:" },
+  {
+    k: "quote",
+    t: "How do you market tech education in communities where many families still see it as a luxury or a waste of time?",
+  },
+  {
+    k: "p",
+    t: "The **Head of Marketing at Nextwave Infotech** offered the following perspective:",
+  },
+  {
+    k: "quote",
+    t: "Good question. And honestly, one worth asking, as it is something that is widespread in this community. While the recognition of tech as a field worthy of acquiring a skill and delving into is admittedly rising in other parts of the country, it is rather slow in this part.",
+  },
+  {
+    k: "quote",
+    t: "I think the answer is pretty simple. But of course, easier said than done. I personally think that the easiest, fastest and surest way to convince parents of otherwise is to show them kids, of varying ages and backgrounds, excelling in tech, because one thing is sure: no parent wants their kid to be left behind... and as such, FOMO (Fear Of Missing Out) has to be installed in them.",
+  },
+  {
+    k: "quote",
+    t: "How can this be done, you may ask? Well, one could start from school. Seize every opportunity that requires parents to come to their children's schools — PTA meetings, award and prize presentation events — and invite a group of tech-savvy children from an academy to showcase something, anything! And let's not forget the CTA! 'Join us! There's something in tech for every single one of you/your children' — boom! FOMO, the desire to have the kid catch up and, ultimately, well... progress.",
+  },
+  { k: "quote", t: "It may be slow, yes, but... motion is still motion." },
+  { k: "quote", t: "Thank you!" },
+  { k: "h2", t: "Strategic Analysis: Leveraging Social Proof & Behavioral Nudges" },
+  {
+    k: "p",
+    t: "The core strategy outlined by Nextwave Infotech aligns closely with established behavioral economics and community marketing frameworks:",
+  },
+  { k: "code", t: VALUE_GAP_DIAGRAM },
+  { k: "h3", t: "1. In-Person Social Proof over Abstract Advertising" },
+  {
+    k: "p",
+    t: 'Abstract claims about "future-proofing careers" rarely convert skeptical audiences. Seeing peers — children from similar backgrounds and age groups — actively running code, creating interactive projects, or solving practical problems delivers undeniable social proof. It reframes technical mastery from an unattainable luxury into a tangible, achievable reality.',
+  },
+  { k: "h3", t: "2. Capitalizing on High-Intent Touchpoints (PTA & School Events)" },
+  {
+    k: "p",
+    t: "Rather than attempting to build new marketing channels from scratch, leveraging existing institutional rhythms — such as Parent-Teacher Association (PTA) meetings and prize-giving days — places the demonstration directly within an environment where parental focus on educational progress is already heightened.",
+  },
+  { k: "h3", t: '3. Constructive "FOMO" as an Educational Catalyst' },
+  {
+    k: "p",
+    t: 'In community dynamics, parental motivation is heavily tied to social mobility and collective peer standards. When parents observe other children acquiring practical technological capabilities, the psychological dynamic shifts from "Why should my child waste time on computers?" to "Is my child falling behind?" This constructive sense of missing out catalyzes action.',
+  },
+  { k: "h2", t: "Implementation Blueprint for Community-Based EdTech Marketing" },
+  {
+    k: "p",
+    t: "To translate this insight into scalable field operations, edtech organizations and community outreach initiatives can implement a three-tiered tactical framework:",
+  },
+  { k: "h3", t: "1. Peer Showcase Modules (The Demonstration Stage)" },
+  {
+    k: "ul",
+    items: [
+      "Structure 5-to-10-minute live demonstrations during community gatherings.",
+      "Highlight students building simple, functional tools — for example, local language learning apps, automated garden watering triggers, or basic websites for community businesses.",
+    ],
+  },
+  { k: "h3", t: "2. Demystified Call to Action (The Accessibility Stage)" },
+  {
+    k: "ul",
+    items: [
+      "Remove entry friction by offering tiered, modular programs suitable for different skill levels and budgets.",
+      "Provide immediate next steps at the event, such as beginner workshops and hands-on weekend trial sessions.",
+    ],
+  },
+  { k: "h3", t: "3. Sustained Momentum & Incremental Progress" },
+  {
+    k: "ul",
+    items: [
+      "Recognize that community mindset shifts occur gradually through repeated positive reinforcement.",
+      "Track localized adoption metrics and showcase long-term student success stories to validate community investment.",
+    ],
+  },
+  { k: "h2", t: "Conclusion" },
+  {
+    k: "p",
+    t: "Changing long-held perceptions about technology education does not require aggressive sales pitches; it requires context-aware visibility. By embedding tangible student demonstrations into trusted community spaces, Nextwave Infotech highlights a pragmatic model for bridging the digital divide — one parent, one demonstration, and one milestone at a time.",
+  },
+  {
+    k: "p",
+    t: "As noted by Nextwave's leadership, systemic change in emerging edtech markets requires patience and steady execution:",
+  },
+  { k: "quote", t: "It may be slow, yes, but... motion is still motion." },
+  { k: "p", t: "Published by **Nextwave Media Desk** | Insight & Analysis Unit." },
+];
+
+export const VALUE_GAP_ARTICLE: NewsArticle = {
+  _id: `local-${VALUE_GAP_SLUG}`,
+  title:
+    'Bridging the Value Gap: Reframing Tech Education from "Luxury" to Necessity in Emerging Communities',
+  slug: VALUE_GAP_SLUG,
+  excerpt:
+    "A recent executive Q&A with Nextwave Infotech's Head of Marketing explores why many families in emerging communities still treat tech education as a luxury — and outlines a community-anchored, social-proof-driven framework for shifting that perception.",
+  category: "Perspectives",
+  publishedAt: "2026-10-19T00:00:00Z",
+  image: null,
+  pdfUrl: null,
+  body: toPortableText(VALUE_GAP_CONTENT),
+};
+
 /** Local (in-repo) articles merged into the CMS article list. */
-export const LOCAL_ARTICLES: NewsArticle[] = [NTRI_ARTICLE, LOCAL_ARTICLE];
+export const LOCAL_ARTICLES: NewsArticle[] = [VALUE_GAP_ARTICLE, NTRI_ARTICLE, LOCAL_ARTICLE];

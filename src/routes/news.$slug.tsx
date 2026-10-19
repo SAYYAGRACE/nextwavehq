@@ -123,6 +123,15 @@ function NewsDetailPage() {
                   <div className="mt-10 prose-invert max-w-none">
                     <PortableText
                       value={article.body as Parameters<typeof PortableText>[0]["value"]}
+                      components={{
+                        types: {
+                          codeBlock: ({ value }) => (
+                            <pre className="my-6 overflow-x-auto rounded-2xl border border-hairline bg-white/[0.02] p-5 text-xs leading-relaxed text-muted-foreground">
+                              <code>{(value as { code?: string }).code}</code>
+                            </pre>
+                          ),
+                        },
+                      }}
                     />
                   </div>
                 </>
