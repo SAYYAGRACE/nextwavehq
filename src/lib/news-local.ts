@@ -447,7 +447,6 @@ export const VALUE_GAP_CONTENT: Item[] = [
     t: "As noted by Nextwave's leadership, systemic change in emerging edtech markets requires patience and steady execution:",
   },
   { k: "quote", t: "It may be slow, yes, but... motion is still motion." },
-  { k: "p", t: "Published by **Nextwave Media Desk** | Insight & Analysis Unit." },
 ];
 
 export const VALUE_GAP_ARTICLE: NewsArticle = {
