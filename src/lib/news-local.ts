@@ -231,7 +231,7 @@ export const LOCAL_ARTICLE: NewsArticle = {
 
 export const NTRI_ARTICLE_SLUG = "introducing-the-nextwave-readiness-index";
 
-const NTRI_CONTENT: Item[] = [
+export const NTRI_CONTENT: Item[] = [
   {
     k: "p",
     t: "Today we are publishing the Nextwave School Tech Readiness Index (NTRI) — a public, evidence-based measure of how ready schools in Kaduna State are to teach and use technology. It is built so that schools, funders, government and parents can finally see the reality on the ground, school by school, and act on it.",
@@ -306,7 +306,7 @@ export const NTRI_ARTICLE: NewsArticle = {
   category: "Readiness",
   publishedAt: "2026-10-17T00:00:00Z",
   image: null,
-  pdfUrl: null,
+  pdfUrl: "/downloads/introducing-the-nextwave-readiness-index.pdf",
   body: toPortableText(NTRI_CONTENT),
 };
 
@@ -328,7 +328,7 @@ const VALUE_GAP_DIAGRAM = `+----------------------------------------------------
 
 export const VALUE_GAP_SLUG = "bridging-the-value-gap";
 
-const VALUE_GAP_CONTENT: Item[] = [
+export const VALUE_GAP_CONTENT: Item[] = [
   {
     k: "ul",
     items: [
@@ -344,7 +344,7 @@ const VALUE_GAP_CONTENT: Item[] = [
   },
   {
     k: "p",
-    t: "In a recent executive Q&A, the Head of Marketing at **Nextwave Infotech** articulated a pragmatic, community-anchored strategy to address this mindset gap: triggering positive behavioral shifts by showcasing practical, youth-led achievements directly within established socio-educational touchpoints.",
+    t: "In a recent executive Q&A, the Head of Marketing at **Nextwave Infotech**, **Amina Samari**, articulated a pragmatic, community-anchored strategy to address this mindset gap: triggering positive behavioral shifts by showcasing practical, youth-led achievements directly within established socio-educational touchpoints.",
   },
   {
     k: "p",
@@ -371,7 +371,7 @@ const VALUE_GAP_CONTENT: Item[] = [
   },
   {
     k: "p",
-    t: "The **Head of Marketing at Nextwave Infotech** offered the following perspective:",
+    t: "**Amina Samari**, Head of Marketing at **Nextwave Infotech**, offered the following perspective:",
   },
   {
     k: "quote",
@@ -456,13 +456,20 @@ export const VALUE_GAP_ARTICLE: NewsArticle = {
     'Bridging the Value Gap: Reframing Tech Education from "Luxury" to Necessity in Emerging Communities',
   slug: VALUE_GAP_SLUG,
   excerpt:
-    "A recent executive Q&A with Nextwave Infotech's Head of Marketing explores why many families in emerging communities still treat tech education as a luxury — and outlines a community-anchored, social-proof-driven framework for shifting that perception.",
+    "A recent executive Q&A with Nextwave Infotech's Head of Marketing, Amina Samari, explores why many families in emerging communities still treat tech education as a luxury — and outlines a community-anchored, social-proof-driven framework for shifting that perception.",
   category: "Perspectives",
   publishedAt: "2026-10-19T00:00:00Z",
   image: null,
-  pdfUrl: null,
+  pdfUrl: "/downloads/bridging-the-value-gap.pdf",
   body: toPortableText(VALUE_GAP_CONTENT),
 };
 
 /** Local (in-repo) articles merged into the CMS article list. */
 export const LOCAL_ARTICLES: NewsArticle[] = [VALUE_GAP_ARTICLE, NTRI_ARTICLE, LOCAL_ARTICLE];
+
+/** Raw structured content per local article slug, for build-time PDF generation. */
+export const ARTICLE_CONTENT: Record<string, Item[]> = {
+  [LOCAL_ARTICLE_SLUG]: CONTENT,
+  [NTRI_ARTICLE_SLUG]: NTRI_CONTENT,
+  [VALUE_GAP_SLUG]: VALUE_GAP_CONTENT,
+};

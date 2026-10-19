@@ -11,6 +11,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "gen:og": "bun scripts/generate-og.ts",
+    "gen:news-pdf": "bun scripts/generate-news-pdf.ts",
     "format": "prettier --write ."
   },
   "dependencies": {

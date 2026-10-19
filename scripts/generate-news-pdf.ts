@@ -2,7 +2,8 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { jsPDF } from "jspdf";
-import { LOCAL_ARTICLE, CONTENT, ARTICLE_BYLINE, type Item } from "../src/lib/news-local";
+import type { NewsArticle } from "../src/lib/cms";
+import { LOCAL_ARTICLES, ARTICLE_CONTENT, ARTICLE_BYLINE, type Item } from "../src/lib/news-local";
 
 const PURPLE: [number, number, number] = [124, 92, 240];
 const INK: [number, number, number] = [28, 28, 38];
@@ -23,7 +24,7 @@ function strip(t: string): string {
   return ascii(t.replace(/\*\*([^*]+)\*\*/g, "$1").replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)"));
 }
 
-function buildPdf(): jsPDF {
+function buildPdf(article: NewsArticle, content: Item[]): jsPDF {
   const doc = new jsPDF({ unit: "pt", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
@@ -61,10 +62,10 @@ function buildPdf(): jsPDF {
 
   // ---- Title block ----
   doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
+  doc.setFontSize(19);
   doc.setTextColor(...INK);
-  const titleLines = doc.splitTextToSize(strip(LOCAL_ARTICLE.title), maxW);
-  const titleH = titleLines.length * 25;
+  const titleLines = doc.splitTextToSize(strip(article.title), maxW);
+  const titleH = titleLines.length * 24;
   ensure(titleH + 40);
   doc.text(titleLines, M, y + 14);
   y += titleH + 6;
@@ -73,8 +74,8 @@ function buildPdf(): jsPDF {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
   doc.setTextColor(...MUTED);
-  const dateStr = LOCAL_ARTICLE.publishedAt
-    ? new Date(LOCAL_ARTICLE.publishedAt).toLocaleDateString("en-GB", {
+  const dateStr = article.publishedAt
+    ? new Date(article.publishedAt).toLocaleDateString("en-GB", {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -106,7 +107,7 @@ function buildPdf(): jsPDF {
     y += lines.length * lineH + 6;
   };
 
-  for (const item of CONTENT as Item[]) {
+  for (const item of content) {
     if (item.k === "h2") {
       ensure(46);
       y += 10;
@@ -133,6 +134,17 @@ function buildPdf(): jsPDF {
         writePara(`\u2022 ${label}: ${value}`, { indent: 14 });
       });
       y += 4;
+    } else if (item.k === "code") {
+      const size = 7;
+      for (const ln of item.t.split("\n")) {
+        ensure(size * 1.35 + 4);
+        doc.setFont("courier", "normal");
+        doc.setFontSize(size);
+        doc.setTextColor(...MUTED);
+        doc.text(ln, M, y + size);
+        y += size * 1.35;
+      }
+      y += 10;
     }
   }
 
@@ -140,10 +152,18 @@ function buildPdf(): jsPDF {
   return doc;
 }
 
-const out = buildPdf();
-const buf = Buffer.from(out.output("arraybuffer"));
 const here = dirname(fileURLToPath(import.meta.url));
-const dest = join(here, "..", "public", "downloads", "modernizing-theoretical-illiteracy.pdf");
-mkdirSync(dirname(dest), { recursive: true });
-writeFileSync(dest, buf);
-console.log(`Wrote ${dest} (${buf.length} bytes)`);
+const outDir = join(here, "..", "public", "downloads");
+mkdirSync(outDir, { recursive: true });
+
+for (const article of LOCAL_ARTICLES) {
+  const content = ARTICLE_CONTENT[article.slug];
+  if (!content) {
+    console.warn(`Skipping ${article.slug} (no content)`);
+    continue;
+  }
+  const buf = Buffer.from(buildPdf(article, content).output("arraybuffer"));
+  const dest = join(outDir, `${article.slug}.pdf`);
+  writeFileSync(dest, buf);
+  console.log(`Wrote ${dest} (${buf.length} bytes)`);
+}
