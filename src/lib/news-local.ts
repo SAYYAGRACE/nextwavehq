@@ -387,6 +387,27 @@ export const VALUE_GAP_CONTENT: Item[] = [
   },
   { k: "quote", t: "It may be slow, yes, but... motion is still motion." },
   { k: "quote", t: "Thank you!" },
+  { k: "h2", t: "Policy Perspective: Keeping Pace with AI and Digital Learning" },
+  {
+    k: "quote",
+    t: "Do Nigeria's current education and ICT policies keep pace with AI and digital learning? What is missing?",
+  },
+  {
+    k: "p",
+    t: "**Muhsin Haruna**, Head of Operations and Policies at **Nextwave Infotech**, responded:",
+  },
+  {
+    k: "quote",
+    t: "While Nigeria has made commendable strides with frameworks like the National Digital Economy Policy and Strategy, our current education and ICT policies struggle to keep pace with the rapid advancements in AI and digital learning. The primary gap is not necessarily a lack of ambition, but the massive disconnect between high-level policy and grassroots implementation. Currently, public school curricula remain heavily theoretical and outdated, leaving students unprepared for an AI-driven global workforce. Furthermore, policies often overlook the critical need for comprehensive teacher upskilling; we cannot expect educators to effectively teach emerging digital competencies they have not mastered themselves.",
+  },
+  {
+    k: "quote",
+    t: "To bridge this gap, policy must transition from paper to practical infrastructure. We must mandate the integration of applied digital literacy — including basic AI principles, prompt engineering, and cybersecurity awareness — directly into the foundational curriculum of primary and secondary schools.",
+  },
+  {
+    k: "quote",
+    t: "A practical recommendation is for the government to partner with local tech organizations to establish decentralized, solar-powered digital learning hubs equipped with offline-first educational platforms in underserved communities. Through our grassroots training initiatives at NextWave Infotech, we have seen firsthand that when students and teachers are given access to localized, practical tech education, their adaptation is remarkably swift.",
+  },
   { k: "h2", t: "Strategic Analysis: Leveraging Social Proof & Behavioral Nudges" },
   {
     k: "p",
