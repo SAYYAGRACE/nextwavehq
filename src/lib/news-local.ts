@@ -466,31 +466,48 @@ export const VALUE_GAP_ARTICLE: NewsArticle = {
 export const POLICY_SLUG = "nigeria-education-ict-policies-ai";
 
 const POLICY_CONTENT: Item[] = [
+  { k: "h2", t: "The Current Landscape: Ambition Meets Reality" },
+  {
+    k: "p",
+    t: "Nigeria stands at a pivotal crossroads in the digital revolution. The Federal Government has laid ambitious groundwork through forward-thinking frameworks such as the National Digital Economy Policy and Strategy (NDEPS 2020–2030) and the National EdTech Strategy (2026–2030). These frameworks champion digital skills development, broadband expansion, and emerging technology adoption.",
+  },
+  {
+    k: "p",
+    t: "However, stark national statistics reveal a deep structural disconnect between policy formulation and classroom reality:",
+  },
   {
     k: "ul",
     items: [
-      "**Publication:** Nextwave Media Desk",
-      "**Series:** Perspectives in Educational Innovation & Community Growth",
-      "**Date:** October 2026",
+      "**Infrastructure Disparities:** According to the National Bureau of Statistics (NBS), only 59% of households in Nigeria have regular access to electricity, with rural coverage falling dramatically lower.",
+      "**The Internet and Device Gap:** Internet penetration sits at approximately 43.5%, while only 35% of schools nationally have functional internet connectivity. In public primary schools, device sharing reaches an alarming 81 students per single digital device in rural districts.",
+      "**Learning and Human Capital Pressures:** The Universal Basic Education Commission (UBEC) and World Bank data highlight an average public primary school student-to-teacher ratio as high as 70:1 in underserved areas, alongside over 18.3 million out-of-school children nationwide.",
     ],
   },
   {
     k: "p",
-    t: "In a recent executive Q&A, **Muhsin Haruna**, Head of Operations and Policies at **Nextwave Infotech**, assessed whether Nigeria's education and ICT policies keep pace with artificial intelligence and digital learning — and identified what is missing.",
+    t: "While global economies are rapidly embedding Artificial Intelligence into basic primary and secondary instruction, Nigeria's basic education system remains burdened by physical and digital access barriers.",
   },
-  { k: "h2", t: "The Question" },
+  { k: "h2", t: "Key Gaps in Nigeria's AI and Digital Learning Policies" },
   {
-    k: "quote",
-    t: "Do Nigeria's current education and ICT policies keep pace with AI and digital learning? What is missing?",
+    k: "ul",
+    items: [
+      "**Theoretical vs. Applied Curriculum:** Most public school syllabi remain anchored in outdated, theoretical ICT concepts rather than practical digital literacy, prompt engineering, data fluency, or basic AI fundamentals.",
+      "**The Teacher Training Deficit:** Digital literacy initiatives frequently focus on student outcomes while neglecting comprehensive educator upskilling, leaving teachers ill-equipped to facilitate tech-driven instruction.",
+      "**Overreliance on On-Grid Infrastructure:** Centralized digital initiatives often fail because they assume stable electricity and high-speed broadband — resources absent in vast swathes of rural Nigeria.",
+    ],
   },
-  { k: "h2", t: "The Assessment" },
+  { k: "h2", t: "Perspective from the Frontlines" },
   {
     k: "p",
-    t: "**Muhsin Haruna**, Head of Operations and Policies at **Nextwave Infotech**, responded:",
+    t: "In evaluating whether Nigeria's policies are keeping pace with global technological shifts, **Muhsin Haruna**, Head of Operations and Policies at **NextWave Infotech**, offers a clear assessment of the operational realities on the ground:",
   },
   {
     k: "quote",
-    t: "While Nigeria has made commendable strides with frameworks like the National Digital Economy Policy and Strategy, our current education and ICT policies struggle to keep pace with the rapid advancements in AI and digital learning. The primary gap is not necessarily a lack of ambition, but the massive disconnect between high-level policy and grassroots implementation. Currently, public school curricula remain heavily theoretical and outdated, leaving students unprepared for an AI-driven global workforce. Furthermore, policies often overlook the critical need for comprehensive teacher upskilling; we cannot expect educators to effectively teach emerging digital competencies they have not mastered themselves.",
+    t: "While Nigeria has made commendable strides with frameworks like the National Digital Economy Policy and Strategy, our current education and ICT policies struggle to keep pace with the rapid advancements in AI and digital learning. The primary gap is not necessarily a lack of ambition, but the massive disconnect between high-level policy and grassroots implementation. Currently, public school curricula remain heavily theoretical and outdated, leaving students unprepared for an AI-driven global workforce.",
+  },
+  {
+    k: "quote",
+    t: "Furthermore, policies often overlook the critical need for comprehensive teacher upskilling; we cannot expect educators to effectively teach emerging digital competencies they have not mastered themselves.",
   },
   {
     k: "quote",
@@ -500,15 +517,17 @@ const POLICY_CONTENT: Item[] = [
     k: "quote",
     t: "A practical recommendation is for the government to partner with local tech organizations to establish decentralized, solar-powered digital learning hubs equipped with offline-first educational platforms in underserved communities. Through our grassroots training initiatives at NextWave Infotech, we have seen firsthand that when students and teachers are given access to localized, practical tech education, their adaptation is remarkably swift.",
   },
-  { k: "h2", t: "Key Takeaways" },
+  { k: "h2", t: "The Strategic Roadmap Forward" },
   {
-    k: "ul",
+    k: "p",
+    t: "To close the implementation gap and position Nigerian youth for an AI-integrated global workforce, policy execution must focus on three practical pillars:",
+  },
+  {
+    k: "ol",
     items: [
-      "The core problem is less a lack of policy ambition than a disconnect between high-level strategy and grassroots implementation.",
-      "Public school curricula remain heavily theoretical and outdated, leaving students unprepared for an AI-driven workforce.",
-      "Comprehensive teacher upskilling is essential; educators cannot teach digital competencies they have not mastered themselves.",
-      "Applied digital literacy — including basic AI principles, prompt engineering, and cybersecurity awareness — should be built into primary and secondary curricula.",
-      "Policy should move from paper to infrastructure, including decentralized, solar-powered digital learning hubs with offline-first platforms in underserved communities.",
+      "**Curriculum Reform for the AI Era:** Integrate practical modules covering AI literacy, algorithmic thinking, and digital safety into the National Policy on Education.",
+      "**Systemic Teacher Upskilling:** Establish continuous, regional professional development networks to certify educators in digital facilitation before new technologies are rolled out in classrooms.",
+      "**Decentralized, Resilient Infrastructure:** Accelerate public-private partnerships (PPPs) with tech organizations to deploy solar-powered, offline-capable digital hubs across rural and underserved local government areas (LGAs).",
     ],
   },
 ];
@@ -516,10 +535,10 @@ const POLICY_CONTENT: Item[] = [
 export const POLICY_ARTICLE: NewsArticle = {
   _id: `local-${POLICY_SLUG}`,
   title:
-    "Do Nigeria's Education and ICT Policies Keep Pace with AI? A Policy Perspective on What's Missing",
+    "Closing the Digital Divide: Reimagining Nigeria's Education and ICT Policies for the AI Era",
   slug: POLICY_SLUG,
   excerpt:
-    "In an executive Q&A, Nextwave Infotech's Head of Operations and Policies, Muhsin Haruna, examines the gap between Nigeria's high-level education and ICT policy ambitions and grassroots implementation — and proposes a practical path forward.",
+    "Nigeria's digital learning ambitions are clear, but classroom reality tells a different story. Drawing on national data and frontline insight from Nextwave Infotech, this analysis maps the gaps and outlines a practical roadmap for AI-era education.",
   category: "Policy",
   publishedAt: "2026-10-31T00:00:00Z",
   image: null,
