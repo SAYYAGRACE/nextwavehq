@@ -387,27 +387,6 @@ export const VALUE_GAP_CONTENT: Item[] = [
   },
   { k: "quote", t: "It may be slow, yes, but... motion is still motion." },
   { k: "quote", t: "Thank you!" },
-  { k: "h2", t: "Policy Perspective: Keeping Pace with AI and Digital Learning" },
-  {
-    k: "quote",
-    t: "Do Nigeria's current education and ICT policies keep pace with AI and digital learning? What is missing?",
-  },
-  {
-    k: "p",
-    t: "**Muhsin Haruna**, Head of Operations and Policies at **Nextwave Infotech**, responded:",
-  },
-  {
-    k: "quote",
-    t: "While Nigeria has made commendable strides with frameworks like the National Digital Economy Policy and Strategy, our current education and ICT policies struggle to keep pace with the rapid advancements in AI and digital learning. The primary gap is not necessarily a lack of ambition, but the massive disconnect between high-level policy and grassroots implementation. Currently, public school curricula remain heavily theoretical and outdated, leaving students unprepared for an AI-driven global workforce. Furthermore, policies often overlook the critical need for comprehensive teacher upskilling; we cannot expect educators to effectively teach emerging digital competencies they have not mastered themselves.",
-  },
-  {
-    k: "quote",
-    t: "To bridge this gap, policy must transition from paper to practical infrastructure. We must mandate the integration of applied digital literacy — including basic AI principles, prompt engineering, and cybersecurity awareness — directly into the foundational curriculum of primary and secondary schools.",
-  },
-  {
-    k: "quote",
-    t: "A practical recommendation is for the government to partner with local tech organizations to establish decentralized, solar-powered digital learning hubs equipped with offline-first educational platforms in underserved communities. Through our grassroots training initiatives at NextWave Infotech, we have seen firsthand that when students and teachers are given access to localized, practical tech education, their adaptation is remarkably swift.",
-  },
   { k: "h2", t: "Strategic Analysis: Leveraging Social Proof & Behavioral Nudges" },
   {
     k: "p",
@@ -484,12 +463,82 @@ export const VALUE_GAP_ARTICLE: NewsArticle = {
   body: toPortableText(VALUE_GAP_CONTENT),
 };
 
+export const POLICY_SLUG = "nigeria-education-ict-policies-ai";
+
+const POLICY_CONTENT: Item[] = [
+  {
+    k: "ul",
+    items: [
+      "**Publication:** Nextwave Media Desk",
+      "**Series:** Perspectives in Educational Innovation & Community Growth",
+      "**Date:** October 2026",
+    ],
+  },
+  {
+    k: "p",
+    t: "In a recent executive Q&A, **Muhsin Haruna**, Head of Operations and Policies at **Nextwave Infotech**, assessed whether Nigeria's education and ICT policies keep pace with artificial intelligence and digital learning — and identified what is missing.",
+  },
+  { k: "h2", t: "The Question" },
+  {
+    k: "quote",
+    t: "Do Nigeria's current education and ICT policies keep pace with AI and digital learning? What is missing?",
+  },
+  { k: "h2", t: "The Assessment" },
+  {
+    k: "p",
+    t: "**Muhsin Haruna**, Head of Operations and Policies at **Nextwave Infotech**, responded:",
+  },
+  {
+    k: "quote",
+    t: "While Nigeria has made commendable strides with frameworks like the National Digital Economy Policy and Strategy, our current education and ICT policies struggle to keep pace with the rapid advancements in AI and digital learning. The primary gap is not necessarily a lack of ambition, but the massive disconnect between high-level policy and grassroots implementation. Currently, public school curricula remain heavily theoretical and outdated, leaving students unprepared for an AI-driven global workforce. Furthermore, policies often overlook the critical need for comprehensive teacher upskilling; we cannot expect educators to effectively teach emerging digital competencies they have not mastered themselves.",
+  },
+  {
+    k: "quote",
+    t: "To bridge this gap, policy must transition from paper to practical infrastructure. We must mandate the integration of applied digital literacy — including basic AI principles, prompt engineering, and cybersecurity awareness — directly into the foundational curriculum of primary and secondary schools.",
+  },
+  {
+    k: "quote",
+    t: "A practical recommendation is for the government to partner with local tech organizations to establish decentralized, solar-powered digital learning hubs equipped with offline-first educational platforms in underserved communities. Through our grassroots training initiatives at NextWave Infotech, we have seen firsthand that when students and teachers are given access to localized, practical tech education, their adaptation is remarkably swift.",
+  },
+  { k: "h2", t: "Key Takeaways" },
+  {
+    k: "ul",
+    items: [
+      "The core problem is less a lack of policy ambition than a disconnect between high-level strategy and grassroots implementation.",
+      "Public school curricula remain heavily theoretical and outdated, leaving students unprepared for an AI-driven workforce.",
+      "Comprehensive teacher upskilling is essential; educators cannot teach digital competencies they have not mastered themselves.",
+      "Applied digital literacy — including basic AI principles, prompt engineering, and cybersecurity awareness — should be built into primary and secondary curricula.",
+      "Policy should move from paper to infrastructure, including decentralized, solar-powered digital learning hubs with offline-first platforms in underserved communities.",
+    ],
+  },
+];
+
+export const POLICY_ARTICLE: NewsArticle = {
+  _id: `local-${POLICY_SLUG}`,
+  title:
+    "Do Nigeria's Education and ICT Policies Keep Pace with AI? A Policy Perspective on What's Missing",
+  slug: POLICY_SLUG,
+  excerpt:
+    "In an executive Q&A, Nextwave Infotech's Head of Operations and Policies, Muhsin Haruna, examines the gap between Nigeria's high-level education and ICT policy ambitions and grassroots implementation — and proposes a practical path forward.",
+  category: "Policy",
+  publishedAt: "2026-10-31T00:00:00Z",
+  image: null,
+  pdfUrl: "/downloads/nigeria-education-ict-policies-ai.pdf",
+  body: toPortableText(POLICY_CONTENT),
+};
+
 /** Local (in-repo) articles merged into the CMS article list. */
-export const LOCAL_ARTICLES: NewsArticle[] = [VALUE_GAP_ARTICLE, NTRI_ARTICLE, LOCAL_ARTICLE];
+export const LOCAL_ARTICLES: NewsArticle[] = [
+  POLICY_ARTICLE,
+  VALUE_GAP_ARTICLE,
+  NTRI_ARTICLE,
+  LOCAL_ARTICLE,
+];
 
 /** Raw structured content per local article slug, for build-time PDF generation. */
 export const ARTICLE_CONTENT: Record<string, Item[]> = {
   [LOCAL_ARTICLE_SLUG]: CONTENT,
   [NTRI_ARTICLE_SLUG]: NTRI_CONTENT,
   [VALUE_GAP_SLUG]: VALUE_GAP_CONTENT,
+  [POLICY_SLUG]: POLICY_CONTENT,
 };
