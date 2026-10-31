@@ -107,6 +107,14 @@ export const ARTICLE_BYLINE = "By NextWave Media Desk";
 
 export const CONTENT: Item[] = [
   {
+    k: "ul",
+    items: [
+      "**Publication:** Nextwave Media Desk",
+      "**Series:** Education Reform & Practical Skills",
+      "**Date:** October 2026",
+    ],
+  },
+  {
     k: "p",
     t: "Across the secondary and post-secondary classrooms of Northern Nigeria, a profound disconnect is quietly unfolding. While global economies pivot around artificial intelligence, cloud infrastructure, and software engineering, millions of students across the region are moving through an educational system that remains almost entirely analog.",
   },
@@ -232,6 +240,14 @@ export const LOCAL_ARTICLE: NewsArticle = {
 export const NTRI_ARTICLE_SLUG = "introducing-the-nextwave-readiness-index";
 
 export const NTRI_CONTENT: Item[] = [
+  {
+    k: "ul",
+    items: [
+      "**Publication:** Nextwave Media Desk",
+      "**Series:** School Tech Readiness & Measurement",
+      "**Date:** October 2026",
+    ],
+  },
   {
     k: "p",
     t: "Today we are publishing the Nextwave School Tech Readiness Index (NTRI) — a public, evidence-based measure of how ready schools in Kaduna State are to teach and use technology. It is built so that schools, funders, government and parents can finally see the reality on the ground, school by school, and act on it.",
@@ -466,6 +482,14 @@ export const VALUE_GAP_ARTICLE: NewsArticle = {
 export const POLICY_SLUG = "nigeria-education-ict-policies-ai";
 
 const POLICY_CONTENT: Item[] = [
+  {
+    k: "ul",
+    items: [
+      "**Publication:** Nextwave Media Desk",
+      "**Series:** Policy, Governance & the Digital Economy",
+      "**Date:** October 2026",
+    ],
+  },
   { k: "h2", t: "The Current Landscape: Ambition Meets Reality" },
   {
     k: "p",
